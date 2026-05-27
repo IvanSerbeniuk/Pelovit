@@ -23,8 +23,7 @@ RUN composer install --no-dev --optimize-autoloader
 # права (важно)
 RUN chmod -R 777 storage bootstrap/cache
 
-# ключ приложения (если нет .env на сервере)
-RUN php artisan key:generate
+
 
 EXPOSE 10000
 
