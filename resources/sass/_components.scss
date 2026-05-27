@@ -1,0 +1,146 @@
+@use 'variables' as *;
+// Product Cards
+.product-card {
+  transition: $transition-default;
+  overflow: hidden;
+  border-radius: $radius-lg;
+
+  //&:hover {
+  //  transform: translateY(-8px);
+  //  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  //}
+
+  .tag_brown {
+    position: absolute;
+    left: 12px;
+    top: 15px;
+    background: $tag-bg;
+    color: $white;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $radius-sm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .like {
+    position: absolute;
+    width: 26px;
+    right: 12px;
+    top: 13px;
+  }
+
+  .card-body {
+    border-top: 1px solid $border-light;
+  }
+
+  .wrapper__price_buy {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .price {
+    font-size: 1.1rem;
+    color: $brown-dark;
+  }
+
+  .disc_price {
+    text-decoration: line-through $discount-line;
+    font-weight: 500;
+    font-size: 14px;
+    color: rgba($text-dark, 0.6);
+  }
+
+  .buy {
+    padding: 7px $spacing-md;
+    background-color: $buy-btn-bg;
+    color: $light-bg;
+    border-radius: $radius-md;
+  }
+}
+
+// Category Cards
+.cards {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+.cat_card{
+  padding: 0;
+}
+.restrict--card-heigh .category-card img{
+  height: 16rem;
+}
+.category-card {
+  transition: $transition-default;
+  position: relative;
+
+  .cat_name {
+    position: absolute;
+    bottom: 30px;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: $white;
+    width: 201px;
+    height: 48px;
+    left: 25px;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+  }
+  img{
+    background-size: cover;
+    background-position: center;
+    object-fit: cover;
+    height: 400px;
+    background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9));
+    z-index: 2;
+  }
+}
+
+// Navbar custom
+.navbar-nav .nav-item .wrapper {
+  display: flex;
+  align-items: center;
+  margin: 0 16px;
+
+  .nav-link {
+    color: $white;
+    font-weight: 700;
+  }
+}
+
+.cat-blue {
+  background-color: $primary-blue;
+}
+
+.radius { border-radius: $radius-md; }
+.rad-16 { border-radius: $radius-lg; }
+.rad-12 { border-radius: $radius-md; }
+.rad-8 { border-radius: $radius-sm; }
+
+// Tags & Likes
+.tag_brown {
+  color: $light-bg;
+  font-weight: 600;
+  position: absolute;
+  background-color: $brown-dark;
+  border-radius: $radius-sm;
+  padding: 4px 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.like {
+  position: absolute;
+  right: 80px;
+}

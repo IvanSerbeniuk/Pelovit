@@ -1,0 +1,181 @@
+@use 'variables' as *;
+/* Reviews Section */
+.cart-section {
+  padding: 40px 0;
+  background-color: #FDFBF8;
+
+
+  .product-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+  }
+
+  .step-circle{
+    background-color: #D5EAF2;
+    color: #69BDDB;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    margin: -1px;
+  }
+
+  .progress_bar_box{
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .progress_bar{
+    flex: 1;
+    height: 0.5rem;
+    background: #D5EAF2;
+  }
+
+  .box-gift{
+    background-color: #F0F5F7;
+  }
+  .loyalty-box {
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .summary-box {
+    background-color: #fff;
+    color: #111;
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .btn-brown {
+    background-color: #422928;
+    color: #fff;
+    border: none;
+  }
+  .btn-blue {
+    background-color: #3b82f6;
+    color: #fff;
+  }
+  .like_box{
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FAF7F3;
+  }
+  .like{
+    position: unset;
+  }
+
+  .btn.btn-link.text-danger{
+    text-decoration: none;
+  }
+  .gray_cl{
+    color: #969696;
+  }
+  .gray_dr_cl{
+    color: #565454;
+  }
+
+}
+.loyalty_modal {
+  .modal-header{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  .modal-content{
+    padding: 2.5rem;
+  }
+
+  .card{
+    max-width: 145px;
+  }
+  #giftList{
+    display: flex;
+    align-content: stretch;
+    justify-content: space-between;
+  }
+  .card_img{
+    max-width: 145px;
+    border-radius: 16px;
+    border: 1px solid #E6E6E6;
+  }
+  .card_mod{
+    max-width: 145px;
+  }
+  .gift-name{
+    text-align: left;
+    color: #565454;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  .row{
+    gap: 0;
+    --bs-gutter-x: 0;
+    --bs-gutter-y: 1rem
+  }
+  .buy span{
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .gift-option{
+    gap: 0.2rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .lead{
+    font-weight: 700;
+    font-size: 1.4rem;
+    width: 80%;
+  }
+  .wrapper_header{
+    display: flex;
+    justify-content: center;
+  }
+  .btn-register{
+    background-color: #1A1A1A;
+    color: white;
+    border-radius: 16px;
+  }
+}
+.count_rates{
+  border: 1px solid #F4F0E7;
+  width: fit-content;
+}
+
+.delete_item_modal img{
+  width: 150px;
+  border: 1px solid #E6E6E6;
+}
+.delete_item_modal .modal-content{
+  background-color: #FDFBF8;
+  max-width: 430px;
+}
+.delete_item_modal p{
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #565454;
+}
+.delete_item_modal .modal-header{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.btn_cancel{
+  border-radius: 16px;
+  border: 1px solid #00000033;
+  background-color: white;
+  color: #422928;
+  padding: 0.5rem 2.8rem;
+}
+.btn_delete{
+  border-radius: 16px;
+  border: 1px solid #00000033;
+  background-color: #1A1A1A;
+  color: white;
+  padding: 0.5rem 2.8rem;
+}
+

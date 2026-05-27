@@ -1,0 +1,17 @@
+@use 'variables' as *;
+
+body {
+  font-family: 'Inter Tight', system-ui, sans-serif;
+}
+body, html {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+}
+
+
+.p-2-5 {
+  padding: .75rem !important;
+}
+.p-4-0 {
+  padding: 2.5rem !important;
+}

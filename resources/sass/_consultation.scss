@@ -1,0 +1,137 @@
+@use 'variables' as *;
+/* Consultation & FAQ */
+.consultation-section {
+  padding: 6rem 0;
+}
+.consultation-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+}
+.consultation-form {
+  color: #fff;
+  position: relative;
+  width: 100%;
+  background: linear-gradient(135deg, #3A2521 0%, #2C1A17 100%);
+  overflow: hidden;
+  align-items: center;
+  padding: 2rem 2rem;
+  border-radius: 24px;
+}
+.consultation-form::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+  url('../images/personal_consultation.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.4;
+  mix-blend-mode: soft-light;
+}
+.consultation-form h2 {
+  font-size: 2.4rem;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+}
+.consultation-form p {
+  font-size: 1.2rem;
+  margin: 0;
+  font-weight: 400;
+  line-height: 140%;
+  display: flex;
+  align-items: center;
+  color: #FFFFFF;
+}
+.consultation-form input.width_input {
+  width: 100%;
+  margin: 0.5rem 0;
+  background-color: rgb(99 66 65);
+  z-index: 2;
+  position: relative;
+}
+.consultation-form input {
+  padding: 1.1rem 1.5rem;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 1.05rem;
+}
+.consultation-form input::placeholder {
+  color: #aaa;
+}
+.contact-method p {
+  margin: 1.5rem 0 0.75rem;
+  font-weight: 500;
+}
+.contact-method label {
+  cursor: pointer;
+  display: flex;
+  margin: 0.6rem 0;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 2;
+  position: relative;
+}
+.contact-method input[type="radio"] {
+  accent-color: #ffffff;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 10px;
+}
+.contact-method input[type="radio"]:not(:checked) {
+  filter: grayscale(1) brightness(0.3);
+}
+.submit-btn {
+  width: 100%;
+  padding: 0.9rem;
+  background: #fff;
+  color: #2C1F1A;
+  border: none;
+  border-radius: 24px;
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+.social-links {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.social-icons a {
+  font-size: 1.8rem;
+  margin-right: 1rem;
+  text-decoration: none;
+}
+.faq-section h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+.faq-item {
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  padding: 1.25rem 0;
+}
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.faq-toggle {
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+.faq-answer {
+  margin-top: 1rem;
+  line-height: 1.6;
+  opacity: 0.9;
+  display: none;
+}
+.faq-item.active .faq-answer {
+  display: block;
+}

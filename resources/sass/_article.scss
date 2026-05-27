@@ -1,0 +1,38 @@
+@use 'variables' as *;
+
+.article-image{
+  height: 500px;
+  object-fit: cover;
+}
+
+.lik_prof{
+  background-color: #E7F1F4;
+}
+.wrapper_date{
+  display: flex;
+  gap: 3rem;
+}
+
+.article_section{
+  .date_artc{
+    font-size: 0.9rem;
+    color: #969696;
+  }
+  .date{
+    font-size: 1rem;
+    color: black;
+  }
+
+}
+.content_images img{
+  height: 320px;
+}
+
+.publications_box.similar .card-img-top{
+  height: 320px;
+}
+.detailed{
+  text-align: end;
+  color: black;
+  text-decoration: none;
+}

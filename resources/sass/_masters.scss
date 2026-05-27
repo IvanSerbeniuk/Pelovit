@@ -1,0 +1,124 @@
+@use 'variables' as *;
+
+.hero{
+  margin: unset;
+  border-radius: unset;
+}
+.stat-card{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.hero{
+  a.btn{
+    //max-width: 165px;
+    font-size: 1rem;
+  }
+}
+
+.sidebar .nav-link {
+  color: #555;
+  padding: 14px 20px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+.sidebar .nav-link.active,
+.sidebar .nav-link:hover {
+  background-color: #f8f1eb;
+  color: #333;
+  font-weight: 500;
+}
+.hero-video {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.product-card {
+  transition: all 0.3s;
+}
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+.tab{
+  width: 50%;
+}
+.calculation{
+  background-color: #98D1E54D;
+}
+.master_category{
+
+  .product_card_sm .cart-item{
+    border: 1px solid #FAF7F3;
+  }
+
+  .content-product_card_sm{
+    display: flex;
+    gap: 12px;
+  }
+  .like{
+    position: unset;
+  }
+
+  .like_box{
+    background-color: #FAF7F3;
+  }
+
+  .calculation .inner{
+    height: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .calculation .inner h4{
+    font-weight: 700;
+    font-size: 2rem;
+  }
+  .calculation .inner .btn{
+    border-radius: 16px ;
+  }
+
+  .categories{
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    .card{
+      position: relative;
+      .card-body{
+        position: absolute;
+        width: -webkit-fill-available;
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 500;
+        height: -webkit-fill-available;
+        display: flex;
+        align-items: flex-end;
+        margin-bottom: 3rem;
+      }
+    }
+    .card-img-top{
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 16px;
+      filter: brightness(70%);
+    }
+  }
+}
+.product_cards_sm{
+  margin-bottom: 80px;
+}
+.master_category-section {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../images/skincare_glow.png) center / cover no-repeat;
+  padding: 6rem 0;
+  position: relative;
+  height: 223px;
+  .master_category_breadcrums{
+    gap: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+}
+.master_category .categories{
+  margin-bottom: 50px;
+}

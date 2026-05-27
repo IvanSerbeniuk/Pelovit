@@ -1,0 +1,143 @@
+@use 'variables' as *;
+
+
+.cert-section .cert-image{
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.hero {
+  margin: 80px 3.5rem;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  color: white;
+  position: relative;
+  border-radius: 24px;
+  min-height:unset;
+}
+.stat-card {
+  background-color: white;
+  color: #1A7B9E;
+  border-radius: 12px;
+  padding: 20px 15px;
+}
+.stat-number {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #1A7B9E;
+}
+.hero-text {
+  max-width: 520px;
+}
+
+.section-nagoroda{
+  margin: 80px 3.5rem;
+  background-color: #F4F0E7;
+  border-radius: 24px;
+}
+
+.doslidgenja_section{
+  .sidebar-nav {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .sidebar-nav a {
+    display: block;
+    padding: 18px 24px;
+    color: #565454;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+  }
+  .sidebar-nav a:hover {
+    background: #1a1a1a;
+    color: white;
+  }
+  .sidebar-nav a.active {
+    background: #f8f1e3;
+    color: #111;
+    font-weight: 600;
+  }
+  .research-img {
+    border-radius: 16px;
+    width: 400px;
+    height: 360px;
+  }
+  .section-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+  }
+}
+
+.values_section{
+  .value-card {
+    color: #1a1a1a;
+    border-radius: 12px;
+    padding: 28px 20px;
+    height: 100%;
+    background-color: #F4F0E7;
+  }
+
+  .value-icon {
+    font-size: 2.8rem;
+    color: #2a9d8f;
+  }
+  .founder-photo {
+    border-radius: 16px;
+    width: 200px;
+    height: 200px;
+  }
+}
+
+.history_section{
+  margin: 80px 3.5rem;
+  .timeline {
+    position: relative;
+  }
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: #69BDDB;
+  }
+  .timeline-item {
+    position: relative;
+    z-index: 2;
+    text-align: left;
+  }
+  .timeline-item img {
+    border-radius: 12px;
+    width: 224px;
+    height: 180px;
+    object-fit: cover;
+  }
+  .year {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1A7B9E;
+  }
+  .d-line{
+    height: 1px;
+    background: repeating-linear-gradient(
+            to right,
+            #69BDDB 0 8px,
+            transparent 8px 16px
+    );
+  }
+}
+.watcheus_section{
+  margin: 80px 3.5rem;
+  img{
+    width: 320px;
+    height: 320px;
+    border-radius: 16px;
+    object-fit: cover;
+  }
+}
+.section-title{
+  margin-bottom: 48px;
+}

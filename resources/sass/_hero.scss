@@ -1,0 +1,46 @@
+@use 'variables' as *;
+
+.hero {
+  background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
+  url('../images/gl_face.png') center/cover no-repeat;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 290px;
+    height: 18rem;
+    object-fit: cover;
+  }
+}
+.carousel-control-prev, .carousel-control-next{
+  width: 4%;
+}
+.card-pelov .mt-3 {
+  font-size: 1rem;
+  color: $brown-dark;
+  width: 100%;
+  text-align: justify;
+}
+.top-border {
+  border-top: solid $border-light;
+  width: 110%;
+  margin-left: -5%;
+}
+.wrapper__price_buy {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  font-size: 1rem;
+  color: #422928;
+}
+
+.buy {
+  padding: 7px 16px;
+  background-color: #69BDD8;
+  color: #FAF7F3;
+  border-radius: 12px;
+}

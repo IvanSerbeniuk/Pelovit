@@ -1,0 +1,156 @@
+@use 'variables' as *;
+
+body{
+  background-color: #FDFBF8;
+}
+.order_section{
+  .checkout-card {
+    border-radius: 16px;
+    transition: all 0.2s;
+    background-color: #ffffff;
+    border: 1px solid #F5EDE8;
+    .card-body .row{
+      color: #969696;
+    }
+  }
+  .cartItemsList{
+    gap: 8px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .count_rates{
+    border: 1px solid #F4F0E7;
+    width: fit-content;
+  }
+
+  .card-body .product-img{
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+  }
+
+  .col-lg-5 .sticky-lg-top{
+    background-color: #FAF7F3;
+  }
+  .form-control::placeholder {
+    color: #E6E6E6;
+  }
+  .form-check label{
+    font-size: 0.9rem;
+  }
+  .payment_icons svg{
+    width: 3rem;
+  }
+  .wrapper_payment{
+    display: flex;
+    justify-content: space-between;
+  }
+  .leve_comment{
+     padding: 0 1.5rem;
+    color: #969696;
+    font-size: 0.9rem;
+  }
+
+  .card-header-custom {
+    background-color: transparent;
+    padding: 1.25rem 1.5rem;
+    font-weight: 500;
+  }
+  .section-icon {
+    margin-right: 8px;
+    color: #2c7d6c;
+  }
+  .btn-checkout-primary {
+    background-color: #69BDDB;
+    border: none;
+    padding: 0.85rem 1.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.2s;
+    border-radius: 16px;
+  }
+  .btn-checkout-primary:hover {
+    background-color: #5498b1;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+  }
+  .product-quantity-group {
+    max-width: 110px;
+  }
+  .product-quantity-group .btn-outline-secondary {
+    background-color: #fff;
+    border-color: #dee2e6;
+    color: #2d3e50;
+  }
+  .product-quantity-group .quantity-input {
+    max-width: 48px;
+    text-align: center;
+    border-left: none;
+    border-right: none;
+    border-color: #dee2e6;
+    font-weight: 500;
+  }
+  .gift-change-link {
+    font-size: 0.8rem;
+    text-decoration: none;
+    border-bottom: 1px dashed #adb5bd;
+    cursor: pointer;
+  }
+  .discount-badge {
+    background-color: #fef9e3;
+    border-radius: 12px;
+    padding: 0.2rem 0.8rem;
+  }
+  hr {
+    opacity: 0.5;
+  }
+  .payment-method-desc {
+    font-size: 0.8rem;
+    color: #556b82;
+    border-radius: 14px;
+    padding: 0.8rem 1rem;
+    margin-top: 0.5rem;
+  }
+  .bonus-note {
+    font-size: 0.8rem;
+    border-radius: 2rem;
+    padding: 0.4rem 1rem;
+    display: inline-block;
+    color: #565454;
+  }
+  .order-total-card {
+    background: #fafcfd;
+    border-radius: 1rem;
+    padding: 0.8rem;
+  }
+
+  .promocode_block .form-label{
+    color: #969696;
+    font-size: 0.9rem;
+  }
+  .promocode_block .actualize{
+    background-color: #969696CC;
+    color: white;
+  }
+  .text-gr{
+    color: #969696;
+  }
+
+  .bottom_sum{
+    border-top: 1px solid #E9E8E8;
+  }
+  .input-group{
+    border-radius: 16px;
+  }
+
+
+
+  @media (max-width: 768px) {
+    body {
+      padding: 1rem;
+    }
+    .card-header-custom {
+      padding: 1rem 1.2rem;
+    }
+  }
+}

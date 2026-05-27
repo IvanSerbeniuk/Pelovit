@@ -1,0 +1,61 @@
+@use 'variables' as *;
+// =============================================
+// LOYALTY + FOOTER
+// =============================================
+.bg-beige {
+  background: #f9f3eb;
+}
+
+.loyalty-form {
+  .form-control {
+    background: rgba(211, 211, 211, 0.4);
+    border: none;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 1.05rem;
+
+    &::placeholder {
+      color: rgba(58, 37, 33, 0.6);
+    }
+
+    &:focus {
+      background: white;
+      box-shadow: 0 0 0 3px rgba(66, 41, 40, 0.15);
+    }
+  }
+
+  button {
+    background: #422928;
+    color: white;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+
+    &:hover {
+      background: #2c1f1a;
+    }
+  }
+}
+
+.loyalty-footer {
+  background: rgba(238, 228, 223, 1);
+  h6 {
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+  }
+
+  ul {
+    font-size: 1.05rem;
+  }
+
+  a:hover {
+    color: #422928 !important;
+    text-decoration: underline !important;
+  }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .loyalty-footer h2 {
+    font-size: 2.2rem;
+  }
+}

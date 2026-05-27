@@ -1,0 +1,141 @@
+@use 'variables' as *;
+
+@media (max-width: $bp-lg) {
+  .consultation-grid,
+  .loyalty-content {
+    flex-direction: column-reverse;
+    gap: 3rem;
+  }
+  .loyalty-text {
+    text-align: center;
+  }
+  .blue_tags_wrapper .blue_tag{
+    font-size: 1rem;
+  }
+  .social-icons a{
+    margin-right: 0;
+    font-size: 1.3rem;
+  }
+  .consultation-form p{
+    font-size:1rem;
+  }
+
+  .kontractne_vyrobnyctvo_page .develop_cons_section .social-icons a{
+    margin-right: 0;
+  }
+  .kontractne_vyrobnyctvo_page .posluga_wrapper{
+    grid-template-columns: repeat(1, minmax(260px, 1fr));
+  }
+}
+@media (max-width: $bp-md) {
+  .marquee-track {
+    gap: 3rem;
+    svg {
+      height: 100px;
+    }
+  }
+  .articles-grid,
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+@media (max-width: $bp-sm) {
+
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+  .review-image {
+    height: 380px;
+  }
+  .loyalty-benefits {
+    grid-template-columns: 1fr;
+  }
+  .hero-carousel{
+    .row.align-items-center{
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 1rem;
+    }
+    .row.align-items-center .mob{
+      text-align: center !important;
+    }
+    .d-inline-block.card-pelov{
+      width: 60%;
+    }
+    .wrapper__price_buy .btn.buy span{
+      display: none;
+    }
+    .hero img{
+      height: 9rem;
+    }
+  }
+
+  .category-section{
+    .cards{
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .cat_card:last-child {
+    display: none;
+  }
+  .category-card img{
+    height: 13rem;
+  }
+
+  .all_categories{
+    .btn.buy span{
+      display: none;
+    }
+  }
+
+  .benefits-section .benefit-card{
+    flex-direction: row;
+    gap: 2rem;
+  }
+  .benefits-section .icon-wrapper{
+    margin: auto 0;
+  }
+
+  .container .card_liman{
+    margin-right: 0;
+    margin-left: 0;
+  }
+  .container .card_liman .features li::before {
+    content: none;
+  }
+  .consultation-grid{
+    grid-template-columns: 1fr;
+  }
+  .loyalty-content {
+    flex-direction: column-reverse;
+    gap: 3rem;
+  }
+  .faq-container{
+    order: 1;
+  }
+  .consultation-form{
+    order: 2;
+  }
+
+  .contact-production-section{
+    .contact_info{
+      flex-direction: column-reverse;
+      gap: 1rem;
+      margin: 0;
+    }
+    .contact_info_text{
+       width: unset;
+    }
+    .content{
+      padding: 0;
+    }
+    .to_page{
+      width: unset;
+    }
+    .image-wrapper img{
+      height: 230px;
+    }
+  }
+
+}

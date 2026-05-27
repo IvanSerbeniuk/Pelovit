@@ -1,0 +1,40 @@
+@use 'variables' as *;
+
+.contact-section {
+  .form-card {
+    background: #2a1e1e;
+    border-radius: 16px;
+    padding: 40px;
+  }
+
+  .map_section{
+    border-radius: 16px;
+    overflow: auto;
+    width: 1320px;
+  }
+  .contact-info{
+    gap: 2rem;
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+  }
+  .contact-info i{
+    color: #1A1A1A;
+  }
+}
+
+.messenger_section{
+  .form-card {
+    background: #2a1e1e;
+    border-radius: 16px;
+    padding: 40px;
+  }
+  .contact-info i {
+    color: #2a9d8f;
+    width: 24px;
+  }
+  .messenger-link{
+    color: #1A1A1A;
+  }
+
+}
