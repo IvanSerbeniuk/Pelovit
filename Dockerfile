@@ -26,6 +26,11 @@ COPY . .
 # зависимости Laravel
 RUN composer install --no-dev --optimize-autoloader
 
+
+# JS deps + Vite build
+RUN npm install
+RUN npm run build
+
 # права (важно)
 RUN chmod -R 777 storage bootstrap/cache
 
