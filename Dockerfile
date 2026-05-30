@@ -2,7 +2,6 @@ FROM php:8.3-cli
 
 WORKDIR /var/www
 
-# системные зависимости
 RUN apt-get update && apt-get install -y \
     unzip \
     curl \
@@ -10,6 +9,8 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libpq-dev \
     zip \
+    nodejs \
+    npm \
     && docker-php-ext-install \
     pdo \
     pdo_mysql \
@@ -17,24 +18,18 @@ RUN apt-get update && apt-get install -y \
     pgsql \
     zip
 
-# composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# копируем проект
 COPY . .
 
-# зависимости Laravel
+# PHP deps
 RUN composer install --no-dev --optimize-autoloader
 
-
-# JS deps + Vite build
+# JS deps + Vite
 RUN npm install
 RUN npm run build
 
-# права (важно)
 RUN chmod -R 777 storage bootstrap/cache
-
-
 
 EXPOSE 10000
 
