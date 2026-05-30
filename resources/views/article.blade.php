@@ -14,7 +14,7 @@
 
     <!-- HERO IMAGE -->
     <div class="mb-4">
-      <img src="{{ Vite::asset('resources/images/skincare1.png') }}"  class="img-fluid rounded-4 w-100 article-image" alt="">
+      <img src="{{ asset('images/skincare1.png') }}"  class="img-fluid rounded-4 w-100 article-image" alt="">
     </div>
 
     <!-- ACTIONS -->
@@ -63,11 +63,11 @@
       <!-- IMAGE GRID -->
       <div class="row g-3 mb-5 content_images">
         <div class="col-md-6">
-          <img src="{{ Vite::asset('resources/images/face_washing.png') }}" class="img-fluid rounded-4 w-100" alt="">
+          <img src="{{ asset('images/face_washing.png') }}" class="img-fluid rounded-4 w-100" alt="">
           <p class="mt-2 small text-muted">Назва продукту</p>
         </div>
         <div class="col-md-6">
-          <img src="{{ Vite::asset('resources/images/science_in_laboratory.png') }}" class="img-fluid rounded-4 w-100" alt="">
+          <img src="{{ asset('images/science_in_laboratory.png') }}" class="img-fluid rounded-4 w-100" alt="">
           <p class="mt-2 small text-muted">Назва продукту</p>
         </div>
       </div>

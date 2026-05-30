@@ -60,7 +60,7 @@
       Робота Асимед неодноразово відмічена нагородами
     </h3>
     <div class="nagoroda_img text-center">
-      <img src="{{ Vite::asset('resources/images/nagorods.png') }}" alt="" class=" img-fluid">
+      <img src="{{ asset('images/nagorods.png') }}" alt="" class=" img-fluid">
     </div>
   </div>
 </section>
@@ -81,7 +81,7 @@
 
       <!-- Центральна колонка - Фото -->
       <div class="col-lg-4">
-        <img src="{{ Vite::asset('resources/images/science_in_laboratory.png') }}"
+        <img src="{{ asset('images/science_in_laboratory.png') }}"
              alt="Дослідження в лабораторії"
              class="research-img img-fluid">
       </div>
@@ -197,7 +197,7 @@
 
       <!-- 2010 -->
       <div class="col-lg-4 timeline-item">
-        <img src="{{ Vite::asset('resources/images/handwash3.jpg') }}"
+        <img src="{{ asset('images/handwash3.jpg') }}"
              alt="2010" class="img-fluid mb-4">
         <div class="year">2010</div>
         <p class="mt-3">Заснування бренду, початок виробництва спа-косметики.</p>
@@ -205,7 +205,7 @@
 
       <!-- 2016 -->
       <div class="col-lg-4 timeline-item">
-        <img src="{{ Vite::asset('resources/images/handwash3.jpg') }}"
+        <img src="{{ asset('images/handwash3.jpg') }}"
              alt="2016" class="img-fluid mb-4">
         <div class="year">2016</div>
         <p class="mt-3">Початок контрактного виробництва для сторонніх брендів.</p>
@@ -213,7 +213,7 @@
 
       <!-- 2022 -->
       <div class="col-lg-4 timeline-item">
-        <img src="{{ Vite::asset('resources/images/handwash3.jpg') }}"
+        <img src="{{ asset('images/handwash3.jpg') }}"
              alt="2022" class="img-fluid mb-4">
         <div class="year">2022</div>
         <p class="mt-3">Запуск нових антивікових та універсальних косметичних ліній.</p>
@@ -225,7 +225,7 @@
       <div class="col-lg-6 timeline-item m-0">
         <div class="year">2013</div>
         <p class="mt-3">Впровадження лікувальних комплексів для застосування вдома.</p>
-        <img src="{{ Vite::asset('resources/images/handwash3.jpg') }}"
+        <img src="{{ asset('images/handwash3.jpg') }}"
              alt="2013" class="img-fluid mb-4">
       </div>
 
@@ -233,7 +233,7 @@
       <div class="col-lg-6 timeline-item m-0">
         <div class="year">2019</div>
         <p class="mt-3">Відкриття мережі дистрибуції по Україні та онлайн-продажів.</p>
-        <img src="{{ Vite::asset('resources/images/handwash3.jpg') }}"
+        <img src="{{ asset('images/handwash3.jpg') }}"
              alt="2019" class="img-fluid mb-4">
       </div>
 
@@ -250,12 +250,12 @@
     <div class="row g-5 justify-content-center">
       <div class="col-lg-5 col-md-6">
         <div class="cert-card">
-          <img src="{{ Vite::asset('resources/images/sertificate1.png') }}" alt="Сертифікат GMP ISO 22716 - Англійська версія" class="cert-image">
+          <img src="{{ asset('images/sertificate1.png') }}" alt="Сертифікат GMP ISO 22716 - Англійська версія" class="cert-image">
         </div>
       </div>
       <div class="col-lg-5 col-md-6">
         <div class="cert-card">
-          <img src="{{ Vite::asset('resources/images/sertificate2.png') }}" alt="Сертифікат GMP ISO 22716 - Українська версія" class="cert-image">
+          <img src="{{ asset('images/sertificate2.png') }}" alt="Сертифікат GMP ISO 22716 - Українська версія" class="cert-image">
         </div>
       </div>
     </div>
@@ -267,10 +267,10 @@
     <div class="row g-4">
       <h2>Слідкуйте за нами</h2>
 
-      <div class="col-md-3 col-6"><img src="{{ Vite::asset('resources/images/catname4.png') }}" alt="" class="img-fluid"></div>
-      <div class="col-md-3 col-6"><img src="{{ Vite::asset('resources/images/face_washing.png') }}" alt="" class="img-fluid"></div>
-      <div class="col-md-3 col-6"><img src="{{ Vite::asset('resources/images/catname5.png') }}" alt="" class="img-fluid"></div>
-      <div class="col-md-3 col-6"><img src="{{ Vite::asset('resources/images/catname3.png') }}" alt="" class="img-fluid"></div>
+      <div class="col-md-3 col-6"><img src="{{ asset('images/catname4.png') }}" alt="" class="img-fluid"></div>
+      <div class="col-md-3 col-6"><img src="{{ asset('images/face_washing.png') }}" alt="" class="img-fluid"></div>
+      <div class="col-md-3 col-6"><img src="{{ asset('images/catname5.png') }}" alt="" class="img-fluid"></div>
+      <div class="col-md-3 col-6"><img src="{{ asset('images/catname3.png') }}" alt="" class="img-fluid"></div>
     </div>
   </div>
 </section>

@@ -19,7 +19,7 @@
             <div class="carousel-inner">
                 <!-- Slide 1 -->
                 <div class="carousel-item active">
-                    <div class="hero text-white" style="background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url({{ Vite::asset('resources/images/gl_face.png') }});">
+                    <div class="hero text-white" style="background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url({{ asset('images/gl_face.png') }});">
                         <div class="container">
                             <div class="row align-items-center">
                                 <div class="col-lg-6 mob">
@@ -31,7 +31,7 @@
                                     <!-- Твій продуктовий блок -->
                                     <div class="bg-white text-dark p-3 rounded-4 shadow-sm d-inline-block card-pelov">
                                         <div class="tag_brown">Обличчя</div>
-                                        <img src="{{ Vite::asset('resources/images/classic300.png') }}" alt="Pelovit-R" class="img-fluid rounded-3">
+                                        <img src="{{ asset('images/classic300.png') }}" alt="Pelovit-R" class="img-fluid rounded-3">
                                         <h5 class="mt-3">Пеловіт-Р Класичний 500мл</h5>
                                         <div class="mt-3 wrapper__price_buy">
                                             <h4 class="price">6908 ₴</h4>
@@ -59,7 +59,7 @@
 
                 <!-- Slide 2 -->
                 <div class="carousel-item active">
-                    <div class="hero text-white" style="background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url({{ Vite::asset('resources/images/gl_face.png') }});">
+                    <div class="hero text-white" style="background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url({{ asset('images/gl_face.png') }});">
                         <div class="container">
                             <div class="row align-items-center">
                                 <div class="col-lg-6 mob">
@@ -70,7 +70,7 @@
                                 <div class="col-lg-6 text-end mob">
                                     <div class="bg-white text-dark p-3 rounded-4 shadow-sm d-inline-block card-pelov">
                                         <div class="tag_brown">Обличчя</div>
-                                        <img src="{{ Vite::asset('resources/images/classic300.png') }}" alt="Pelovit-R" class="img-fluid rounded-3">
+                                        <img src="{{ asset('images/classic300.png') }}" alt="Pelovit-R" class="img-fluid rounded-3">
                                         <h5 class="mt-3">Пеловіт-Р Класичний 500мл</h5>
                                         <div class="mt-3 wrapper__price_buy">
                                             <h4 class="price">6908 ₴</h4>
@@ -98,7 +98,7 @@
 
                 <!-- Slide 3 -->
                 <div class="carousel-item active">
-                    <div class="hero text-white" style="background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url({{ Vite::asset('resources/images/gl_face.png') }});">
+                    <div class="hero text-white" style="background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url({{ asset('images/gl_face.png') }});">
                         <div class="container">
                             <div class="row align-items-center">
                                 <div class="col-lg-6 mob">
@@ -110,7 +110,7 @@
                                     <!-- Твій продуктовий блок -->
                                     <div class="bg-white text-dark p-3 rounded-4 shadow-sm d-inline-block card-pelov">
                                         <div class="tag_brown">Обличчя</div>
-                                        <img src="{{ Vite::asset('resources/images/classic300.png') }}" alt="Pelovit-R" class="img-fluid rounded-3">
+                                        <img src="{{ asset('images/classic300.png') }}" alt="Pelovit-R" class="img-fluid rounded-3">
                                         <h5 class="mt-3">Пеловіт-Р Класичний 500мл</h5>
                                         <div class="mt-3 wrapper__price_buy">
                                             <h4 class="price">6908 ₴</h4>
@@ -199,31 +199,31 @@
             <div class="row cards">
                 <div class="cat_card">
                     <div class="category-card ">
-                        <img src="{{ Vite::asset('resources/images/tranc.png') }}" class="rounded-4 w-100" alt="">
+                        <img src="{{ asset('images/tranc.png') }}" class="rounded-4 w-100" alt="">
                         <p class="mt-3 fw-medium cat_name">Лікувальні препарати</p>
                     </div>
                 </div>
                 <div class="cat_card">
                     <div class="category-card ">
-                        <img src="{{ Vite::asset('resources/images/face_washing.png') }}" class="rounded-4 w-100" alt="">
+                        <img src="{{ asset('images/face_washing.png') }}" class="rounded-4 w-100" alt="">
                         <p class="mt-3 fw-medium cat_name">Доглядова косметика</p>
                     </div>
                 </div>
                 <div class="cat_card">
                     <div class="category-card ">
-                        <img src="{{ Vite::asset('resources/images/catname3.png') }}" class="rounded-4 w-100" alt="">
+                        <img src="{{ asset('images/catname3.png') }}" class="rounded-4 w-100" alt="">
                         <p class="mt-3 fw-medium cat_name">Комплекси</p>
                     </div>
                 </div>
                 <div class="cat_card">
                     <div class="category-card ">
-                        <img src="{{ Vite::asset('resources/images/catname4.png') }}" class="rounded-4 w-100" alt="">
+                        <img src="{{ asset('images/catname4.png') }}" class="rounded-4 w-100" alt="">
                         <p class="mt-3 fw-medium cat_name">PRO серія Майстер</p>
                     </div>
                 </div>
                 <div class="cat_card">
                     <div class="category-card ">
-                        <img src="{{ Vite::asset('resources/images/catname5.png') }}" class="rounded-4 w-100" alt="">
+                        <img src="{{ asset('images/catname5.png') }}" class="rounded-4 w-100" alt="">
                         <p class="mt-3 fw-medium cat_name">Парфумована лінійка ART17</p>
                     </div>
                 </div>
@@ -292,7 +292,7 @@
                     <a href="#" class="btn btn-light rad-16 to_page">До сторінки</a>
                 </div>
                 <div class="col-lg-6 text-end image-wrapper">
-                    <img src="{{ Vite::asset('resources/images/pexel-mart.jpg') }}" class="rounded-4 shadow" alt="Контрактне виробництво косметики">
+                    <img src="{{ asset('images/pexel-mart.jpg') }}" class="rounded-4 shadow" alt="Контрактне виробництво косметики">
                 </div>
             </div>
         </div>
@@ -611,13 +611,13 @@
             <div class="reviews-grid">
 
                 <!-- Card 1 - Bottle in hand -->
-                <div class="review-card" style='background-image: url({{ Vite::asset('resources/images/vidguk1.jpg') }});' >
+                <div class="review-card" style='background-image: url({{ asset('images/vidguk1.jpg') }});' >
                     <div class="review-image" ></div>
                     <div class="review-footer">
                         <div class="wrapper rad-16">
 
                             <div class="product-info">
-                                <img src="{{ Vite::asset('resources/images/vid_prep.png') }}" alt="Пеловіт-Р">
+                                <img src="{{ asset('images/vid_prep.png') }}" alt="Пеловіт-Р">
                                 <div class="content_wrapper">
                                     <div class="prep_name">
                                         <div>Пеловіт-Р Класичний</div>
@@ -631,13 +631,13 @@
                 </div>
 
                 <!-- Card 2 - Woman with red hair (your new image) -->
-                <div class="review-card" style='background-image: url({{ Vite::asset('resources/images/vidguk2.jpg') }});' >
+                <div class="review-card" style='background-image: url({{ asset('images/vidguk2.jpg') }});' >
                     <div class="review-image" ></div>
                     <div class="review-footer">
                         <div class="wrapper rad-16">
 
                             <div class="product-info">
-                                <img src="{{ Vite::asset('resources/images/vid_prep.png') }}" alt="Пеловіт-Р">
+                                <img src="{{ asset('images/vid_prep.png') }}" alt="Пеловіт-Р">
                                 <div class="content_wrapper">
                                     <div class="prep_name">
                                         <div>Пеловіт-Р Класичний</div>
@@ -651,13 +651,13 @@
                 </div>
 
                 <!-- Card 3 - Hand with bottle + cat -->
-                <div class="review-card" style='background-image: url({{ Vite::asset('resources/images/vidguk3.jpg') }});' >
+                <div class="review-card" style='background-image: url({{ asset('images/vidguk3.jpg') }});' >
                     <div class="review-image" ></div>
                     <div class="review-footer">
                         <div class="wrapper rad-16">
 
                             <div class="product-info">
-                                <img src="{{ Vite::asset('resources/images/vid_prep.png') }}" alt="Пеловіт-Р">
+                                <img src="{{ asset('images/vid_prep.png') }}" alt="Пеловіт-Р">
                                 <div class="content_wrapper">
                                     <div class="prep_name">
                                         <div>Пеловіт-Р Класичний</div>
@@ -671,13 +671,13 @@
                 </div>
 
                 <!-- Card 4 - Instagram story style -->
-                <div class="review-card" style='background-image: url({{ Vite::asset('resources/images/vidguk4.jpg') }});' >
+                <div class="review-card" style='background-image: url({{ asset('images/vidguk4.jpg') }});' >
                     <div class="review-image" ></div>
                     <div class="review-footer">
                         <div class="wrapper rad-16">
 
                             <div class="product-info">
-                                <img src="{{ Vite::asset('resources/images/vid_prep.png') }}" alt="Пеловіт-Р">
+                                <img src="{{ asset('images/vid_prep.png') }}" alt="Пеловіт-Р">
                                 <div class="content_wrapper">
                                     <div class="prep_name">
                                         <div>Пеловіт-Р Класичний</div>

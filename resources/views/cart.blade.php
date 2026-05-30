@@ -41,7 +41,7 @@
         <!-- Cart Items -->
         <div class="cart_wrapper gap-2 d-flex flex-column">
           <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
-            <img src="{{ Vite::asset('resources/images/image.png') }}" alt="Пеловіт" class="product-img">
+            <img src="{{ asset('images/image.png') }}" alt="Пеловіт" class="product-img">
             <div class="flex-grow-1">
               <h6>Пеловіт-Р Класичний 500мл</h6>
               <div class="d-flex align-items-center gap-2 mt-2 rad-12 count_rates">
@@ -64,7 +64,7 @@
           </div>
 
           <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
-            <img src="{{ Vite::asset('resources/images/image.png') }}" alt="Пеловіт" class="product-img">
+            <img src="{{ asset('images/image.png') }}" alt="Пеловіт" class="product-img">
             <div class="flex-grow-1">
               <h6>Пеловіт-Р Класичний 500мл</h6>
               <div class="d-flex align-items-center gap-2 mt-2 rad-12 count_rates">
@@ -92,7 +92,7 @@
         <h5 class="mt-5 mb-3">Акційні товари</h5>
 
         <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
-          <img src="{{ Vite::asset('resources/images/image.png') }}" alt="Пеловіт" class="product-img">
+          <img src="{{ asset('images/image.png') }}" alt="Пеловіт" class="product-img">
           <div class="flex-grow-1">
             <h6>Пеловіт-Р Класичний 500мл</h6>
             <div class="fw-medium">690₴</div>
@@ -214,7 +214,7 @@
           <!-- Подарунок 1 -->
           <div class="col-md-6 col-lg-3  rad-16 card_mod">
             <div class="gift-option text-center h-100" data-gift-id="1">
-              <img src="{{ Vite::asset('resources/images/image.png') }}" alt="" class="img-fluid card_img">
+              <img src="{{ asset('images/image.png') }}" alt="" class="img-fluid card_img">
               <div class="gift-name">15 мл<br>Спрей від нежиті<br>Доктор Лоріс+</div>
               <button class="btn buy rad-12 ">
                 <span>Дедальніше</span>
@@ -230,7 +230,7 @@
           <!-- Подарунок 2 -->
           <div class="col-md-6 col-lg-3  rad-16 card_mod">
             <div class="gift-option text-center h-100" data-gift-id="2">
-              <img src="{{ Vite::asset('resources/images/image.png') }}" alt="" class="img-fluid card_img">
+              <img src="{{ asset('images/image.png') }}" alt="" class="img-fluid card_img">
               <div class="gift-name">15 мл<br>Масло для тіла<br>Липолитик</div>
               <button class="btn buy rad-12 ">
                 <span>Дедальніше</span>
@@ -246,7 +246,7 @@
           <!-- Подарунок 3 -->
           <div class="col-md-6 col-lg-3  rad-16 card_mod">
             <div class="gift-option text-center h-100" data-gift-id="3">
-              <img src="{{ Vite::asset('resources/images/image.png') }}" alt="" class="img-fluid card_img">
+              <img src="{{ asset('images/image.png') }}" alt="" class="img-fluid card_img">
               <div class="gift-name">15 мл<br>Скраб-бустер<br>для тіла</div>
               <button class="btn buy rad-12 ">
                 <span>Дедальніше</span>
@@ -262,7 +262,7 @@
           <!-- Подарунок 4 -->
           <div class="col-md-6 col-lg-3  rad-16 card_mod">
             <div class="gift-option text-center h-100" data-gift-id="4">
-              <img src="{{ Vite::asset('resources/images/image.png') }}" alt="" class="img-fluid card_img">
+              <img src="{{ asset('images/image.png') }}" alt="" class="img-fluid card_img">
               <div class="gift-name">15 мл<br>Лікувальний<br>ополіскувач</div>
               <button class="btn buy rad-12 ">
                 <span>Дедальніше</span>
@@ -294,7 +294,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
-      <img src="{{ Vite::asset('resources/images/image.png') }}" alt="Скраб-бустер для тіла" class="img-fluid mb-2 rad-16">
+      <img src="{{ asset('images/image.png') }}" alt="Скраб-бустер для тіла" class="img-fluid mb-2 rad-16">
 
       <p class="mb-2">Скраб-бустер для тіла</p>
       <h4 id="infoModalLabel" class="mb-4 text-center">Ви справді хочете видалити продукт з кошика?</h4>

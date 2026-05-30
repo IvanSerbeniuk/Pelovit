@@ -41,7 +41,7 @@
 
             </i>
           </div>
-          <img src="{{ Vite::asset('resources/images/page_pelovit.jpg') }}"
+          <img src="{{ asset('images/page_pelovit.jpg') }}"
                class="img-fluid product-image shadow-sm rounded" alt="Пеловіт-Р Стомат Freshmint">
         </div>
         <!-- Thumbnails -->
@@ -248,10 +248,10 @@
               <!-- Images -->
               <div class="review-images row g-3">
                 <div class="comment_image">
-                  <img src="{{ Vite::asset('resources/images/smile_big.png') }}" alt="Зуби після лікування" class="img-fluid">
+                  <img src="{{ asset('images/smile_big.png') }}" alt="Зуби після лікування" class="img-fluid">
                 </div>
                 <div class="comment_image">
-                  <img src="{{ Vite::asset('resources/images/smile_big.png') }}" alt="Усмішка з дзеркалом" class="img-fluid">
+                  <img src="{{ asset('images/smile_big.png') }}" alt="Усмішка з дзеркалом" class="img-fluid">
                 </div>
               </div>
             </div>
@@ -263,19 +263,19 @@
           <h4 class="heading">При покупці від 3-х одиниць ПОДАРУНОК на вибір:</h4>
           <div class="cards_promos">
             <div class="card_promo">
-              <img src="{{ Vite::asset('resources/images/promo_image.png') }}" alt="" class="image_promo img-fluid">
+              <img src="{{ asset('images/promo_image.png') }}" alt="" class="image_promo img-fluid">
               <div class="title_product">Спрей від нежиті Доктор Лоріс+</div>
             </div>
             <div class="card_promo">
-              <img src="{{ Vite::asset('resources/images/promo_image.png') }}" alt="" class="image_promo img-fluid">
+              <img src="{{ asset('images/promo_image.png') }}" alt="" class="image_promo img-fluid">
               <div class="title_product">Масло для тіла Липолитик</div>
             </div>
             <div class="card_promo">
-              <img src="{{ Vite::asset('resources/images/promo_image.png') }}" alt="" class="image_promo img-fluid">
+              <img src="{{ asset('images/promo_image.png') }}" alt="" class="image_promo img-fluid">
               <div class="title_product">Скраб-бустер для тiла</div>
             </div>
             <div class="card_promo">
-              <img src="{{ Vite::asset('resources/images/promo_image.png') }}" alt="" class="image_promo img-fluid">
+              <img src="{{ asset('images/promo_image.png') }}" alt="" class="image_promo img-fluid">
               <div class="title_product">Лікувальний ополіскувач</div>
             </div>
           </div>
@@ -439,7 +439,7 @@
                     <path d="M20.0152 10.764L11.2652 19.43L2.51516 10.764C1.93802 10.2024 1.48341 9.52732 1.17997 8.78138C0.876525 8.03544 0.730818 7.23475 0.752023 6.42973C0.773228 5.62471 0.960886 4.8328 1.30318 4.10387C1.64547 3.37494 2.13499 2.72477 2.7409 2.19432C3.34681 1.66386 4.05599 1.26461 4.82378 1.0217C5.59157 0.778794 6.40134 0.69749 7.20209 0.78291C8.00285 0.868331 8.77724 1.11862 9.47652 1.51803C10.1758 1.91744 10.7848 2.45731 11.2652 3.10364C11.7476 2.462 12.3573 1.92685 13.0561 1.53168C13.7549 1.13651 14.5277 0.889833 15.3262 0.807082C16.1248 0.724331 16.9318 0.807289 17.6967 1.05077C18.4617 1.29424 19.1682 1.69299 19.772 2.22207C20.3758 2.75114 20.8638 3.39914 21.2057 4.12552C21.5475 4.85189 21.7357 5.64101 21.7585 6.44347C21.7813 7.24593 21.6383 8.04447 21.3383 8.7891C21.0383 9.53373 20.5879 10.2084 20.0152 10.771" stroke="#422928" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                   </svg>
                 </div>
-                <img src="{{ Vite::asset('resources/images/e3f68f8396e0adf377793609b6f0d28b9c9a4d04.png') }}" class="card-img-top" alt="Product">
+                <img src="{{ asset('images/e3f68f8396e0adf377793609b6f0d28b9c9a4d04.png') }}" class="card-img-top" alt="Product">
                 <div class="card-body">
                   <h6 class="card-title">Pelovit-R Класичний 500ml</h6>
                   <div class="wrapper__price_buy">
@@ -472,7 +472,7 @@
                     <path d="M20.0152 10.764L11.2652 19.43L2.51516 10.764C1.93802 10.2024 1.48341 9.52732 1.17997 8.78138C0.876525 8.03544 0.730818 7.23475 0.752023 6.42973C0.773228 5.62471 0.960886 4.8328 1.30318 4.10387C1.64547 3.37494 2.13499 2.72477 2.7409 2.19432C3.34681 1.66386 4.05599 1.26461 4.82378 1.0217C5.59157 0.778794 6.40134 0.69749 7.20209 0.78291C8.00285 0.868331 8.77724 1.11862 9.47652 1.51803C10.1758 1.91744 10.7848 2.45731 11.2652 3.10364C11.7476 2.462 12.3573 1.92685 13.0561 1.53168C13.7549 1.13651 14.5277 0.889833 15.3262 0.807082C16.1248 0.724331 16.9318 0.807289 17.6967 1.05077C18.4617 1.29424 19.1682 1.69299 19.772 2.22207C20.3758 2.75114 20.8638 3.39914 21.2057 4.12552C21.5475 4.85189 21.7357 5.64101 21.7585 6.44347C21.7813 7.24593 21.6383 8.04447 21.3383 8.7891C21.0383 9.53373 20.5879 10.2084 20.0152 10.771" stroke="#422928" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                   </svg>
                 </div>
-                <img src="{{ Vite::asset('resources/images/e3f68f8396e0adf377793609b6f0d28b9c9a4d04.png') }}" class="card-img-top" alt="Product">
+                <img src="{{ asset('images/e3f68f8396e0adf377793609b6f0d28b9c9a4d04.png') }}" class="card-img-top" alt="Product">
                 <div class="card-body">
                   <h6 class="card-title">Pelovit-R Класичний 500ml</h6>
                   <div class="wrapper__price_buy">
@@ -505,7 +505,7 @@
                     <path d="M20.0152 10.764L11.2652 19.43L2.51516 10.764C1.93802 10.2024 1.48341 9.52732 1.17997 8.78138C0.876525 8.03544 0.730818 7.23475 0.752023 6.42973C0.773228 5.62471 0.960886 4.8328 1.30318 4.10387C1.64547 3.37494 2.13499 2.72477 2.7409 2.19432C3.34681 1.66386 4.05599 1.26461 4.82378 1.0217C5.59157 0.778794 6.40134 0.69749 7.20209 0.78291C8.00285 0.868331 8.77724 1.11862 9.47652 1.51803C10.1758 1.91744 10.7848 2.45731 11.2652 3.10364C11.7476 2.462 12.3573 1.92685 13.0561 1.53168C13.7549 1.13651 14.5277 0.889833 15.3262 0.807082C16.1248 0.724331 16.9318 0.807289 17.6967 1.05077C18.4617 1.29424 19.1682 1.69299 19.772 2.22207C20.3758 2.75114 20.8638 3.39914 21.2057 4.12552C21.5475 4.85189 21.7357 5.64101 21.7585 6.44347C21.7813 7.24593 21.6383 8.04447 21.3383 8.7891C21.0383 9.53373 20.5879 10.2084 20.0152 10.771" stroke="#422928" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                   </svg>
                 </div>
-                <img src="{{ Vite::asset('resources/images/e3f68f8396e0adf377793609b6f0d28b9c9a4d04.png') }}" class="card-img-top" alt="Product">
+                <img src="{{ asset('images/e3f68f8396e0adf377793609b6f0d28b9c9a4d04.png') }}" class="card-img-top" alt="Product">
                 <div class="card-body">
                   <h6 class="card-title">Pelovit-R Класичний 500ml</h6>
                   <div class="wrapper__price_buy">
@@ -538,7 +538,7 @@
                     <path d="M20.0152 10.764L11.2652 19.43L2.51516 10.764C1.93802 10.2024 1.48341 9.52732 1.17997 8.78138C0.876525 8.03544 0.730818 7.23475 0.752023 6.42973C0.773228 5.62471 0.960886 4.8328 1.30318 4.10387C1.64547 3.37494 2.13499 2.72477 2.7409 2.19432C3.34681 1.66386 4.05599 1.26461 4.82378 1.0217C5.59157 0.778794 6.40134 0.69749 7.20209 0.78291C8.00285 0.868331 8.77724 1.11862 9.47652 1.51803C10.1758 1.91744 10.7848 2.45731 11.2652 3.10364C11.7476 2.462 12.3573 1.92685 13.0561 1.53168C13.7549 1.13651 14.5277 0.889833 15.3262 0.807082C16.1248 0.724331 16.9318 0.807289 17.6967 1.05077C18.4617 1.29424 19.1682 1.69299 19.772 2.22207C20.3758 2.75114 20.8638 3.39914 21.2057 4.12552C21.5475 4.85189 21.7357 5.64101 21.7585 6.44347C21.7813 7.24593 21.6383 8.04447 21.3383 8.7891C21.0383 9.53373 20.5879 10.2084 20.0152 10.771" stroke="#422928" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                   </svg>
                 </div>
-                <img src="{{ Vite::asset('resources/images/e3f68f8396e0adf377793609b6f0d28b9c9a4d04.png') }}" class="card-img-top" alt="Product">
+                <img src="{{ asset('images/e3f68f8396e0adf377793609b6f0d28b9c9a4d04.png') }}" class="card-img-top" alt="Product">
                 <div class="card-body">
                   <h6 class="card-title">Pelovit-R Класичний 500ml</h6>
                   <div class="wrapper__price_buy">

@@ -103,49 +103,49 @@
       <div class="row cards">
         <div class="cat_card">
           <div class="category-card ">
-            <img src="{{ Vite::asset('resources/images/massage1.png') }}" class="rounded-4 w-100" alt="">
+            <img src="{{ asset('images/massage1.png') }}" class="rounded-4 w-100" alt="">
             <p class="mt-3 fw-medium cat_name">Масажистів та спа майстрів</p>
           </div>
         </div>
         <div class="cat_card">
           <div class="category-card ">
-            <img src="{{ Vite::asset('resources/images/cosmetology2.png') }}" class="rounded-4 w-100" alt="">
+            <img src="{{ asset('images/cosmetology2.png') }}" class="rounded-4 w-100" alt="">
             <p class="mt-3 fw-medium cat_name">Косметологів</p>
           </div>
         </div>
         <div class="cat_card">
           <div class="category-card ">
-            <img src="{{ Vite::asset('resources/images/med3.png') }}" class="rounded-4 w-100" alt="">
+            <img src="{{ asset('images/med3.png') }}" class="rounded-4 w-100" alt="">
             <p class="mt-3 fw-medium cat_name">Медичних та оздоровчих центрів</p>
           </div>
         </div>
         <div class="cat_card">
           <div class="category-card ">
-            <img src="{{ Vite::asset('resources/images/tryhologit4.png') }}" class="rounded-4 w-100" alt="">
+            <img src="{{ asset('images/tryhologit4.png') }}" class="rounded-4 w-100" alt="">
             <p class="mt-3 fw-medium cat_name">Трихологів</p>
           </div>
         </div>
         <div class="cat_card">
           <div class="category-card ">
-            <img src="{{ Vite::asset('resources/images/podologiv5.png') }}" class="rounded-4 w-100" alt="">
+            <img src="{{ asset('images/podologiv5.png') }}" class="rounded-4 w-100" alt="">
             <p class="mt-3 fw-medium cat_name">Подологів</p>
           </div>
         </div>
         <div class="cat_card">
           <div class="category-card ">
-            <img src="{{ Vite::asset('resources/images/manikure6.png') }}" class="rounded-4 w-100" alt="">
+            <img src="{{ asset('images/manikure6.png') }}" class="rounded-4 w-100" alt="">
             <p class="mt-3 fw-medium cat_name">Майстрів манікюру</p>
           </div>
         </div>
         <div class="cat_card">
           <div class="category-card ">
-            <img src="{{ Vite::asset('resources/images/brow7.png') }}" class="rounded-4 w-100" alt="">
+            <img src="{{ asset('images/brow7.png') }}" class="rounded-4 w-100" alt="">
             <p class="mt-3 fw-medium cat_name">Лашмейкерів та бровістів</p>
           </div>
         </div>
         <div class="cat_card">
           <div class="category-card ">
-            <img src="{{ Vite::asset('resources/images/epilation8.png') }}" class="rounded-4 w-100" alt="">
+            <img src="{{ asset('images/epilation8.png') }}" class="rounded-4 w-100" alt="">
             <p class="mt-3 fw-medium cat_name">Майстрів епіляції</p>
           </div>
         </div>
@@ -556,7 +556,7 @@
 
       <!-- Big Image -->
       <div class="mt-5 hero-image">
-        <img src="{{ Vite::asset('resources/images/skincare_routine.png') }}" alt="Косметика Аксимед" class="img-fluid">
+        <img src="{{ asset('images/skincare_routine.png') }}" alt="Косметика Аксимед" class="img-fluid">
       </div>
 
     </div>
@@ -637,7 +637,7 @@
           <div class="offer-card mb-5">
             <div class="row align-items-center">
               <div class="col-md-4 text-center">
-                <img src="{{ Vite::asset('resources/images/amber_test.png') }}" alt="Крем" class="img-fluid" style="max-height: 160px;">
+                <img src="{{ asset('images/amber_test.png') }}" alt="Крем" class="img-fluid" style="max-height: 160px;">
               </div>
               <div class="col-md-7">
                 <h5 class="fw-bold">ОТРИМАЙТЕ 3 безкоштовні пробники нашої продукції</h5>
@@ -743,7 +743,7 @@
 
       <!-- Big Image -->
       <div class="main-image mb-5">
-        <img src="{{ Vite::asset('resources/images/makeup_pencil.png') }}" alt="Пеловіт eyeliner" class="img-fluid">
+        <img src="{{ asset('images/makeup_pencil.png') }}" alt="Пеловіт eyeliner" class="img-fluid">
       </div>
 
       <!-- Three Columns -->
@@ -803,7 +803,7 @@
                     </div>
                   </div>
                   <div class="client-info">
-                    <img src="{{ Vite::asset('resources/images/pexel_oly.jpg') }}" alt="Юлія" class="client-avatar">
+                    <img src="{{ asset('images/pexel_oly.jpg') }}" alt="Юлія" class="client-avatar">
                     <div>
                       <strong>Юлія</strong><br>
                       <small>косметолог</small>
@@ -818,7 +818,7 @@
                     Замовила розробку зігріваючої маски для массажа та крема для рук з мінералами під моєю власною маркою Blossom Nails. Манікюр з їх використанням дуже подобається клієнтам і вони рекомендують мене знайомим, тож за півроку кількість моїх клієнтів збільшилася вдвічі”
                   </div>
                   <div class="client-info">
-                    <img src="{{ Vite::asset('resources/images/skin_portrait.png') }}"  alt="Тетяна" class="client-avatar">
+                    <img src="{{ asset('images/skin_portrait.png') }}"  alt="Тетяна" class="client-avatar">
                     <div>
                       <strong>Тетяна</strong><br>
                       <small>майстер манікюру</small>
@@ -839,7 +839,7 @@
                     Масаж з остеопатичними техніками дає прекрасні результати. Клієнти помічають різницю і завжди повертаються.
                   </div>
                   <div class="client-info">
-                    <img src="{{ Vite::asset('resources/images/skin_portrait.png') }}" alt="Олена" class="client-avatar">
+                    <img src="{{ asset('images/skin_portrait.png') }}" alt="Олена" class="client-avatar">
                     <div>
                       <strong>Олена</strong><br>
                       <small>масажист</small>
@@ -854,7 +854,7 @@
                     Після запуску власної лінійки косметики клієнти стали частіше записуватись і питати саме мої продукти.
                   </div>
                   <div class="client-info">
-                    <img src="{{ Vite::asset('resources/images/pexel_oly.jpg') }}" alt="Ірина" class="client-avatar">
+                    <img src="{{ asset('images/pexel_oly.jpg') }}" alt="Ірина" class="client-avatar">
                     <div>
                       <strong>Ірина</strong><br>
                       <small>трихолог</small>
@@ -924,12 +924,12 @@
       <div class="row g-4 mt-4">
         <div class="col-lg-6">
           <div class="lab-image">
-            <img src="{{ Vite::asset('resources/images/pexel_arnempodrez.jpg') }}" alt="Науковець з колбою" class="img-fluid">
+            <img src="{{ asset('images/pexel_arnempodrez.jpg') }}" alt="Науковець з колбою" class="img-fluid">
           </div>
         </div>
         <div class="col-lg-6">
           <div class="lab-image">
-            <img src="{{ Vite::asset('resources/images/science_in_laboratory.png') }}" alt="Лабораторія Аксимед" class="img-fluid">
+            <img src="{{ asset('images/science_in_laboratory.png') }}" alt="Лабораторія Аксимед" class="img-fluid">
           </div>
         </div>
       </div>
@@ -942,7 +942,7 @@
         Робота Асимед неодноразово відмічена нагородами
       </h3>
       <div class="nagoroda_img">
-        <img src="{{ Vite::asset('resources/images/nagorods.png') }}" alt="" class=" img-fluid">
+        <img src="{{ asset('images/nagorods.png') }}" alt="" class=" img-fluid">
       </div>
     </div>
   </section>
@@ -956,12 +956,12 @@
       <div class="row g-5 justify-content-center">
         <div class="col-lg-5 col-md-6">
           <div class="cert-card">
-            <img src="{{ Vite::asset('resources/images/sertificate1.png') }}" alt="Сертифікат GMP ISO 22716 - Англійська версія" class="cert-image">
+            <img src="{{ asset('images/sertificate1.png') }}" alt="Сертифікат GMP ISO 22716 - Англійська версія" class="cert-image">
           </div>
         </div>
         <div class="col-lg-5 col-md-6">
           <div class="cert-card">
-            <img src="{{ Vite::asset('resources/images/sertificate2.png') }}" alt="Сертифікат GMP ISO 22716 - Українська версія" class="cert-image">
+            <img src="{{ asset('images/sertificate2.png') }}" alt="Сертифікат GMP ISO 22716 - Українська версія" class="cert-image">
           </div>
         </div>
       </div>

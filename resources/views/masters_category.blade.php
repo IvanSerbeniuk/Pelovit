@@ -64,7 +64,7 @@
             <div class="row g-3 mb product_cards_sm">
               <div class="col-md-4 product_card_sm">
                 <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
-                  <img src="{{ Vite::asset('resources/images/image.png') }}" alt="Пеловіт" class="product-img" style="width: 50px;">
+                  <img src="{{ asset('images/image.png') }}" alt="Пеловіт" class="product-img" style="width: 50px;">
                   <div>
                     <h6>Пеловіт-Р Класичний 500мл</h6>
                     <div class="content-product_card_sm">
@@ -102,7 +102,7 @@
               </div>
               <div class="col-md-4 product_card_sm">
                 <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
-                  <img src="{{ Vite::asset('resources/images/image.png') }}" alt="Пеловіт" class="product-img" style="width: 50px;">
+                  <img src="{{ asset('images/image.png') }}" alt="Пеловіт" class="product-img" style="width: 50px;">
                   <div>
                     <h6>Пеловіт-Р Класичний 500мл</h6>
                     <div class="content-product_card_sm">
@@ -140,7 +140,7 @@
               </div>
               <div class="col-md-4 product_card_sm">
                 <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
-                  <img src="{{ Vite::asset('resources/images/image.png') }}" alt="Пеловіт" class="product-img" style="width: 50px;">
+                  <img src="{{ asset('images/image.png') }}" alt="Пеловіт" class="product-img" style="width: 50px;">
                   <div>
                     <h6>Пеловіт-Р Класичний 500мл</h6>
                     <div class="content-product_card_sm">
@@ -197,7 +197,7 @@
             <div class="categories">
               <div class="category_img">
                 <div class="card border-0 overflow-hidden">
-                  <img src="{{ Vite::asset('resources/images/massage1.png') }}" class="card-img-top" alt="">
+                  <img src="{{ asset('images/massage1.png') }}" class="card-img-top" alt="">
                   <div class="card-body ">
                     <div>Спа-масажі</div>
                   </div>
@@ -205,7 +205,7 @@
               </div>
               <div class="category_img">
                 <div class="card border-0 overflow-hidden">
-                  <img src="{{ Vite::asset('resources/images/facemask2.png') }}" class="card-img-top" alt="">
+                  <img src="{{ asset('images/facemask2.png') }}" class="card-img-top" alt="">
                   <div class="card-body ">
                     <div>Лікувальні масажі</div>
                   </div>
@@ -213,7 +213,7 @@
               </div>
               <div class="category_img">
                 <div class="card border-0 overflow-hidden">
-                  <img src="{{ Vite::asset('resources/images/gl_face.png') }}" class="card-img-top" alt="">
+                  <img src="{{ asset('images/gl_face.png') }}" class="card-img-top" alt="">
                   <div class="card-body ">
                     <div>Масажі обличчя</div>
                   </div>
@@ -221,7 +221,7 @@
               </div>
               <div class="category_img">
                 <div class="card border-0 overflow-hidden">
-                  <img src="{{ Vite::asset('resources/images/podologiv5.png') }}" class="card-img-top" alt="">
+                  <img src="{{ asset('images/podologiv5.png') }}" class="card-img-top" alt="">
                   <div class="card-body ">
                     <div>Апаратні масажі</div>
                   </div>

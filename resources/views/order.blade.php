@@ -163,7 +163,7 @@
           <div id="cartItemsList" class="cartItemsList">
             <!-- Товар 1 -->
             <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
-              <img src="{{ Vite::asset('resources/images/image.png') }}" alt="Пеловіт" class="product-img">
+              <img src="{{ asset('images/image.png') }}" alt="Пеловіт" class="product-img">
               <div class="flex-grow-1">
                 <h6>Пеловіт-Р Класичний 500мл</h6>
                 <div class="d-flex align-items-center gap-2 mt-2 rad-12 count_rates">
@@ -186,7 +186,7 @@
             </div>
             <!-- Товар 2 (аналогічний) -->
             <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
-              <img src="{{ Vite::asset('resources/images/image.png') }}" alt="Пеловіт" class="product-img">
+              <img src="{{ asset('images/image.png') }}" alt="Пеловіт" class="product-img">
               <div class="flex-grow-1">
                 <h6>Пеловіт-Р Класичний 500мл</h6>
                 <div class="d-flex align-items-center gap-2 mt-2 rad-12 count_rates">
@@ -209,7 +209,7 @@
             </div>
             <!-- Товар 3 (ціна 600₴) -->
             <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
-              <img src="{{ Vite::asset('resources/images/image.png') }}" alt="Пеловіт" class="product-img">
+              <img src="{{ asset('images/image.png') }}" alt="Пеловіт" class="product-img">
               <div class="flex-grow-1">
                 <h6>Пеловіт-Р Класичний 500мл</h6>
                 <div class="d-flex align-items-center gap-2 mt-2 rad-12 count_rates">
@@ -240,7 +240,7 @@
               </div>
             </div>
             <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
-              <img src="{{ Vite::asset('resources/images/image.png') }}" alt="Пеловіт" class="product-img">
+              <img src="{{ asset('images/image.png') }}" alt="Пеловіт" class="product-img">
               <div class="flex-grow-1">
                 <h6>Пеловіт-Р Класичний 500мл</h6>
               </div>
