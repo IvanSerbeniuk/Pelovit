@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
@@ -24,7 +25,9 @@ Route::get('/masters', fn() => view('masters'));
 Route::get('/masters_category', fn() => view('masters_category'));
 Route::get('/contacts', fn() => view('contacts'));
 Route::get('/cart', fn() => view('cart'))->name('cart');
-Route::get('/order', fn() => view('order'));
+Route::get('/order', fn() => view('order'))->name('order');
+Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+Route::get('/order/success', fn() => view('order_success'))->name('order.success');
 Route::get('/catalog-journal', fn() => view('catalog_journal'));
 Route::get('/article', fn() => view('article'));
 Route::get('/opt', fn() => view('opt'));

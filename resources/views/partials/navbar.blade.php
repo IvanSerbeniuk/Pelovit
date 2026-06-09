@@ -68,7 +68,8 @@
                     </svg>
 
                 </a>
-                <a href="{{ route('cart') }}" class="text-dark position-relative cart">
+                <a href="{{ route('cart') }}" class="text-dark position-relative cart" style="position:relative!important;">
+                    <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" style="font-size:.65rem;z-index:1;"></span>
                     <svg width="109" height="40" viewBox="0 0 109 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect x="0.5" y="0.5" width="108" height="39" rx="11.5" stroke="#BDBDBD"/>
                         <g clip-path="url(#clip0_985_6966)">

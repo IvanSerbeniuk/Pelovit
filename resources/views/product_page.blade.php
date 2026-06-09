@@ -3,7 +3,15 @@
 @section('title', 'PELOVIT-R — Косметика для здорової шкіри')
 
 @section('content')
-
+<script id="product-data" type="application/json">
+{!! json_encode([
+    'id'    => $product->id,
+    'name'  => $product->name,
+    'price' => (float) $product->price,
+    'image' => $product->image,
+    'slug'  => $product->slug,
+]) !!}
+</script>
     <div class="product_name_page" data-product-name="pelovit">
 
   <section class="container py-5">

@@ -8,6 +8,10 @@
   <h1 class="fw-bold mt-4 mb-3">
     Оформлення замовлення
   </h1>
+  <form id="order-form" method="POST" action="{{ route('order.store') }}">
+  @csrf
+  <input type="hidden" name="items" id="order-items-input">
+  <input type="hidden" name="total" id="order-total-input">
   <div class="row g-4">
     <!-- Ліва колонка: контакти, доставка, оплата, коментар -->
     <div class="col-lg-7">
@@ -19,19 +23,19 @@
           <div class="row g-3">
             <div class="col-md-6">
               <label class="form-label fw-medium">Ваше ім'я <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" placeholder="Введіть імʼя" value="">
+              <input type="text" class="form-control" name="first_name" placeholder="Введіть імʼя" required>
             </div>
             <div class="col-md-6">
               <label class="form-label fw-medium">Ваше прізвище <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" placeholder="Введіть прізвище" value="">
+              <input type="text" class="form-control" name="last_name" placeholder="Введіть прізвище" required>
             </div>
             <div class="col-md-6">
               <label class="form-label fw-medium">Мобільний телефон</label>
-              <input type="tel" class="form-control" placeholder="Введіть телефон">
+              <input type="tel" class="form-control" name="phone" placeholder="Введіть телефон" required>
             </div>
             <div class="col-md-6">
               <label class="form-label fw-medium">Електронна пошта</label>
-              <input type="email" class="form-control" placeholder="Введіть електронну пошту">
+              <input type="email" class="form-control" name="email" placeholder="Введіть електронну пошту">
             </div>
           </div>
         </div>
@@ -49,11 +53,11 @@
           <div class="row g-3">
             <div class="col-md-6">
               <label class="form-label">Місто / Населений пункт</label>
-              <input type="text" class="form-control" placeholder="Оберіть місто" value="Київ">
+              <input type="text" class="form-control" name="city" placeholder="Оберіть місто">
             </div>
             <div class="col-md-6">
               <label class="form-label">Номер відділення / поштомату</label>
-              <input type="text" class="form-control" placeholder="Відділення №" value="№ 5">
+              <input type="text" class="form-control" name="branch" placeholder="Відділення №">
             </div>
           </div>
         </div>
@@ -68,7 +72,7 @@
           <div class="form-check mb-3 p-3">
             <div class="wrapper_payment">
               <div class="payment_content">
-                <input class="form-check-input" type="radio" name="paymentMethod" id="cardPayment" checked>
+                <input class="form-check-input" type="radio" name="payment_method" value="card" id="cardPayment" checked>
                 <label class="form-check-label" for="cardPayment">
                    Оплата на карту
                 </label>
@@ -126,7 +130,7 @@
             </div>
           </div>
           <div class="form-check p-3 rounded-3">
-            <input class="form-check-input" type="radio" name="paymentMethod" id="cashOnDelivery">
+            <input class="form-check-input" type="radio" name="payment_method" value="cod" id="cashOnDelivery">
             <label class="form-check-label" for="cashOnDelivery">
                Оплата при отриманні
             </label>
@@ -147,7 +151,7 @@
           Залишити коментар
         </div>
         <div class="card-body p-4 pt-0">
-          <textarea class="form-control" rows="3" placeholder="Залишити коментар (додаткові побажання, зручний час доставки тощо)"></textarea>
+          <textarea class="form-control" name="comment" rows="3" placeholder="Залишити коментар (додаткові побажання, зручний час доставки тощо)"></textarea>
         </div>
       </div>
     </div>
@@ -160,7 +164,7 @@
         </div>
         <div class="card-body p-4">
           <!-- Список товарів (динамічні quantity) -->
-          <div id="cartItemsList" class="cartItemsList">
+          <div id="order-items-container" class="cartItemsList">
             <!-- Товар 1 -->
             <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
               <img src="{{ asset('images/image.png') }}" alt="Пеловіт" class="product-img">
@@ -271,7 +275,7 @@
               </div>
               <div class="d-flex justify-content-between align-items-center">
                 <span class="fw-semibold">Сума</span>
-                <span>300₴</span>
+                <span id="order-subtotal-display">0₴</span>
               </div>
             </div>
           </div>
@@ -279,7 +283,7 @@
           <!-- Підсумок суми -->
             <div class="d-flex justify-content-between align-items-center bottom_sum  pt-3">
               <span class="fw-semibold">Сума замовлення</span>
-              <span>300₴</span>
+              <span id="order-total-display">0₴</span>
             </div>
           </div>
 
@@ -290,7 +294,7 @@
               Погоджуюсь на обробку персональних данних
             </label>
           </div>
-          <button class="btn btn-checkout-primary w-100 text-white" id="confirmOrderBtn">
+          <button type="submit" class="btn btn-checkout-primary w-100 text-white" id="confirmOrderBtn">
             Підтвердити замовлення
           </button>
           <div class="text-center mt-3">
@@ -300,10 +304,6 @@
       </div>
     </div>
   </div>
+  </form>
 </section>
-
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 @endsection

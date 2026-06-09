@@ -39,54 +39,8 @@
 
 
         <!-- Cart Items -->
-        <div class="cart_wrapper gap-2 d-flex flex-column">
-          <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
-            <img src="{{ asset('images/image.png') }}" alt="Пеловіт" class="product-img">
-            <div class="flex-grow-1">
-              <h6>Пеловіт-Р Класичний 500мл</h6>
-              <div class="d-flex align-items-center gap-2 mt-2 rad-12 count_rates">
-                <button class="btn btn-sm ">-</button>
-                <span class="mx-2">1</span>
-                <button class="btn btn-sm ">+</button>
-              </div>
-            </div>
-            <div class="text-end d-flex flex-column">
-              <button class="btn btn-link text-danger">
-                <i class="cross" data-bs-toggle="modal" data-bs-target="#infoModal">
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M13.5 4.5L4.5 13.5" stroke="#1A1A1A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
-                    <path d="M4.5 4.5L13.5 13.5" stroke="#1A1A1A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
-                  </svg>
-                </i>
-              </button>
-              <div class="fw-medium">690₴</div>
-            </div>
-          </div>
-
-          <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
-            <img src="{{ asset('images/image.png') }}" alt="Пеловіт" class="product-img">
-            <div class="flex-grow-1">
-              <h6>Пеловіт-Р Класичний 500мл</h6>
-              <div class="d-flex align-items-center gap-2 mt-2 rad-12 count_rates">
-                <button class="btn btn-sm ">-</button>
-                <span class="mx-2">1</span>
-                <button class="btn btn-sm ">+</button>
-              </div>
-            </div>
-            <div class="text-end d-flex flex-column">
-              <button class="btn btn-link text-danger">
-                <i class="cross" data-bs-toggle="modal" data-bs-target="#infoModal">
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M13.5 4.5L4.5 13.5" stroke="#1A1A1A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
-                    <path d="M4.5 4.5L13.5 13.5" stroke="#1A1A1A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
-                  </svg>
-                </i>
-              </button>
-              <div class="fw-medium">690₴</div>
-            </div>
-          </div>
-
-        </div>
+        <div id="dynamic-cart-items" class="cart_wrapper gap-2 d-flex flex-column"></div>
+        <p id="cart-empty-msg" class="text-muted d-none">Ваш кошик порожній.</p>
 
         <!-- Акційні товари -->
         <h5 class="mt-5 mb-3">Акційні товари</h5>
@@ -142,7 +96,7 @@
           </div>
           <div class="d-flex justify-content-between mb-3 gray_cl">
             <span>Сума</span>
-            <span>300₴</span>
+            <span id="cart-subtotal">0₴</span>
           </div>
 
           <div class="loyalty-box mb-4  box-gift">
@@ -163,10 +117,11 @@
 
           <div class="d-flex justify-content-between mb-3 ">
             <span>Сума замовлення</span>
-            <span><strong>300₴</strong></span>
+            <span><strong id="cart-total">0₴</strong></span>
           </div>
 
-          <button class="btn btn-brown w-100 py-3 fs-5 mb-3 rad-16">
+          <a href="{{ url('/order') }}" class="btn btn-brown w-100 py-3 fs-5 mb-3 rad-16" style="display:flex;align-items:center;justify-content:center;gap:.5rem;">Зробити замовлення</a>
+          <button class="btn btn-brown w-100 py-3 fs-5 mb-3 rad-16" style="display:none!important;">
             Зробити замовлення
             <i>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
