@@ -203,23 +203,38 @@
         </div>
       </div>
 
-      <!-- Права частина - Фото менеджера -->
-      <div class="col-lg-4 col-md-6 text-center mt-5 mt-md-0">
-        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330"
-             alt="Ім'я Прізвище"
-             class="rounded-4 img-fluid"
-             style="max-width: 280px;">
-        <div class="mt-4">
-          <h5 class="mb-1">Ім'я Прізвище</h5>
-          <p class="text-muted">Менеджер</p>
-        </div>
-      </div>
     </div>
   </div>
 </section>
 
-
-
+<!-- Команда -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="fw-bold mb-4">Наша команда</h2>
+    <div class="row g-4">
+      @foreach ($team as $member)
+      <div class="col-lg-2-custom col-md-4 col-sm-6 col-12">
+        <div class="contact-card h-100">
+          @if ($member->image)
+            <img src="{{ asset($member->image) }}" alt="{{ $member->name }}">
+          @else
+            <div class="contact-card-placeholder"></div>
+          @endif
+          <div class="contact-info">
+            <h5>{{ $member->name }}</h5>
+            <p class="position">{{ $member->position }}</p>
+            @if ($member->phone)
+            <a href="tel:{{ preg_replace('/\D/', '', $member->phone) }}" class="phone text-decoration-none">
+              <i class="fas fa-phone"></i> {{ $member->phone }}
+            </a>
+            @endif
+          </div>
+        </div>
+      </div>
+      @endforeach
+    </div>
+  </div>
+</section>
 
 
 

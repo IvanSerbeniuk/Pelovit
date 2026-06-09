@@ -38,3 +38,38 @@
   }
 
 }
+
+.col-lg-2-custom {
+  @media (min-width: 992px) {
+    flex: 0 0 auto;
+    width: 20%;
+  }
+}
+
+.contact-card {
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+
+  img, .contact-card-placeholder {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    display: block;
+  }
+
+  .contact-card-placeholder {
+    background: #e9e3df;
+  }
+
+  .contact-info {
+    padding: 16px;
+
+    h5 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+
+    .position { font-size: .85rem; color: #7a6a62; margin-bottom: 8px; }
+
+    .phone { font-size: .85rem; color: #422928; }
+  }
+}

@@ -23,7 +23,10 @@ Route::get('/about', fn() => view('about_us'));
 Route::get('/kontractne-vyrobnyctvo', fn() => view('kontractne_vyrobnyctvo'));
 Route::get('/masters', fn() => view('masters'));
 Route::get('/masters_category', fn() => view('masters_category'));
-Route::get('/contacts', fn() => view('contacts'));
+Route::get('/contacts', function () {
+    $team = \App\Models\TeamMember::orderBy('sort_order')->get();
+    return view('contacts', compact('team'));
+});
 Route::get('/cart', fn() => view('cart'))->name('cart');
 Route::get('/order', fn() => view('order'))->name('order');
 Route::post('/order', [OrderController::class, 'store'])->name('order.store');
