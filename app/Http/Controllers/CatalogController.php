@@ -16,10 +16,19 @@ class CatalogController extends Controller
             ->orderBy('sort_order')
             ->get();
 
+        // Collect all matching category IDs (the clicked one + its children)
+        $categoryIds = [];
+        if ($request->category) {
+            $cat = Category::where('slug', $request->category)->first();
+            if ($cat) {
+                $categoryIds = $cat->children->pluck('id')->push($cat->id)->toArray();
+            }
+        }
+
         $products = Product::where('is_active', true)
             ->with('category')
-            ->when($request->category, fn($q, $slug) =>
-            $q->whereHas('category', fn($q) => $q->where('slug', $slug))
+            ->when($categoryIds, fn($q) =>
+                $q->whereIn('category_id', $categoryIds)
             )
             ->when($request->brand, fn($q, $brand) =>
             $q->where('brand', $brand)

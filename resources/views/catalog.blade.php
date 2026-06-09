@@ -10,12 +10,22 @@
     <div class="row cards">
       @foreach ($categories as $cat)
       <div class="cat_card">
-        <a href="{{ route('catalog') }}?category={{ $cat->slug }}" class="text-decoration-none d-block">
-          <div class="category-card rounded-4 overflow-hidden">
-            <img src="{{ asset('images/tranc.png') }}" class="rounded-4 w-100" alt="{{ $cat->name }}">
+        <a href="{{ route('catalog', ['category' => $cat->slug]) }}" class="text-decoration-none d-block">
+          <div class="category-card rounded-4 overflow-hidden {{ request('category') === $cat->slug ? 'active' : '' }}">
+            <img src="{{ $cat->image ? asset($cat->image) : asset('images/tranc.png') }}" class="rounded-4 w-100" alt="{{ $cat->name }}">
             <p class="mt-3 fw-medium cat_name">{{ $cat->name }}</p>
           </div>
         </a>
+        @if ($cat->children->isNotEmpty() && request('category') === $cat->slug)
+          <div class="subcategories mt-2 ps-2">
+            @foreach ($cat->children as $child)
+              <a href="{{ route('catalog', ['category' => $child->slug]) }}"
+                 class="badge text-decoration-none me-1 mb-1 {{ request('category') === $child->slug ? 'bg-dark' : 'bg-secondary' }}">
+                {{ $child->name }}
+              </a>
+            @endforeach
+          </div>
+        @endif
       </div>
       @endforeach
     </div>
@@ -32,122 +42,31 @@
   <div class="offcanvas-body">
 
     <div class="mb-4">
-      <h6>Зони догляду</h6>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="face">
-        <label class="form-check-label" for="face">Обличчя</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="skin_around_eyes">
-        <label class="form-check-label" for="skin_around_eyes">Шкіра навколо очей</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="body">
-        <label class="form-check-label" for="body">Тіло</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="nails_feet">
-        <label class="form-check-label" for="nails_feet">Нігті та стопи</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="joins_muscles">
-        <label class="form-check-label" for="joins_muscles">Сустави та м'язи</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="hair_headskin">
-        <label class="form-check-label" for="hair_headskin">Волосся та шкіра голови</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="throat_lor">
-        <label class="form-check-label" for="throat_lor">Горло та ЛОР-зона</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="digest_system">
-        <label class="form-check-label" for="digest_system">Травна система</label>
-      </div>
-    </div>
-
-    <div class="mb-4">
-      <h6>Проблематики</h6>
-      <div class="form-check ">
-        <input class="form-check-input" type="checkbox" id="dry_skin">
-        <label class="form-check-label" for="dry_skin">Сухість шкіри</label>
-      </div>
-      <div class="form-check ">
-        <input class="form-check-input" type="checkbox" id="youth_restore">
-        <label class="form-check-label" for="youth_restore">Омолодження та ліфтинг</label>
-      </div>
-      <div class="form-check ">
-        <input class="form-check-input" type="checkbox" id="pigment">
-        <label class="form-check-label" for="pigment">Пігментація шкіри</label>
-      </div>
-      <div class="form-check ">
-        <input class="form-check-input" type="checkbox" id="cellulite">
-        <label class="form-check-label" for="cellulite">Целюліт</label>
-      </div>
-      <div class="form-check ">
-        <input class="form-check-input" type="checkbox" id="problems_joints">
-        <label class="form-check-label" for="problems_joints">Проблеми з суглобами</label>
-      </div>
-      <div class="form-check ">
-        <input class="form-check-input" type="checkbox" id="lor_decease">
-        <label class="form-check-label" for="lor_decease">ЛОР-захворювання</label>
-      </div>
-      <div class="form-check ">
-        <input class="form-check-input" type="checkbox" id="problems_hails_feet">
-        <label class="form-check-label" for="problems_hails_feet">Проблеми з нігтями та стопами</label>
-      </div>
-    </div>
-
-    <div class="mb-4">
-      <h6>Тип шкіри</h6>
-      <div class="form-check ">
-        <input class="form-check-input" type="checkbox" id="dry">
-        <label class="form-check-label" for="dry">Суха</label>
-      </div>
-      <div class="form-check ">
-        <input class="form-check-input" type="checkbox" id="normal">
-        <label class="form-check-label" for="normal">Нормальна</label>
-      </div>
-      <div class="form-check ">
-        <input class="form-check-input" type="checkbox" id="fat">
-        <label class="form-check-label" for="fat">Жирна</label>
-      </div>
-      <div class="form-check ">
-        <input class="form-check-input" type="checkbox" id="combined">
-        <label class="form-check-label" for="combined">Комбінована</label>
-      </div>
-      <div class="form-check ">
-        <input class="form-check-input" type="checkbox" id="sensitive">
-        <label class="form-check-label" for="sensitive">Чутлива</label>
-      </div>
-    </div>
-
-    <div class="mb-4">
-      <h6>Вік</h6>
-      <div class="form-check ">
-        <input class="form-check-input" type="checkbox" id="18-24">
-        <label class="form-check-label" for="18-24">18–24</label>
-      </div>
-      <div class="form-check ">
-        <input class="form-check-input" type="checkbox" id="25-34">
-        <label class="form-check-label" for="25-34">25–34</label>
-      </div>
-      <div class="form-check ">
-        <input class="form-check-input" type="checkbox" id="45-54">
-        <label class="form-check-label" for="45-54">45–54</label>
-      </div>
-      <div class="form-check ">
-        <input class="form-check-input" type="checkbox" id="55">
-        <label class="form-check-label" for="55">55+</label>
-      </div>
+      <h6 class="fw-semibold mb-3">Категорії</h6>
+      @foreach ($categories as $cat)
+        <div class="mb-2">
+          <a href="{{ route('catalog', ['category' => $cat->slug]) }}"
+             class="d-block text-decoration-none fw-medium {{ request('category') === $cat->slug ? 'text-dark' : 'text-secondary' }}">
+            {{ $cat->name }}
+          </a>
+          @if ($cat->children->isNotEmpty())
+            <div class="ps-3 mt-1">
+              @foreach ($cat->children as $child)
+                <a href="{{ route('catalog', ['category' => $child->slug]) }}"
+                   class="d-block text-decoration-none small py-1 {{ request('category') === $child->slug ? 'text-dark fw-semibold' : 'text-secondary' }}">
+                  — {{ $child->name }}
+                </a>
+              @endforeach
+            </div>
+          @endif
+        </div>
+      @endforeach
     </div>
 
   </div>
 
   <div class="offcanvas-footer p-3 border-top">
-    <button class="btn btn-dark w-100 mb-2">Застосувати фільтри</button>
-    <button class="btn btn-outline-secondary w-100">Скинути</button>
+    <a href="{{ route('catalog') }}" class="btn btn-outline-secondary w-100">Скинути фільтри</a>
   </div>
 </div>
 <!-- ====================== SIDE FILTERS OFFCANVAS ====================== -->
