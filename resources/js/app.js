@@ -12,7 +12,7 @@ function fmt(n) {
 }
 
 function imgSrc(image) {
-    return image ? '/products/' + image : '/images/image.png';
+    return image ? '/' + image : '/images/image.png';
 }
 
 // ── Cart page ──────────────────────────────────────────────────────────────
@@ -181,4 +181,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initProductPage();
+
+    document.querySelectorAll('.catalog-add-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            Cart.add({
+                id:    parseInt(btn.dataset.id),
+                name:  btn.dataset.name,
+                price: parseFloat(btn.dataset.price),
+                image: btn.dataset.image,
+                slug:  btn.dataset.slug,
+            });
+            const saved = btn.innerHTML;
+            btn.textContent = '✓';
+            btn.disabled = true;
+            setTimeout(() => { btn.innerHTML = saved; btn.disabled = false; }, 1500);
+        });
+    });
 });
