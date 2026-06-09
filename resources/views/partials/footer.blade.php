@@ -74,27 +74,46 @@
             <div class="col-lg-3">
                 <h6 class="fw-semibold mb-3">Контакти</h6>
                 <ul class="list-unstyled">
+                    @if (!empty($settings['email']))
                     <li class="mb-3">
-                        <a href="mailto:aksimed@ukr.net" class="text-dark text-decoration-none">
-                            ✉ aksimed@ukr.net
+                        <a href="mailto:{{ $settings['email'] }}" class="text-dark text-decoration-none">
+                            ✉ {{ $settings['email'] }}
                         </a>
                     </li>
-                    <li class="mb-2">
-                        <a href="tel:+380633090303" class="text-dark text-decoration-none">☎ +38 (063) 309-03-03</a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="tel:+380635992202" class="text-dark text-decoration-none">☎ +38 (063) 599-22-02</a>
-                    </li>
-                    <li class="mb-4">
-                        <a href="tel:+380934948557" class="text-dark text-decoration-none">☎ +38 (093) 494-85-57</a>
-                    </li>
+                    @endif
+                    @foreach (['phone', 'phone_2', 'phone_3'] as $key)
+                        @if (!empty($settings[$key]))
+                        <li class="mb-2">
+                            <a href="tel:{{ preg_replace('/\D/', '', $settings[$key]) }}" class="text-dark text-decoration-none">
+                                ☎ {{ $settings[$key] }}
+                            </a>
+                        </li>
+                        @endif
+                    @endforeach
                 </ul>
 
                 <!-- Social -->
-                <div class="d-flex gap-3">
-                    <a href="#" class="text-dark fs-4"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-dark fs-4"><i class="fab fa-telegram"></i></a>
-                    <a href="#" class="text-dark fs-4"><i class="fab fa-whatsapp"></i></a>
+                <div class="d-flex gap-3 mt-3">
+                    @if (!empty($settings['instagram_url']))
+                    <a href="{{ $settings['instagram_url'] }}" target="_blank" rel="noopener" class="text-dark fs-4">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    @endif
+                    @if (!empty($settings['facebook_url']))
+                    <a href="{{ $settings['facebook_url'] }}" target="_blank" rel="noopener" class="text-dark fs-4">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    @endif
+                    @if (!empty($settings['youtube_url']))
+                    <a href="{{ $settings['youtube_url'] }}" target="_blank" rel="noopener" class="text-dark fs-4">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    @endif
+                    @if (!empty($settings['telegram_url']))
+                    <a href="{{ $settings['telegram_url'] }}" target="_blank" rel="noopener" class="text-dark fs-4">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                    @endif
                 </div>
             </div>
         </div>

@@ -45,7 +45,8 @@
                 </a>
 
                 {{-- Phone --}}
-                <a href="tel:+380633090303" class="nav-icon text-dark" title="+38 (063) 309-03-03">
+                @php $phone = $settings['phone'] ?? '+38 (063) 309-03-03'; @endphp
+                <a href="tel:{{ preg_replace('/\D/', '', $phone) }}" class="nav-icon text-dark" title="{{ $phone }}">
                     <x-icons.phone />
                 </a>
 
