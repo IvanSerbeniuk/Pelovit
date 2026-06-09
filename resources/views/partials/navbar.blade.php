@@ -1,91 +1,89 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
     <div class="container">
+
+        {{-- Logo --}}
+        <a class="navbar-brand fw-bold" href="{{ url('/') }}">
+            <span style="color:#422928;">PELOVIT</span><span style="color:#9c6b55;">-R</span>
+        </a>
+
+        {{-- Mobile toggler --}}
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Меню">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mx-auto">
+            <ul class="navbar-nav mx-auto gap-1">
                 <li class="nav-item cat-blue radius">
                     <div class="wrapper">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <g clip-path="url(#clip0_985_6925)">
-                                <path d="M4 4H10V10H4V4Z" stroke="#FFFEFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M14 4H20V10H14V4Z" stroke="#FFFEFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M4 14H10V20H4V14Z" stroke="#FFFEFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M14 17C14 17.7956 14.3161 18.5587 14.8787 19.1213C15.4413 19.6839 16.2044 20 17 20C17.7956 20 18.5587 19.6839 19.1213 19.1213C19.6839 18.5587 20 17.7956 20 17C20 16.2044 19.6839 15.4413 19.1213 14.8787C18.5587 14.3161 17.7956 14 17 14C16.2044 14 15.4413 14.3161 14.8787 14.8787C14.3161 15.4413 14 16.2044 14 17Z" stroke="#FFFEFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </g>
-                            <defs>
-                                <clipPath id="clip0_985_6925">
-                                    <rect width="24" height="24" fill="white"/>
-                                </clipPath>
-                            </defs>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none">
+                            <path d="M4 4H10V10H4V4Z" stroke="#FFFEFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M14 4H20V10H14V4Z" stroke="#FFFEFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M4 14H10V20H4V14Z" stroke="#FFFEFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M14 17C14 17.7956 14.3161 18.5587 14.8787 19.1213C15.4413 19.6839 16.2044 20 17 20C17.7956 20 18.5587 19.6839 19.1213 19.1213C19.6839 18.5587 20 17.7956 20 17C20 16.2044 19.6839 15.4413 19.1213 14.8787C18.5587 14.3161 17.7956 14 17 14C16.2044 14 15.4413 14.3161 14.8787 14.8787C14.3161 15.4413 14 16.2044 14 17Z" stroke="#FFFEFC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                        <a class="nav-link" href="{{url('/catalog')}}">Каталог товарів</a>
+                        <a class="nav-link" href="{{ route('catalog') }}">Каталог</a>
                     </div>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="{{url('/')}}">Головна</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{url('/about')}}">Про нас</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{url('/opt')}}">Контрактне виробництво</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{url('/catalog')}}">Категорії</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{url('/masters')}}">Майстри</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{url('/contacts')}}">Контакти</a></li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Головна</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('about') ? 'active' : '' }}" href="{{ url('/about') }}">Про нас</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('kontractne-vyrobnyctvo') ? 'active' : '' }}" href="{{ url('/kontractne-vyrobnyctvo') }}">Контрактне виробництво</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('masters') ? 'active' : '' }}" href="{{ url('/masters') }}">Майстри</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('contacts') ? 'active' : '' }}" href="{{ url('/contacts') }}">Контакти</a>
+                </li>
             </ul>
-            <div class="d-flex align-items-center gap-3">
-                <a href="#" class="text-dark">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
-                        <g clip-path="url(#clip0_985_6943)">
-                            <path d="M3.25 10.8333C3.25 11.8292 3.44615 12.8153 3.82725 13.7354C4.20835 14.6554 4.76693 15.4914 5.47111 16.1956C6.17528 16.8997 7.01127 17.4583 7.93132 17.8394C8.85137 18.2205 9.83748 18.4167 10.8333 18.4167C11.8292 18.4167 12.8153 18.2205 13.7354 17.8394C14.6554 17.4583 15.4914 16.8997 16.1956 16.1956C16.8997 15.4914 17.4583 14.6554 17.8394 13.7354C18.2205 12.8153 18.4167 11.8292 18.4167 10.8333C18.4167 9.83748 18.2205 8.85137 17.8394 7.93132C17.4583 7.01127 16.8997 6.17528 16.1956 5.47111C15.4914 4.76693 14.6554 4.20834 13.7354 3.82725C12.8153 3.44615 11.8292 3.25 10.8333 3.25C9.83748 3.25 8.85137 3.44615 7.93132 3.82725C7.01127 4.20834 6.17528 4.76693 5.47111 5.47111C4.76693 6.17528 4.20835 7.01127 3.82725 7.93132C3.44615 8.85137 3.25 9.83748 3.25 10.8333Z" stroke="#1A1A1A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M22.75 22.75L16.25 16.25" stroke="#1A1A1A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                        </g>
-                        <defs>
-                            <clipPath id="clip0_985_6943">
-                                <rect width="26" height="26" fill="white"/>
-                            </clipPath>
-                        </defs>
+
+            {{-- Right icons --}}
+            <div class="d-flex align-items-center gap-2">
+
+                {{-- Search --}}
+                <a href="{{ route('catalog') }}" class="nav-icon text-dark" title="Пошук">
+                    <svg width="22" height="22" viewBox="0 0 26 26" fill="none">
+                        <circle cx="11" cy="11" r="7.75" stroke="#1A1A1A" stroke-width="1.4"/>
+                        <path d="M22.75 22.75L17.25 17.25" stroke="#1A1A1A" stroke-width="1.4" stroke-linecap="round"/>
                     </svg>
                 </a>
-                <div class="dropdown">
-                    <button class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">🇺🇦 UA</button>
-                </div>
-                <a href="#" class="text-dark phone">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                {{-- Phone --}}
+                <a href="tel:+380633090303" class="nav-icon text-dark" title="+38 (063) 309-03-03">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                         <path d="M2.81657 0.649994H7.1499L9.31657 6.06666L6.60824 7.69166C7.76844 10.0442 9.67241 11.9481 12.0249 13.1083L13.6499 10.4L19.0666 12.5667V16.9C19.0666 17.4746 18.8383 18.0257 18.432 18.4321C18.0256 18.8384 17.4745 19.0667 16.8999 19.0667C12.6741 18.8099 8.6884 17.0154 5.6948 14.0218C2.7012 11.0282 0.906706 7.04246 0.649902 2.81666C0.649902 2.24202 0.878175 1.69092 1.2845 1.2846C1.69083 0.878267 2.24193 0.649994 2.81657 0.649994Z" stroke="#1A1A1A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </a>
-                <a href="#" class="text-dark like">
-                    <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+                {{-- Wishlist --}}
+                <a href="#" class="nav-icon text-dark" title="Обране">
+                    <svg width="22" height="20" viewBox="0 0 21 19" fill="none">
                         <path d="M18.539 9.94868L10.414 17.9957L2.28898 9.94868C1.75306 9.42718 1.33093 8.80037 1.04916 8.10771C0.767389 7.41505 0.63209 6.67155 0.651781 5.92403C0.671471 5.17651 0.845725 4.44117 1.16357 3.7643C1.48141 3.08743 1.93596 2.48371 2.49859 1.99115C3.06122 1.49858 3.71975 1.12785 4.43269 0.902289C5.14564 0.676731 5.89757 0.601234 6.64113 0.680553C7.38469 0.759872 8.10377 0.992289 8.7531 1.36317C9.40242 1.73405 9.96792 2.23535 10.414 2.83552C10.862 2.23971 11.4281 1.74278 12.077 1.37584C12.7259 1.0089 13.4435 0.779839 14.185 0.702998C14.9265 0.626158 15.6758 0.703191 16.3862 0.929276C17.0965 1.15536 17.7525 1.52563 18.3132 2.01691C18.8738 2.50819 19.327 3.10991 19.6444 3.7844C19.9618 4.45889 20.1366 5.19164 20.1578 5.93679C20.179 6.68193 20.0462 7.42343 19.7676 8.11487C19.4891 8.80632 19.0708 9.43283 18.539 9.95519" stroke="#1A1A1A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </a>
-                <a href="#" class="text-dark profile">
-                    <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g clip-path="url(#clip0_2186_6962)">
-                            <path d="M8.66675 7.58333C8.66675 8.7326 9.12329 9.8348 9.93595 10.6475C10.7486 11.4601 11.8508 11.9167 13.0001 11.9167C14.1494 11.9167 15.2516 11.4601 16.0642 10.6475C16.8769 9.8348 17.3334 8.7326 17.3334 7.58333C17.3334 6.43406 16.8769 5.33186 16.0642 4.5192C15.2516 3.70655 14.1494 3.25 13.0001 3.25C11.8508 3.25 10.7486 3.70655 9.93595 4.5192C9.12329 5.33186 8.66675 6.43406 8.66675 7.58333Z" stroke="#1A1A1A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M6.5 22.75V20.5833C6.5 19.4341 6.95655 18.3319 7.7692 17.5192C8.58186 16.7065 9.68406 16.25 10.8333 16.25H15.1667C16.3159 16.25 17.4181 16.7065 18.2308 17.5192C19.0435 18.3319 19.5 19.4341 19.5 20.5833V22.75" stroke="#1A1A1A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                        </g>
-                        <defs>
-                            <clipPath id="clip0_2186_6962">
-                                <rect width="26" height="26" fill="white"/>
-                            </clipPath>
-                        </defs>
-                    </svg>
 
-                </a>
-                <a href="{{ route('cart') }}" class="text-dark position-relative cart" style="position:relative!important;">
-                    <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" style="font-size:.65rem;z-index:1;"></span>
-                    <svg width="109" height="40" viewBox="0 0 109 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="0.5" y="0.5" width="108" height="39" rx="11.5" stroke="#BDBDBD"/>
-                        <g clip-path="url(#clip0_985_6966)">
-                            <path d="M22.331 16H33.67C33.9584 16 34.2434 16.0623 34.5054 16.1827C34.7674 16.3031 35.0003 16.4788 35.1881 16.6976C35.3759 16.9164 35.5141 17.1733 35.5933 17.4506C35.6726 17.7279 35.6909 18.019 35.647 18.304L34.392 26.456C34.2831 27.1644 33.9241 27.8105 33.38 28.2771C32.836 28.7438 32.1428 29.0002 31.426 29H24.574C23.8574 29 23.1645 28.7434 22.6207 28.2768C22.0768 27.8102 21.718 27.1643 21.609 26.456L20.354 18.304C20.3102 18.019 20.3285 17.7279 20.4078 17.4506C20.487 17.1733 20.6252 16.9164 20.813 16.6976C21.0008 16.4788 21.2337 16.3031 21.4957 16.1827C21.7577 16.0623 22.0427 16 22.331 16Z" stroke="#1A1A1A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M25 19V14C25 13.2044 25.3161 12.4413 25.8787 11.8787C26.4413 11.3161 27.2044 11 28 11C28.7956 11 29.5587 11.3161 30.1213 11.8787C30.6839 12.4413 31 13.2044 31 14V19" stroke="#1A1A1A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                        </g>
-                        <path d="M55.0645 25L51.667 20.6592H51.0518V25H48.9053V14.8145H51.0518V18.8887H51.6465L54.873 14.8145H57.5459L53.5742 19.7363L57.7373 25H55.0645ZM61.21 25.1504C60.4398 25.1504 59.7721 24.9863 59.207 24.6582C58.6465 24.3255 58.2135 23.8652 57.9082 23.2773C57.6074 22.6849 57.457 21.9967 57.457 21.2129C57.457 20.4199 57.6074 19.7295 57.9082 19.1416C58.2135 18.5492 58.6465 18.0889 59.207 17.7607C59.7721 17.4281 60.4398 17.2617 61.21 17.2617C61.9847 17.2617 62.6523 17.4281 63.2129 17.7607C63.778 18.0889 64.2109 18.5492 64.5117 19.1416C64.8171 19.7295 64.9697 20.4199 64.9697 21.2129C64.9697 21.9967 64.8171 22.6849 64.5117 23.2773C64.2109 23.8652 63.778 24.3255 63.2129 24.6582C62.6523 24.9863 61.9847 25.1504 61.21 25.1504ZM61.2236 23.4961C61.5745 23.4961 61.8685 23.3981 62.1055 23.2021C62.3424 23.0016 62.5202 22.7282 62.6387 22.3818C62.7617 22.0355 62.8232 21.6413 62.8232 21.1992C62.8232 20.7526 62.7617 20.3584 62.6387 20.0166C62.5202 19.6748 62.3424 19.4059 62.1055 19.21C61.8685 19.014 61.5745 18.916 61.2236 18.916C60.8682 18.916 60.5697 19.014 60.3281 19.21C60.0911 19.4059 59.9111 19.6748 59.7881 20.0166C59.6696 20.3584 59.6104 20.7526 59.6104 21.1992C59.6104 21.6413 59.6696 22.0355 59.7881 22.3818C59.9111 22.7282 60.0911 23.0016 60.3281 23.2021C60.5697 23.3981 60.8682 23.4961 61.2236 23.4961ZM65.9062 17.3574H67.9229V23.3252H70.0762V17.3574H72.0928V23.3252H74.2529V17.3574H76.2764V25H65.9062V17.3574ZM79.5439 22.2041L82.292 17.3574H84.3838V25H82.3672V20.1465L79.626 25H77.5273V17.3574H79.5439V22.2041ZM85.6348 25V17.3574H87.7471V20.3242H88.3486L90.4199 17.3574H92.9082L90.208 21.1582L92.9355 25H90.4199L88.5332 22.293H87.7471V25H85.6348Z" fill="#1A1A1A"/>
-                        <defs>
-                            <clipPath id="clip0_985_6966">
-                                <rect width="24" height="24" fill="white" transform="translate(16 8)"/>
-                            </clipPath>
-                        </defs>
+                {{-- Profile --}}
+                <a href="#" class="nav-icon text-dark" title="Профіль">
+                    <svg width="24" height="24" viewBox="0 0 26 26" fill="none">
+                        <circle cx="13" cy="8" r="4.25" stroke="#1A1A1A" stroke-width="1.3"/>
+                        <path d="M6.5 22.75V20.5833C6.5 18.1901 8.44 16.25 10.8333 16.25H15.1667C17.56 16.25 19.5 18.1901 19.5 20.5833V22.75" stroke="#1A1A1A" stroke-width="1.3" stroke-linecap="round"/>
                     </svg>
-
-                    <!--      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span>-->
                 </a>
+
+                {{-- Cart --}}
+                <a href="{{ route('cart') }}" class="nav-cart position-relative text-decoration-none" title="Кошик">
+                    <span id="cart-count" class="cart-badge d-none">0</span>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path d="M6.33105 8H17.67C18.2754 8 18.8286 8.35062 19.0877 8.89443L20.9877 12.8944C21.196 13.3313 21.0082 13.8582 20.5713 14.0664L6.33105 8ZM6.33105 8L4.35405 10.304L5.60905 18.456C5.71797 19.1643 6.07683 19.8102 6.62068 20.2768C7.16453 20.7434 7.85745 21 8.57405 21H15.426C16.1428 21.0002 16.836 20.7438 17.38 20.2771C17.9241 19.8105 18.2831 19.1644 18.392 18.456L19.647 10.304C19.6909 10.019 19.6726 9.72786 19.5933 9.45059C19.5141 9.17331 19.3759 8.91645 19.1881 8.6976C19.0003 8.47876 18.7674 8.30311 18.5054 8.1827C18.2434 8.06229 17.9584 7.99997 17.67 8" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 11V6C9 4.34315 10.3431 3 12 3C13.6569 3 15 4.34315 15 6V11" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="cart-label">Кошик</span>
+                </a>
+
             </div>
         </div>
     </div>
