@@ -25,7 +25,7 @@
                                 <div class="col-lg-6 mob">
                                     <h1 class="display-3 fw-bold mb-4">Краса починається зі здорової шкіри.</h1>
                                     <p class="lead mb-5">Відкрийте для себе догляд для обличчя, що поєднує ефективність сучасних формул і силу натуральних компонентів.</p>
-                                    <a href="#" class="btn btn-light btn-lg px-5 py-3 fw-medium rad-16">Дивитися товари</a>
+                                    <a href="{{ route('catalog') }}" class="btn btn-light btn-lg px-5 py-3 fw-medium rad-16">Дивитися товари</a>
                                 </div>
                                 <div class="col-lg-6 text-end mob">
                                     <!-- Твій продуктовий блок -->
@@ -35,7 +35,7 @@
                                         <h5 class="mt-3">Пеловіт-Р Класичний 500мл</h5>
                                         <div class="mt-3 wrapper__price_buy">
                                             <h4 class="price">6908 ₴</h4>
-                                            <a href="{{url('product')}}" class="btn buy rad-16 ">
+                                            <a href="{{ route('catalog') }}" class="btn buy rad-16 ">
                                                 <span>Купити</span>
                                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <g clip-path="url(#clip0_472_16570)">
@@ -58,14 +58,14 @@
                 </div>
 
                 <!-- Slide 2 -->
-                <div class="carousel-item active">
+                <div class="carousel-item">
                     <div class="hero text-white" style="background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url({{ asset('images/gl_face.png') }});">
                         <div class="container">
                             <div class="row align-items-center">
                                 <div class="col-lg-6 mob">
                                     <h1 class="display-3 fw-bold mb-4">Краса починається зі здорової шкіри.</h1>
                                     <p class="lead mb-5">Відкрийте для себе догляд для обличчя, що поєднує ефективність сучасних формул і силу натуральних компонентів.</p>
-                                    <a href="#" class="btn btn-light btn-lg px-5 py-3 fw-medium rad-16">Дивитися товари</a>
+                                    <a href="{{ route('catalog') }}" class="btn btn-light btn-lg px-5 py-3 fw-medium rad-16">Дивитися товари</a>
                                 </div>
                                 <div class="col-lg-6 text-end mob">
                                     <div class="bg-white text-dark p-3 rounded-4 shadow-sm d-inline-block card-pelov">
@@ -74,7 +74,7 @@
                                         <h5 class="mt-3">Пеловіт-Р Класичний 500мл</h5>
                                         <div class="mt-3 wrapper__price_buy">
                                             <h4 class="price">6908 ₴</h4>
-                                            <a href="{{url('product')}}" class="btn buy rad-16 ">
+                                            <a href="{{ route('catalog') }}" class="btn buy rad-16 ">
                                                 <span>Купити</span>
                                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <g clip-path="url(#clip0_472_16570)">
@@ -97,14 +97,14 @@
                 </div>
 
                 <!-- Slide 3 -->
-                <div class="carousel-item active">
+                <div class="carousel-item">
                     <div class="hero text-white" style="background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url({{ asset('images/gl_face.png') }});">
                         <div class="container">
                             <div class="row align-items-center">
                                 <div class="col-lg-6 mob">
                                     <h1 class="display-3 fw-bold mb-4">Краса починається зі здорової шкіри.</h1>
                                     <p class="lead mb-5">Відкрийте для себе догляд для обличчя, що поєднує ефективність сучасних формул і силу натуральних компонентів.</p>
-                                    <a href="#" class="btn btn-light btn-lg px-5 py-3 fw-medium rad-16">Дивитися товари</a>
+                                    <a href="{{ route('catalog') }}" class="btn btn-light btn-lg px-5 py-3 fw-medium rad-16">Дивитися товари</a>
                                 </div>
                                 <div class="col-lg-6 text-end mob">
                                     <!-- Твій продуктовий блок -->
@@ -114,7 +114,7 @@
                                         <h5 class="mt-3">Пеловіт-Р Класичний 500мл</h5>
                                         <div class="mt-3 wrapper__price_buy">
                                             <h4 class="price">6908 ₴</h4>
-                                            <a href="{{url('product')}}" class="btn buy rad-16 ">
+                                            <a href="{{ route('catalog') }}" class="btn buy rad-16 ">
                                                 <span>Купити</span>
                                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <g clip-path="url(#clip0_472_16570)">
@@ -165,17 +165,17 @@
                             <div class="like">
                                 {{-- SVG сердечко --}}
                             </div>
-                            <img src="{{ $product->image }}" class="card-img-top" alt="{{ $product->name }}">
+                            <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
                             <div class="card-body">
                                 <h6 class="card-title">{{ $product->name }}</h6>
                                 <div class="wrapper__price_buy">
                                     <div class="disc_price_wrapper">
-                                        <h4 class="price">{{ $product->price }}₴</h4>
+                                        <h4 class="price">{{ number_format($product->price, 0, '.', '') }}₴</h4>
                                         @if($product->old_price)
-                                            <div class="disc_price">{{ $product->old_price }}₴</div>
+                                            <div class="disc_price">{{ number_format($product->old_price, 0, '.', '') }}₴</div>
                                         @endif
                                     </div>
-                                    <a href="{{ route('product', ['slug' => $product->slug]) }}" class="btn buy rad-12">
+                                    <a href="{{ route('product', $product->slug) }}" class="btn buy rad-12">
                                         <span>Купити</span>
                                         {{-- SVG корзина --}}
                                     </a>
@@ -249,17 +249,17 @@
                                     <path d="M20.0152 10.764L11.2652 19.43L2.51516 10.764C1.93802 10.2024 1.48341 9.52732 1.17997 8.78138C0.876525 8.03544 0.730818 7.23475 0.752023 6.42973C0.773228 5.62471 0.960886 4.8328 1.30318 4.10387C1.64547 3.37494 2.13499 2.72477 2.7409 2.19432C3.34681 1.66386 4.05599 1.26461 4.82378 1.0217C5.59157 0.778794 6.40134 0.69749 7.20209 0.78291C8.00285 0.868331 8.77724 1.11862 9.47652 1.51803C10.1758 1.91744 10.7848 2.45731 11.2652 3.10364C11.7476 2.462 12.3573 1.92685 13.0561 1.53168C13.7549 1.13651 14.5277 0.889833 15.3262 0.807082C16.1248 0.724331 16.9318 0.807289 17.6967 1.05077C18.4617 1.29424 19.1682 1.69299 19.772 2.22207C20.3758 2.75114 20.8638 3.39914 21.2057 4.12552C21.5475 4.85189 21.7357 5.64101 21.7585 6.44347C21.7813 7.24593 21.6383 8.04447 21.3383 8.7891C21.0383 9.53373 20.5879 10.2084 20.0152 10.771" stroke="#422928" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </div>
-                            <img src="{{ $product->image }}" class="card-img-top" alt="{{ $product->name }}">
+                            <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
                             <div class="card-body">
                                 <h6 class="card-title">{{ $product->name }}</h6>
                                 <div class="wrapper__price_buy">
                                     <div class="disc_price_wrapper">
-                                        <h4 class="price">{{ $product->price }}₴</h4>
+                                        <h4 class="price">{{ number_format($product->price, 0, '.', '') }}₴</h4>
                                         @if($product->old_price)
-                                            <div class="disc_price">{{ $product->old_price }}₴</div>
+                                            <div class="disc_price">{{ number_format($product->old_price, 0, '.', '') }}₴</div>
                                         @endif
                                     </div>
-                                    <a href="{{ route('product', ['slug' => $product->slug]) }}" class="btn buy rad-12">
+                                    <a href="{{ route('product', $product->slug) }}" class="btn buy rad-12">
                                         <span>Купити</span>
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <g clip-path="url(#clip0_472_16570)">

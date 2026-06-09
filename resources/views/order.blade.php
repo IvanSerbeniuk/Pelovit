@@ -164,77 +164,7 @@
         </div>
         <div class="card-body p-4">
           <!-- Список товарів (динамічні quantity) -->
-          <div id="order-items-container" class="cartItemsList">
-            <!-- Товар 1 -->
-            <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
-              <img src="{{ asset('images/image.png') }}" alt="Пеловіт" class="product-img">
-              <div class="flex-grow-1">
-                <h6>Пеловіт-Р Класичний 500мл</h6>
-                <div class="d-flex align-items-center gap-2 mt-2 rad-12 count_rates">
-                  <button class="btn btn-sm ">-</button>
-                  <span class="mx-2">1</span>
-                  <button class="btn btn-sm ">+</button>
-                </div>
-              </div>
-              <div class="text-end d-flex flex-column">
-                <button class="btn btn-link text-danger">
-                  <i class="cross" data-bs-toggle="modal" data-bs-target="#infoModal">
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M13.5 4.5L4.5 13.5" stroke="#1A1A1A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
-                      <path d="M4.5 4.5L13.5 13.5" stroke="#1A1A1A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </svg>
-                  </i>
-                </button>
-                <div class="fw-medium">690₴</div>
-              </div>
-            </div>
-            <!-- Товар 2 (аналогічний) -->
-            <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
-              <img src="{{ asset('images/image.png') }}" alt="Пеловіт" class="product-img">
-              <div class="flex-grow-1">
-                <h6>Пеловіт-Р Класичний 500мл</h6>
-                <div class="d-flex align-items-center gap-2 mt-2 rad-12 count_rates">
-                  <button class="btn btn-sm ">-</button>
-                  <span class="mx-2">1</span>
-                  <button class="btn btn-sm ">+</button>
-                </div>
-              </div>
-              <div class="text-end d-flex flex-column">
-                <button class="btn btn-link text-danger">
-                  <i class="cross" data-bs-toggle="modal" data-bs-target="#infoModal">
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M13.5 4.5L4.5 13.5" stroke="#1A1A1A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
-                      <path d="M4.5 4.5L13.5 13.5" stroke="#1A1A1A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </svg>
-                  </i>
-                </button>
-                <div class="fw-medium">690₴</div>
-              </div>
-            </div>
-            <!-- Товар 3 (ціна 600₴) -->
-            <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
-              <img src="{{ asset('images/image.png') }}" alt="Пеловіт" class="product-img">
-              <div class="flex-grow-1">
-                <h6>Пеловіт-Р Класичний 500мл</h6>
-                <div class="d-flex align-items-center gap-2 mt-2 rad-12 count_rates">
-                  <button class="btn btn-sm ">-</button>
-                  <span class="mx-2">1</span>
-                  <button class="btn btn-sm ">+</button>
-                </div>
-              </div>
-              <div class="text-end d-flex flex-column">
-                <button class="btn btn-link text-danger">
-                  <i class="cross" data-bs-toggle="modal" data-bs-target="#infoModal">
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M13.5 4.5L4.5 13.5" stroke="#1A1A1A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
-                      <path d="M4.5 4.5L13.5 13.5" stroke="#1A1A1A" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </svg>
-                  </i>
-                </button>
-                <div class="fw-medium">690₴</div>
-              </div>
-            </div>
-          </div>
+          <div id="order-items-container" class="cartItemsList"></div>
 
           <!-- Ваші подарунки -->
           <div class="mt-4 pt-2">
