@@ -51,14 +51,21 @@
                 </a>
 
                 {{-- Wishlist --}}
-                <a href="#" class="nav-icon text-dark" title="Обране">
+                <a href="{{ route('wishlist') }}" class="nav-icon text-dark position-relative" title="Обране">
+                    <span id="wishlist-count" class="cart-badge d-none">0</span>
                     <x-icons.heart />
                 </a>
 
                 {{-- Profile --}}
-                <a href="#" class="nav-icon text-dark" title="Профіль">
+                @auth
+                <a href="{{ route('profile.edit') }}" class="nav-icon text-dark" title="Профіль">
                     <x-icons.user />
                 </a>
+                @else
+                <a href="{{ route('login') }}" class="nav-icon text-dark" title="Увійти">
+                    <x-icons.user />
+                </a>
+                @endauth
 
                 {{-- Cart --}}
                 <a href="{{ route('cart') }}" class="nav-cart position-relative text-decoration-none" title="Кошик">

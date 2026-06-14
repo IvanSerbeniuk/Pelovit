@@ -37,7 +37,14 @@
         <div class="text-center">
           <div class="share_wrapper">
             <i class="share"><x-icons.share /></i>
-            <i class="like"><x-icons.heart-like size="20" /></i>
+            <button class="like wishlist-toggle" style="background:none;border:none;cursor:pointer;"
+              data-id="{{ $product->id }}"
+              data-name="{{ e($product->name) }}"
+              data-price="{{ $product->price }}"
+              data-image="{{ $product->image }}"
+              data-slug="{{ $product->slug }}">
+              <x-icons.heart-like size="20" />
+            </button>
           </div>
           <img src="{{ asset($product->image ?: 'images/image.png') }}"
                class="img-fluid product-image shadow-sm rounded" alt="{{ $product->name }}">
@@ -343,14 +350,7 @@
               <button type="submit" class="submit-btn">Надіслати</button>
             </form>
 
-            <div class="social-links">
-              <p>Ви можете написати нам самі:</p>
-              <div class="social-icons">
-                <a href="#"><x-icons.instagram /></a>
-                <a href="#"><x-icons.telegram /></a>
-                <a href="#"><x-icons.viber /></a>
-              </div>
-            </div>
+            @include('partials.social-links')
           </div>
         </section>
 
@@ -373,7 +373,14 @@
             <div class="col-md-3 col-6">
               <div class="product-card card border-0 shadow-sm rad-16">
                 <div class="tag_brown">{{ $rel->category->name ?? '' }}</div>
-                <div class="like"><x-icons.heart-like /></div>
+                <button class="like wishlist-toggle" style="background:none;border:none;cursor:pointer;"
+                  data-id="{{ $rel->id }}"
+                  data-name="{{ e($rel->name) }}"
+                  data-price="{{ $rel->price }}"
+                  data-image="{{ $rel->image }}"
+                  data-slug="{{ $rel->slug }}">
+                  <x-icons.heart-like />
+                </button>
                 <a href="{{ route('product', $rel->slug) }}">
                   <img src="{{ asset($rel->image ?: 'images/image.png') }}" class="card-img-top" alt="{{ $rel->name }}">
                 </a>

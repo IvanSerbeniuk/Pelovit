@@ -98,9 +98,14 @@
           @if ($product->category)
           <div class="tag_brown">{{ $product->category->name }}</div>
           @endif
-          <div class="like">
+          <button class="like wishlist-toggle" style="background:none;border:none;cursor:pointer;"
+            data-id="{{ $product->id }}"
+            data-name="{{ e($product->name) }}"
+            data-price="{{ $product->price }}"
+            data-image="{{ $product->image }}"
+            data-slug="{{ $product->slug }}">
             <x-icons.heart color="#422928" size="23" />
-          </div>
+          </button>
           <a href="{{ route('product', $product->slug) }}">
             <img src="{{ asset($product->image ?: 'images/image.png') }}" class="card-img-top" alt="{{ $product->name }}">
           </a>

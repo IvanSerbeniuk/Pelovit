@@ -93,14 +93,7 @@
               <button type="submit" class="submit-btn">Надіслати</button>
             </form>
 
-            <div class="social-links">
-              <p>Ви можете написати нам самі:</p>
-              <div class="social-icons">
-                <a href="#"><x-icons.instagram /></a>
-                <a href="#"><x-icons.telegram /></a>
-                <a href="#"><x-icons.viber /></a>
-              </div>
-            </div>
+            @include('partials.social-links')
           </div>
         </div>
       </div>

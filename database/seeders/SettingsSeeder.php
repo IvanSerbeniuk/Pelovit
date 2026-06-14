@@ -21,6 +21,7 @@ class SettingsSeeder extends Seeder
             'facebook_url'  => 'https://www.facebook.com/PLab.Mineral',
             'youtube_url'   => 'https://www.youtube.com/channel/UCjHWCyCPWeWFLGjwnoxhwXg',
             'telegram_url'  => '',
+            'viber_url'     => '',
         ];
 
         foreach ($settings as $key => $value) {

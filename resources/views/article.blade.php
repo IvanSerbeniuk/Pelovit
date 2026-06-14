@@ -236,13 +236,13 @@
         </div>
 
         <!-- Social Icons -->
+        @php $shareUrl = urlencode(request()->url()); @endphp
         <div class="d-flex justify-content-center gap-3 flex-wrap">
-          <a href="#" class="share-icon"><i class="bi bi-box-arrow-up fs-3"></i></a>
-          <a href="#" class="share-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="48" height="48" alt="WhatsApp"></a>
-          <a href="#" class="share-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" width="48" height="48" alt="Telegram"></a>
-          <a href="#" class="share-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Viber_logo_2018_%28without_text%29.svg/960px-Viber_logo_2018_%28without_text%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail" width="48" height="48" alt="Viber"></a>
-          <a href="#" class="share-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="48" height="48" alt="Instagram"></a>
-          <a href="#" class="share-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" width="48" height="48" alt="Facebook"></a>
+          <a href="https://api.whatsapp.com/send?text={{ $shareUrl }}" target="_blank" rel="noopener" class="share-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="48" height="48" alt="WhatsApp"></a>
+          <a href="https://t.me/share/url?url={{ $shareUrl }}" target="_blank" rel="noopener" class="share-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" width="48" height="48" alt="Telegram"></a>
+          <a href="viber://forward?text={{ $shareUrl }}" class="share-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Viber_logo_2018_%28without_text%29.svg/960px-Viber_logo_2018_%28without_text%29.svg.png" width="48" height="48" alt="Viber"></a>
+          @if(!empty($settings['instagram_url']))<a href="{{ $settings['instagram_url'] }}" target="_blank" rel="noopener" class="share-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="48" height="48" alt="Instagram"></a>@endif
+          <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" rel="noopener" class="share-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" width="48" height="48" alt="Facebook"></a>
         </div>
       </div>
     </div>

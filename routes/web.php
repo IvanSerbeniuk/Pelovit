@@ -1,9 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WishlistController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $promotions = \App\Models\Product::where('is_active', true)
@@ -47,3 +50,12 @@ Route::get('/article', fn() => view('article'));
 Route::get('/opt', fn() => view('opt'));
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product');
 
+Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';

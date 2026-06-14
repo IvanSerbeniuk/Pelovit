@@ -15,3 +15,19 @@ body, html {
 .p-4-0 {
   padding: 2.5rem !important;
 }
+
+.btn-brown {
+  background-color: $brown-dark;
+  color: #fff;
+  border: none;
+  &:hover { background-color: darken($brown-dark, 8%); color: #fff; }
+  &:focus { box-shadow: 0 0 0 .2rem rgba($brown-dark, .3); }
+}
+
+.wishlist-toggle {
+  padding: 0;
+  line-height: 1;
+  transition: transform .15s ease;
+  &:hover { transform: scale(1.15); }
+  svg path { transition: fill .2s ease; }
+}

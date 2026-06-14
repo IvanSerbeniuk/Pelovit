@@ -132,9 +132,14 @@
                     <div class="col-md-3 col-6">
                         <div class="product-card card border-0 shadow-sm rad-16">
                             <div class="tag_brown">{{ $product->category->name ?? 'Акція' }}</div>
-                            <div class="like">
-                                {{-- SVG сердечко --}}
-                            </div>
+                                <button class="like wishlist-toggle" style="background:none;border:none;cursor:pointer;"
+                                data-id="{{ $product->id }}"
+                                data-name="{{ e($product->name) }}"
+                                data-price="{{ $product->price }}"
+                                data-image="{{ $product->image }}"
+                                data-slug="{{ $product->slug }}">
+                                <x-icons.heart color="#422928" size="23" />
+                            </button>
                             <a href="{{ route('product', $product->slug) }}">
                                 <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
                             </a>
@@ -210,7 +215,14 @@
                                         <div class="col-3">
                                             <div class="product-card card border-0 shadow-sm rad-16">
                                                 <div class="tag_brown">{{ $product->category->name ?? '' }}</div>
-                                                <div class="like"><x-icons.heart-like /></div>
+                                                <button class="like wishlist-toggle" style="background:none;border:none;cursor:pointer;"
+                                                    data-id="{{ $product->id }}"
+                                                    data-name="{{ e($product->name) }}"
+                                                    data-price="{{ $product->price }}"
+                                                    data-image="{{ $product->image }}"
+                                                    data-slug="{{ $product->slug }}">
+                                                    <x-icons.heart color="#422928" size="23" />
+                                                </button>
                                                 <a href="{{ route('product', $product->slug) }}">
                                                     <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
                                                 </a>
@@ -263,7 +275,14 @@
                                         <div class="col-6">
                                             <div class="product-card card border-0 shadow-sm rad-16">
                                                 <div class="tag_brown">{{ $product->category->name ?? '' }}</div>
-                                                <div class="like"><x-icons.heart-like /></div>
+                                                <button class="like wishlist-toggle" style="background:none;border:none;cursor:pointer;"
+                                                    data-id="{{ $product->id }}"
+                                                    data-name="{{ e($product->name) }}"
+                                                    data-price="{{ $product->price }}"
+                                                    data-image="{{ $product->image }}"
+                                                    data-slug="{{ $product->slug }}">
+                                                    <x-icons.heart color="#422928" size="23" />
+                                                </button>
                                                 <a href="{{ route('product', $product->slug) }}">
                                                     <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
                                                 </a>
