@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'PELOVIT-R — Косметика для здорової шкіри')
+@section('title', $product->name . ' — PELOVIT-R')
 
 @section('content')
 <script id="product-data" type="application/json">
@@ -20,15 +20,14 @@
 
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            <a href="/">Home</a>
-          </li>
-          <li class="breadcrumb-item">
-            <a href="/products">Products</a>
-          </li>
-          <li class="breadcrumb-item active" aria-current="page">
-            Пеловіт-Р Стомат Freshmint
-          </li>
+          <li class="breadcrumb-item"><a href="/">Головна</a></li>
+          <li class="breadcrumb-item"><a href="{{ route('catalog') }}">Каталог</a></li>
+          @if($product->category)
+            <li class="breadcrumb-item">
+              <a href="{{ route('catalog', ['category' => $product->category->slug]) }}">{{ $product->category->name }}</a>
+            </li>
+          @endif
+          <li class="breadcrumb-item active" aria-current="page">{{ $product->name }}</li>
         </ol>
       </nav>
 
@@ -40,8 +39,8 @@
             <i class="share"><x-icons.share /></i>
             <i class="like"><x-icons.heart-like size="20" /></i>
           </div>
-          <img src="{{ asset('images/page_pelovit.jpg') }}"
-               class="img-fluid product-image shadow-sm rounded" alt="Пеловіт-Р Стомат Freshmint">
+          <img src="{{ asset($product->image ?: 'images/image.png') }}"
+               class="img-fluid product-image shadow-sm rounded" alt="{{ $product->name }}">
         </div>
         <!-- Thumbnails -->
 <!--        <div class="d-flex justify-content-center gap-3 mt-4">-->
@@ -53,10 +52,14 @@
 
       <!-- Right - Info -->
       <div class="col-lg-7 right_content">
-        <h1 class="fw-bold">Пеловіт-Р Стомат Freshmint</h1>
+        <h1 class="fw-bold">{{ $product->name }}</h1>
         <div class="categories">
-          <p class="text-muted">Лікувальні препарати</p>
-          <p class="text-muted">Стоматологія</p>
+          @if($product->category)
+            <p class="text-muted">{{ $product->category->name }}</p>
+          @endif
+          @if($product->brand)
+            <p class="text-muted">{{ $product->brand }}</p>
+          @endif
         </div>
 
 
@@ -71,10 +74,11 @@
           Залишайте оплату будь-яким зручним для вас способом.
         </p>
 
-        <h2 class="price">300₴</h2>
-        <div class="portion_box">
-          <p class="portion_text">200 мл</p>
-          <p class="portion_text">400 мл</p>
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <h2 class="price mb-0">{{ number_format($product->price, 0, '.', '') }}₴</h2>
+          @if($product->old_price)
+            <span class="text-muted text-decoration-line-through fs-5">{{ number_format($product->old_price, 0, '.', '') }}₴</span>
+          @endif
         </div>
 
         <div class="my-4 counter_cart_wrapper">
@@ -98,28 +102,10 @@
 
         <!-- Description -->
         <div class="description_wrapper_dropdown">
-          <h5 class="mt-5 mb-3">Механізм дії</h5>
-          <p>Натуральний препарат для щоденного догляду за ротовою порожниною. Нормалізує мікрофлору, зменшує запалення, кровоточивість ясен та сприяє регенерації слизової оболонки.</p>
-
-          <h5 class="mt-5 mb-3">Склад</h5>
-          <p>Водневий показник (рН) 7,72 Загальна жорсткість 785,0 мг-екв/дм3 Загальна лужність 5,2 мг-екв/дм3 Сухий залишок (мінералізація) 157,8 г/дм3 Натрій + 60,0 г/дм3 Калій + 0,9 г/дм3 Кальцій2+ 2,5 г/дм3 Магній2+ 8,03 г/дм3 Хлор – 91,2 г/дм3 Сульфати 2- 2,1 г/дм3 Карбонати2- 0,02 г/дм3 Бікарбонати – 0,317 г/дм3 Еп +289,0
-          </p>
-
-          <h5 class="mt-4 mb-3">Показання</h5>
-          <table class="table table-bordered">
-            <thead>
-            <tr>
-              <th>Проблема</th>
-              <th>Спосіб застосування</th>
-              <th>Результат</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr><td>Зубний біль</td><td>Полоскання 4–8 разів на день</td><td>Нормалізація чутливості</td></tr>
-            <tr><td>Гінгівіт, пародонтит</td><td>Регулярне полоскання</td><td>Зменшення запалення</td></tr>
-            <tr><td>Стоматит</td><td>Курсова терапія</td><td>Прискорення загоєння</td></tr>
-            </tbody>
-          </table>
+          @if($product->description)
+            <h5 class="mt-5 mb-3">Опис</h5>
+            <p>{{ $product->description }}</p>
+          @endif
         </div>
 
         <!-- Reviews -->
@@ -383,27 +369,39 @@
 
 
       <!-- Similar Products -->
+      @if($related->isNotEmpty())
       <section class="py-5 all_categories often_bought">
         <div class="container">
           <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold">З цим товаром часто купують</h2>
-            <a href="#" class="view-all">Переглянути більше</a>
+            <a href="{{ route('catalog', ['category' => $product->category->slug ?? '']) }}" class="view-all">Переглянути більше</a>
           </div>
           <div class="row g-4">
+            @foreach($related as $rel)
             <div class="col-md-3 col-6">
               <div class="product-card card border-0 shadow-sm rad-16">
-                <div class="tag_brown">Обличчя</div>
-                <div class="like">
-                  <x-icons.heart-like />
-                </div>
-                <img src="{{ asset('images/e3f68f8396e0adf377793609b6f0d28b9c9a4d04.png') }}" class="card-img-top" alt="Product">
+                <div class="tag_brown">{{ $rel->category->name ?? '' }}</div>
+                <div class="like"><x-icons.heart-like /></div>
+                <a href="{{ route('product', $rel->slug) }}">
+                  <img src="{{ asset($rel->image ?: 'images/image.png') }}" class="card-img-top" alt="{{ $rel->name }}">
+                </a>
                 <div class="card-body">
-                  <h6 class="card-title">Pelovit-R Класичний 500ml</h6>
+                  <h6 class="card-title">
+                    <a href="{{ route('product', $rel->slug) }}" class="text-decoration-none text-dark">{{ $rel->name }}</a>
+                  </h6>
                   <div class="wrapper__price_buy">
                     <div class="disc_price_wrapper">
-                      <h4 class="price">6908₴</h4>
+                      <h4 class="price">{{ number_format($rel->price, 0, '.', '') }}₴</h4>
+                      @if($rel->old_price)
+                        <div class="disc_price">{{ number_format($rel->old_price, 0, '.', '') }}₴</div>
+                      @endif
                     </div>
-                    <button class="btn buy rad-12 ">
+                    <button class="btn buy rad-12 catalog-add-btn"
+                      data-id="{{ $rel->id }}"
+                      data-name="{{ e($rel->name) }}"
+                      data-price="{{ $rel->price }}"
+                      data-image="{{ $rel->image }}"
+                      data-slug="{{ $rel->slug }}">
                       <span>Купити</span>
                       <x-icons.cart color="#FAF7F3" />
                     </button>
@@ -411,73 +409,11 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3 col-6">
-              <div class="product-card card border-0 shadow-sm rad-16">
-                <div class="tag_brown">Обличчя</div>
-                <div class="like">
-                  <x-icons.heart-like />
-                </div>
-                <img src="{{ asset('images/e3f68f8396e0adf377793609b6f0d28b9c9a4d04.png') }}" class="card-img-top" alt="Product">
-                <div class="card-body">
-                  <h6 class="card-title">Pelovit-R Класичний 500ml</h6>
-                  <div class="wrapper__price_buy">
-                    <div class="disc_price_wrapper">
-                      <h4 class="price">6908₴</h4>
-                    </div>
-                    <button class="btn buy rad-12 ">
-                      <span>Купити</span>
-                      <x-icons.cart color="#FAF7F3" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3 col-6">
-              <div class="product-card card border-0 shadow-sm rad-16">
-                <div class="tag_brown">Обличчя</div>
-                <div class="like">
-                  <x-icons.heart-like />
-                </div>
-                <img src="{{ asset('images/e3f68f8396e0adf377793609b6f0d28b9c9a4d04.png') }}" class="card-img-top" alt="Product">
-                <div class="card-body">
-                  <h6 class="card-title">Pelovit-R Класичний 500ml</h6>
-                  <div class="wrapper__price_buy">
-                    <div class="disc_price_wrapper">
-                      <h4 class="price">6908₴</h4>
-                    </div>
-                    <button class="btn buy rad-12 ">
-                      <span>Купити</span>
-                      <x-icons.cart color="#FAF7F3" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3 col-6">
-              <div class="product-card card border-0 shadow-sm rad-16">
-                <div class="tag_brown">Обличчя</div>
-                <div class="like">
-                  <x-icons.heart-like />
-                </div>
-                <img src="{{ asset('images/e3f68f8396e0adf377793609b6f0d28b9c9a4d04.png') }}" class="card-img-top" alt="Product">
-                <div class="card-body">
-                  <h6 class="card-title">Pelovit-R Класичний 500ml</h6>
-                  <div class="wrapper__price_buy">
-                    <div class="disc_price_wrapper">
-                      <h4 class="price">6908₴</h4>
-                    </div>
-                    <button class="btn buy rad-12 ">
-                      <span>Купити</span>
-                      <x-icons.cart color="#FAF7F3" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Product cards same as above -->
+            @endforeach
           </div>
         </div>
       </section>
+      @endif
     </div>
   </section>
 
