@@ -25,6 +25,35 @@
   font-size: 16px;
 }
 
+//.all-products-carousel-wrap {
+//  padding: 0 2.5rem;
+//}
+
+.all-products-carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1.5px solid $brown-bg;
+  background: #fff;
+  color: $brown-bg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+
+  &:hover {
+    background: $brown-bg;
+    color: #fff;
+  }
+
+  &.prev { left: -1.5rem; }
+  &.next { right: -1.5rem; }
+}
+
 // Contact Info
 .contact-production-section{
   .image-wrapper{

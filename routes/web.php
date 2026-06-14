@@ -25,7 +25,7 @@ Route::get('/', function () {
 
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
 Route::get('/about', fn() => view('about_us'));
-Route::get('/kontractne-vyrobnyctvo', fn() => view('kontractne_vyrobnyctvo'));
+Route::get('/kontractne-vyrobnyctvo', fn() => view('kontractne_vyrobnyctvo'))->name('kontractne_vyrobnyctvo');
 Route::get('/masters', fn() => view('masters'));
 Route::get('/masters_category', fn() => view('masters_category'));
 Route::get('/contacts', function () {

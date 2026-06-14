@@ -187,38 +187,97 @@
         <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="fw-bold">Всі товари</h2>
-                <a href="#" class="view-all">Переглянути більше</a>
+                <a href="{{ route('catalog') }}" class="view-all">Переглянути більше</a>
             </div>
-            <div class="row g-4">
 
-                @foreach($allProducts as $product)
-                    <div class="col-md-3 col-6">
-                        <div class="product-card card border-0 shadow-sm rad-16">
-                            <div class="tag_brown">{{ $product->category->name ?? '' }}</div>
-                            <div class="like">
-                                <x-icons.heart-like />
-                            </div>
-                            <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
-                            <div class="card-body">
-                                <h6 class="card-title">{{ $product->name }}</h6>
-                                <div class="wrapper__price_buy">
-                                    <div class="disc_price_wrapper">
-                                        <h4 class="price">{{ number_format($product->price, 0, '.', '') }}₴</h4>
-                                        @if($product->old_price)
-                                            <div class="disc_price">{{ number_format($product->old_price, 0, '.', '') }}₴</div>
-                                        @endif
-                                    </div>
-                                    <a href="{{ route('product', $product->slug) }}" class="btn buy rad-12">
-                                        <span>Купити</span>
-                                        <x-icons.cart color="#FAF7F3" />
-                                    </a>
+            {{-- Desktop: 4 per slide --}}
+            <div class="position-relative all-products-carousel-wrap d-none d-md-block">
+                <div id="allProductsCarouselDesktop" class="carousel slide" data-bs-ride="false">
+                    <div class="carousel-inner">
+                        @foreach($allProducts->chunk(4) as $index => $chunk)
+                            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                <div class="row g-4">
+                                    @foreach($chunk as $product)
+                                        <div class="col-3">
+                                            <div class="product-card card border-0 shadow-sm rad-16">
+                                                <div class="tag_brown">{{ $product->category->name ?? '' }}</div>
+                                                <div class="like"><x-icons.heart-like /></div>
+                                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">{{ $product->name }}</h6>
+                                                    <div class="wrapper__price_buy">
+                                                        <div class="disc_price_wrapper">
+                                                            <h4 class="price">{{ number_format($product->price, 0, '.', '') }}₴</h4>
+                                                            @if($product->old_price)
+                                                                <div class="disc_price">{{ number_format($product->old_price, 0, '.', '') }}₴</div>
+                                                            @endif
+                                                        </div>
+                                                        <a href="{{ route('product', $product->slug) }}" class="btn buy rad-12">
+                                                            <span>Купити</span>
+                                                            <x-icons.cart color="#FAF7F3" />
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
-                        </div>
+                        @endforeach
                     </div>
-                @endforeach
-
+                </div>
+                <button class="all-products-carousel-btn prev" type="button" data-bs-target="#allProductsCarouselDesktop" data-bs-slide="prev" aria-label="Попередні">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="all-products-carousel-btn next" type="button" data-bs-target="#allProductsCarouselDesktop" data-bs-slide="next" aria-label="Наступні">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
             </div>
+
+            {{-- Mobile: 2 per slide --}}
+            <div class="position-relative all-products-carousel-wrap d-block d-md-none">
+                <div id="allProductsCarouselMobile" class="carousel slide" data-bs-ride="false">
+                    <div class="carousel-inner">
+                        @foreach($allProducts->chunk(2) as $index => $chunk)
+                            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                <div class="row g-4">
+                                    @foreach($chunk as $product)
+                                        <div class="col-6">
+                                            <div class="product-card card border-0 shadow-sm rad-16">
+                                                <div class="tag_brown">{{ $product->category->name ?? '' }}</div>
+                                                <div class="like"><x-icons.heart-like /></div>
+                                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">{{ $product->name }}</h6>
+                                                    <div class="wrapper__price_buy">
+                                                        <div class="disc_price_wrapper">
+                                                            <h4 class="price">{{ number_format($product->price, 0, '.', '') }}₴</h4>
+                                                            @if($product->old_price)
+                                                                <div class="disc_price">{{ number_format($product->old_price, 0, '.', '') }}₴</div>
+                                                            @endif
+                                                        </div>
+                                                        <a href="{{ route('product', $product->slug) }}" class="btn buy rad-12">
+                                                            <span>Купити</span>
+                                                            <x-icons.cart color="#FAF7F3" />
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <button class="all-products-carousel-btn prev" type="button" data-bs-target="#allProductsCarouselMobile" data-bs-slide="prev" aria-label="Попередні">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="all-products-carousel-btn next" type="button" data-bs-target="#allProductsCarouselMobile" data-bs-slide="next" aria-label="Наступні">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </div>
+
         </div>
     </section>
     <!-- Контрактне виробництво -->
@@ -228,7 +287,7 @@
                 <div class="col-lg-6 content">
                     <h3 class="fw-bold contact_info_head">Контрактне виробництво</h3>
                     <p class="contact_info_text">Пропонуємо повний цикл виробництва косметики під вашим брендом — від розробки формули до готової продукції. Забезпечуємо високу якість, сучасні технології та індивідуальний підхід до кожного клієнта</p>
-                    <a href="#" class="btn btn-light rad-16 to_page">До сторінки</a>
+                    <a href="{{ route('kontractne_vyrobnyctvo') }}" class="btn btn-light rad-16 to_page">До сторінки</a>
                 </div>
                 <div class="col-lg-6 text-end image-wrapper">
                     <img src="{{ asset('images/pexel-mart.jpg') }}" class="rounded-4 shadow" alt="Контрактне виробництво косметики">
