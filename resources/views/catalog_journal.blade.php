@@ -1,196 +1,113 @@
 @extends('layouts.app')
 
-@section('title', 'PELOVIT-R — Косметика для здорової шкіри')
+@section('title', 'Меджурнал — PELOVIT-R')
 
 @section('content')
 
-
-    <header class="">
+<header class="">
   <div class="container py-3">
     <div class="d-flex justify-content-between align-items-center">
-      <div class="d-flex align-items-center gap-2">
-        <h1 class="text-decoration-none fw-bold">Меджурнал</h1>
-      </div>
-
-      <div class="d-flex" style="max-width: 420px; width: 100%;">
+      <h1 class="fw-bold">Меджурнал</h1>
+      <form method="GET" action="{{ route('journal') }}" class="d-flex" style="max-width: 420px; width: 100%;">
         <div class="input-group" style="border-radius: 16px;border: 1px solid #DEDEDE;overflow: hidden !important;">
-          <span class="input-group-text " ><i class="bi bi-search"></i></span>
-          <input type="text" class="form-control"  placeholder="Пошук по блогу">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input type="text" name="search" class="form-control" placeholder="Пошук по блогу"
+                 value="{{ request('search') }}">
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </header>
 
+{{-- Останні публікації --}}
+@if($featured->isNotEmpty())
 <section class="container publications_box py-5">
   <h5 class="mb-4">Останні публікації</h5>
-
   <div class="row g-4">
-    <!-- Card 1 -->
+    @foreach($featured as $post)
     <div class="col-lg-6">
-      <div class="card h-100">
-        <div class="position-relative">
-          <div class="card-img-top_wrapper">
-            <img src="https://picsum.photos/id/1011/800/600" class="card-img-top" alt="Жіноче обличчя">
+      <a href="{{ route('journal.show', $post->slug) }}" class="text-decoration-none text-dark">
+        <div class="card h-100">
+          <div class="position-relative">
+            <div class="card-img-top_wrapper">
+              <img src="{{ $post->image ? asset($post->image) : 'https://picsum.photos/id/' . ($loop->index + 10) . '11/800/600' }}"
+                   class="card-img-top" alt="{{ $post->title }}">
+            </div>
+            @if($post->category)
+            <span class="badge position-absolute px-3 py-2">{{ $post->category }}</span>
+            @endif
           </div>
-          <span class="badge position-absolute  px-3 py-2">Клінічні дослідження</span>
-        </div>
-        <div class="card-body d-flex flex-column">
-          <p class="text-muted small data">12 вересня 2025</p>
-          <h5 class="card-title">Висновок одеського інституту здоров’я сім’ї</h5>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 2 -->
-    <div class="col-lg-6">
-      <div class="card h-100">
-        <div class="position-relative">
-          <div class="card-img-top_wrapper">
-            <img src="https://picsum.photos/id/106/800/600" class="card-img-top" alt="Флакон">
+          <div class="card-body d-flex flex-column">
+            <p class="text-muted small data">{{ $post->formattedDate }}</p>
+            <h5 class="card-title">{{ $post->title }}</h5>
           </div>
-          <span class="badge position-absolute  px-3 py-2">Клінічні дослідження</span>
         </div>
-        <div class="card-body d-flex flex-column">
-          <p class="text-muted small data">12 вересня 2025</p>
-          <h5 class="card-title">Висновок одеського інституту здоров’я сім’ї</h5>
-        </div>
-      </div>
+      </a>
     </div>
-</div>
+    @endforeach
+  </div>
 </section>
+@endif
 
 <section class="catalog_journal">
   <div class="container py-5">
     <div class="row">
 
-      <!-- Sidebar -->
+      {{-- Sidebar --}}
       <div class="col-lg-3 mb-5">
-        <h5 class="mb-3 ">Категорії</h5>
+        <h5 class="mb-3">Категорії</h5>
         <div class="sidebar">
           <ul class="nav flex-column">
-            <li class="nav-item"><a href="#" class="nav-link active">Всі</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Без категорії</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Відновлення та лікування</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Інструкції</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Історія та події</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Клінічні дослідження</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Лікувальні процедури</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Лікування та профілактика</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Профілактика та реабілітація</a></li>
+            <li class="nav-item">
+              <a href="{{ route('journal') }}" class="nav-link {{ !request('category') ? 'active' : '' }}">Всі</a>
+            </li>
+            @foreach($categories as $cat)
+            <li class="nav-item">
+              <a href="{{ route('journal', ['category' => $cat]) }}"
+                 class="nav-link {{ request('category') === $cat ? 'active' : '' }}">{{ $cat }}</a>
+            </li>
+            @endforeach
           </ul>
         </div>
       </div>
 
-      <!-- Main Content -->
+      {{-- Posts grid --}}
       <div class="col-lg-9">
+        @if($posts->isEmpty())
+          <p class="text-muted py-4">Публікацій не знайдено.</p>
+        @else
         <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4" id="articles">
+          @foreach($posts as $post)
           <div class="col">
-            <div class="card h-100">
-              <div class="position-relative">
-                <div class="card-img-top_wrapper">
-                  <img src="https://picsum.photos/id/1011/600/400" class="card-img-top" alt="">
+            <a href="{{ route('journal.show', $post->slug) }}" class="text-decoration-none text-dark">
+              <div class="card h-100">
+                <div class="position-relative">
+                  <div class="card-img-top_wrapper">
+                    <img src="{{ $post->image ? asset($post->image) : 'https://picsum.photos/id/' . (100 + $post->id) . '/600/400' }}"
+                         class="card-img-top" alt="{{ $post->title }}">
+                  </div>
+                  @if($post->category)
+                  <span class="badge position-absolute top-3 start-3">{{ $post->category }}</span>
+                  @endif
                 </div>
-                <span class="badge position-absolute top-3 start-3">Клінічні дослідження</span>
-              </div>
-              <div class="card-body">
-                <p class="text-muted small">12 вересня 2025</p>
-                <h6 class="card-title">Висновок одеського інституту здоров’я сім’ї</h6>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card h-100">
-              <div class="position-relative">
-                <div class="card-img-top_wrapper">
-                  <img src="https://picsum.photos/id/1011/600/400" class="card-img-top" alt="">
+                <div class="card-body">
+                  <p class="text-muted small">{{ $post->formattedDate }}</p>
+                  <h6 class="card-title">{{ $post->title }}</h6>
                 </div>
-                <span class="badge position-absolute top-3 start-3">Клінічні дослідження</span>
               </div>
-              <div class="card-body">
-                <p class="text-muted small">12 вересня 2025</p>
-                <h6 class="card-title">Висновок одеського інституту здоров’я сім’ї</h6>
-              </div>
-            </div>
+            </a>
           </div>
-          <div class="col">
-            <div class="card h-100">
-              <div class="position-relative">
-                <div class="card-img-top_wrapper">
-                  <img src="https://picsum.photos/id/1011/600/400" class="card-img-top" alt="">
-                </div>
-                <span class="badge position-absolute top-3 start-3">Клінічні дослідження</span>
-              </div>
-              <div class="card-body">
-                <p class="text-muted small">12 вересня 2025</p>
-                <h6 class="card-title">Висновок одеського інституту здоров’я сім’ї</h6>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card h-100">
-              <div class="position-relative">
-                <div class="card-img-top_wrapper">
-                  <img src="https://picsum.photos/id/1011/600/400" class="card-img-top" alt="">
-                </div>
-                <span class="badge position-absolute top-3 start-3">Клінічні дослідження</span>
-              </div>
-              <div class="card-body">
-                <p class="text-muted small">12 вересня 2025</p>
-                <h6 class="card-title">Висновок одеського інституту здоров’я сім’ї</h6>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card h-100">
-              <div class="position-relative">
-                <div class="card-img-top_wrapper">
-                  <img src="https://picsum.photos/id/1011/600/400" class="card-img-top" alt="">
-                </div>
-                <span class="badge position-absolute top-3 start-3">Клінічні дослідження</span>
-              </div>
-              <div class="card-body">
-                <p class="text-muted small">12 вересня 2025</p>
-                <h6 class="card-title">Висновок одеського інституту здоров’я сім’ї</h6>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card h-100">
-              <div class="position-relative">
-                <div class="card-img-top_wrapper">
-                  <img src="https://picsum.photos/id/1011/600/400" class="card-img-top" alt="">
-                </div>
-                <span class="badge position-absolute top-3 start-3">Клінічні дослідження</span>
-              </div>
-              <div class="card-body">
-                <p class="text-muted small">12 вересня 2025</p>
-                <h6 class="card-title">Висновок одеського інституту здоров’я сім’ї</h6>
-              </div>
-            </div>
-          </div>
-          <!-- Cards will be generated by JS or you can duplicate them -->
+          @endforeach
         </div>
 
-        <!-- Pagination -->
-        <nav class="mt-5">
-          <ul class="pagination justify-content-center">
-            <li class="page-item"><a class="page-link border-0" href="#"><</a></li>
-            <li class="page-item active"><a class="page-link  border-0" href="#">1</a></li>
-            <li class="page-item"><a class="page-link border-0" href="#">2</a></li>
-            <li class="page-item"><a class="page-link border-0" href="#">3</a></li>
-            <li class="page-item"><a class="page-link border-0" href="#">...</a></li>
-            <li class="page-item"><a class="page-link border-0" href="#">38</a></li>
-            <li class="page-item"><a class="page-link border-0" href="#">></a></li>
-          </ul>
-        </nav>
+        <div class="mt-5 d-flex justify-content-center">
+          {{ $posts->links() }}
+        </div>
+        @endif
       </div>
+
     </div>
   </div>
 </section>
 
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 @endsection

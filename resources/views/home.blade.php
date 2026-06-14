@@ -348,7 +348,7 @@
     <section class="py-5">
         <div class="container">
             <div class="row align-items-center card_liman">
-                <h2 class="fw-bold pelovit-content">Pelovit-R — натуральна сила Куяльницького лиману для здоров’я та краси вдома</h2>
+                <h2 class="fw-bold pelovit-content">Pelovit-R — натуральна сила Куяльницького лиману для здоров'я та краси вдома</h2>
                 <ul class="list-unstyled features">
                     <li > Натуральні компоненти</li>
                     <li> Ефект санаторію без виходу з дому</li>
@@ -773,58 +773,33 @@
     <section class="medical-journal">
         <div class="container">
             <div class="section-header">
-                <h2>Меджуранал</h2>
-                <a href="/catalog-journal" class="view-all">Переглянути більше</a>
+                <h2>Меджурнал</h2>
+                <a href="{{ route('journal') }}" class="view-all">Переглянути більше</a>
             </div>
 
+            @if($latestPosts->isNotEmpty())
             <div class="articles-grid">
-
-                <!-- Article 1 -->
+                @foreach($latestPosts as $post)
+                @php
+                    $imgId = 100 + $post->id;
+                    $postImg = $post->image ? asset($post->image) : "https://picsum.photos/id/{$imgId}/600/400";
+                @endphp
                 <div class="article-card">
-                    <div class="article-image">
-                        <span class="tag">Клінічні дослідження</span>
-                        <img src="assets/skincare1.png" alt="Клінічні дослідження">
-                    </div>
-                    <div class="article-info">
-                        <span class="date">12 серпня 2025</span>
-                        <h3>Висновок одеського інституту здоров’я сім’ї</h3>
-                        <a href="/article" class="read-more">Детальніше
-                            <x-icons.arrow-right />
-                        </a>
-                    </div>
+                    <a href="{{ route('journal.show', $post->slug) }}" class="text-decoration-none text-dark">
+                        <div class="article-image">
+                            @if($post->category)<span class="tag">{{ $post->category }}</span>@endif
+                            <img src="{{ $postImg }}" alt="{{ $post->title }}">
+                        </div>
+                        <div class="article-info">
+                            <span class="date">{{ $post->formattedDate }}</span>
+                            <h3>{{ $post->title }}</h3>
+                            <span class="read-more">Детальніше <x-icons.arrow-right /></span>
+                        </div>
+                    </a>
                 </div>
-
-                <!-- Article 2 -->
-                <div class="article-card">
-                    <div class="article-image">
-                        <span class="tag">Клінічні дослідження</span>
-                        <img src="assets/facemask2.png" alt="Клінічні дослідження">
-                    </div>
-                    <div class="article-info">
-                        <span class="date">12 серпня 2025</span>
-                        <h3>Висновок одеського інституту здоров’я сім’ї</h3>
-                        <a href="/article" class="read-more">Детальніше
-                            <x-icons.arrow-right />
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Article 3 -->
-                <div class="article-card">
-                    <div class="article-image">
-                        <span class="tag">Клінічні дослідження</span>
-                        <img src="assets/handwash3.jpg" alt="Клінічні дослідження">
-                    </div>
-                    <div class="article-info">
-                        <span class="date">12 серпня 2025</span>
-                        <h3>Висновок одеського інституту здоров’я сім’ї</h3>
-                        <a href="/article" class="read-more">Детальніше
-                            <x-icons.arrow-right />
-                        </a>
-                    </div>
-                </div>
-
+                @endforeach
             </div>
+            @endif
         </div>
     </section>
 
@@ -839,11 +814,11 @@
                     <p>Наш фахівець допоможе підібрати ідеальні засоби Pelovit саме для ваших потреб та розповість, як отримати максимальний ефект.</p>
 
                     <form>
-                        <input type="text" class="width_input" placeholder="Ваше ім’я" required>
+                        <input type="text" class="width_input" placeholder="Ваше ім'я" required>
                         <input type="tel"  class="width_input" placeholder="+38 (0..) ... ...." required>
 
                         <div class="contact-method">
-                            <p>Спосіб зв’язку</p>
+                            <p>Спосіб зв'язку</p>
                             <label><input type="radio" name="contact" checked> Дзвінок</label>
                             <label><input type="radio" name="contact"> Telegram</label>
                             <label><input type="radio" name="contact"> Viber</label>

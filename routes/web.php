@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WishlistController;
@@ -23,7 +24,12 @@ Route::get('/', function () {
         ->orderBy('sort_order')
         ->get();
 
-    return view('home', compact('promotions', 'allProducts', 'categories'));
+    $latestPosts = \App\Models\Post::published()
+        ->orderByDesc('published_at')
+        ->limit(3)
+        ->get();
+
+    return view('home', compact('promotions', 'allProducts', 'categories', 'latestPosts'));
 });
 
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
@@ -45,8 +51,9 @@ Route::get('/cart', function () {
 Route::get('/order', fn() => view('order'))->name('order');
 Route::post('/order', [OrderController::class, 'store'])->name('order.store');
 Route::get('/order/success', fn() => view('order_success'))->name('order.success');
-Route::get('/catalog-journal', fn() => view('catalog_journal'));
-Route::get('/article', fn() => view('article'));
+Route::get('/catalog-journal', [PostController::class, 'index'])->name('journal');
+Route::get('/journal/{slug}', [PostController::class, 'show'])->name('journal.show');
+Route::redirect('/article', '/catalog-journal');
 Route::get('/opt', fn() => view('opt'));
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product');
 
