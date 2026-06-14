@@ -64,10 +64,7 @@
 
 
 
-        <div class="d-flex align-items-center gap-3 mb-4">
-          <span class="rating fs-4">★★★★★</span>
-          <span><strong>4.9</strong> (15 відгуків)</span>
-        </div>
+
 
         <p class="text-muted small">
           Після оформлення вас зв'яжеться продавець-консультант.<br>
@@ -91,12 +88,7 @@
           <button class="btn btn-outline-dark px-5 btn-lg buy_in_oneclick">Купити в один клік</button>
         </div>
 
-        <div class="cons_wrap">
-          <div><x-icons.chat /> Після оформлення з вами зв’язується продавець-консультант</div>
-          <div><x-icons.wallet /> Здійснюєте оплату будь-яким зручним для вас способом</div>
-          <div><x-icons.box /> Отримуєте посилку Новою Поштою (в межах України)</div>
 
-        </div>
 
 
 
