@@ -124,7 +124,7 @@
         <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="fw-bold">Акції</h2>
-                <a href="#" class="view-all">Переглянути більше</a>
+                <a href="{{ route('catalog') }}" class="view-all">Переглянути більше</a>
             </div>
             <div class="row g-4">
 
@@ -755,7 +755,7 @@
         <div class="container">
             <div class="section-header">
                 <h2>Меджуранал</h2>
-                <a href="#" class="view-all">Переглянути більше</a>
+                <a href="/catalog-journal" class="view-all">Переглянути більше</a>
             </div>
 
             <div class="articles-grid">
@@ -769,7 +769,7 @@
                     <div class="article-info">
                         <span class="date">12 серпня 2025</span>
                         <h3>Висновок одеського інституту здоров’я сім’ї</h3>
-                        <a href="#" class="read-more">Детальніше
+                        <a href="/article" class="read-more">Детальніше
                             <x-icons.arrow-right />
                         </a>
                     </div>
@@ -784,7 +784,7 @@
                     <div class="article-info">
                         <span class="date">12 серпня 2025</span>
                         <h3>Висновок одеського інституту здоров’я сім’ї</h3>
-                        <a href="#" class="read-more">Детальніше
+                        <a href="/article" class="read-more">Детальніше
                             <x-icons.arrow-right />
                         </a>
                     </div>
@@ -799,7 +799,7 @@
                     <div class="article-info">
                         <span class="date">12 серпня 2025</span>
                         <h3>Висновок одеського інституту здоров’я сім’ї</h3>
-                        <a href="#" class="read-more">Детальніше
+                        <a href="/article" class="read-more">Детальніше
                             <x-icons.arrow-right />
                         </a>
                     </div>
@@ -837,15 +837,14 @@
                     <div class="social-links">
                         <p>Ви можете написати нам самі:</p>
                         <div class="social-icons">
-                            <a href="#">
+                            <a href="{{ $settings['instagram_url'] ?? '#' }}" target="_blank" rel="noopener">
                                 <x-icons.instagram />
                             </a>
-                            <a href="#">
+                            <a href="{{ $settings['telegram_url'] ?? '#' }}" target="_blank" rel="noopener">
                                 <x-icons.telegram />
                             </a>
-                            <a href="#">
+                            <a href="{{ $settings['viber_url'] ?? '#' }}" target="_blank" rel="noopener">
                                 <x-icons.viber />
-
                             </a>
                         </div>
                     </div>

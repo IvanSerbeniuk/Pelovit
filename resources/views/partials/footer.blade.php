@@ -49,12 +49,12 @@
             <div class="col-lg-3">
                 <h6 class="fw-semibold mb-3">Навігація</h6>
                 <ul class="list-unstyled">
-                    <li class="mb-2"><a href="#" class="text-dark text-decoration-none">Про нас</a></li>
-                    <li class="mb-2"><a href="#" class="text-dark text-decoration-none">Препарати</a></li>
-                    <li class="mb-2"><a href="#" class="text-dark text-decoration-none">Контрактне виробництво</a></li>
-                    <li class="mb-2"><a href="#" class="text-dark text-decoration-none">Опт закупівлі</a></li>
-                    <li class="mb-2"><a href="#" class="text-dark text-decoration-none">Майстрам</a></li>
-                    <li><a href="#" class="text-dark text-decoration-none">Адреси магазинів</a></li>
+                    <li class="mb-2"><a href="/about" class="text-dark text-decoration-none">Про нас</a></li>
+                    <li class="mb-2"><a href="{{ route('catalog') }}" class="text-dark text-decoration-none">Препарати</a></li>
+                    <li class="mb-2"><a href="{{ route('kontractne_vyrobnyctvo') }}" class="text-dark text-decoration-none">Контрактне виробництво</a></li>
+                    <li class="mb-2"><a href="/opt" class="text-dark text-decoration-none">Опт закупівлі</a></li>
+                    <li class="mb-2"><a href="/masters" class="text-dark text-decoration-none">Майстрам</a></li>
+                    <li><a href="/contacts" class="text-dark text-decoration-none">Адреси магазинів</a></li>
                 </ul>
             </div>
 
@@ -62,11 +62,11 @@
             <div class="col-lg-3">
                 <h6 class="fw-semibold mb-3">Категорія товарів</h6>
                 <ul class="list-unstyled">
-                    <li class="mb-2"><a href="#" class="text-dark text-decoration-none">Парфумована лінійка ART17</a></li>
-                    <li class="mb-2"><a href="#" class="text-dark text-decoration-none">Лікувальні препарати</a></li>
-                    <li class="mb-2"><a href="#" class="text-dark text-decoration-none">Доглядова косметика</a></li>
-                    <li class="mb-2"><a href="#" class="text-dark text-decoration-none">PRO серія Майстер</a></li>
-                    <li><a href="#" class="text-dark text-decoration-none">Комплекси</a></li>
+                    <li class="mb-2"><a href="{{ route('catalog') }}" class="text-dark text-decoration-none">Парфумована лінійка ART17</a></li>
+                    <li class="mb-2"><a href="{{ route('catalog') }}" class="text-dark text-decoration-none">Лікувальні препарати</a></li>
+                    <li class="mb-2"><a href="{{ route('catalog') }}" class="text-dark text-decoration-none">Доглядова косметика</a></li>
+                    <li class="mb-2"><a href="{{ route('catalog') }}" class="text-dark text-decoration-none">PRO серія Майстер</a></li>
+                    <li><a href="{{ route('catalog') }}" class="text-dark text-decoration-none">Комплекси</a></li>
                 </ul>
             </div>
 
