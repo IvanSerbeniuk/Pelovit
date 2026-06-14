@@ -12,7 +12,7 @@
       <div class="cat_card">
         <a href="{{ route('catalog', ['category' => $cat->slug]) }}" class="text-decoration-none d-block">
           <div class="category-card rounded-4 overflow-hidden {{ request('category') === $cat->slug ? 'active' : '' }}">
-            <img src="{{ $cat->image ? asset($cat->image) : asset('images/tranc.png') }}" class="rounded-4 w-100" alt="{{ $cat->name }}">
+            <img src="{{ $cat->image ? asset($cat->image) : asset('images/image.png') }}" class="rounded-4 w-100" alt="{{ $cat->name }}">
             <p class="mt-3 fw-medium cat_name">{{ $cat->name }}</p>
           </div>
         </a>

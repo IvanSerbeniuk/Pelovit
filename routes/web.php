@@ -15,7 +15,12 @@ Route::get('/', function () {
         ->limit(8)
         ->get();
 
-    return view('home', compact('promotions', 'allProducts'));
+    $categories = \App\Models\Category::whereNull('parent_id')
+        ->where('is_active', true)
+        ->orderBy('sort_order')
+        ->get();
+
+    return view('home', compact('promotions', 'allProducts', 'categories'));
 });
 
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');

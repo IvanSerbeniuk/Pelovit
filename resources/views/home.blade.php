@@ -164,39 +164,20 @@
         <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="fw-bold mb-4">Категорії</h2>
-                <a href="#" class="view-all">Переглянути більше</a>
+                <a href="{{ route('catalog') }}" class="view-all">Переглянути більше</a>
             </div>
             <div class="row cards">
+                @foreach($categories as $category)
                 <div class="cat_card">
-                    <div class="category-card ">
-                        <img src="{{ asset('images/tranc.png') }}" class="rounded-4 w-100" alt="">
-                        <p class="mt-3 fw-medium cat_name">Лікувальні препарати</p>
-                    </div>
+                    <a href="{{ route('catalog', ['category' => $category->slug]) }}" class="text-decoration-none text-dark">
+                        <div class="category-card">
+                            <img src="{{ $category->image ? asset($category->image) : asset('images/image.png') }}"
+                                 class="rounded-4 w-100" alt="{{ e($category->name) }}">
+                            <p class="mt-3 fw-medium cat_name">{{ $category->name }}</p>
+                        </div>
+                    </a>
                 </div>
-                <div class="cat_card">
-                    <div class="category-card ">
-                        <img src="{{ asset('images/face_washing.png') }}" class="rounded-4 w-100" alt="">
-                        <p class="mt-3 fw-medium cat_name">Доглядова косметика</p>
-                    </div>
-                </div>
-                <div class="cat_card">
-                    <div class="category-card ">
-                        <img src="{{ asset('images/catname3.png') }}" class="rounded-4 w-100" alt="">
-                        <p class="mt-3 fw-medium cat_name">Комплекси</p>
-                    </div>
-                </div>
-                <div class="cat_card">
-                    <div class="category-card ">
-                        <img src="{{ asset('images/catname4.png') }}" class="rounded-4 w-100" alt="">
-                        <p class="mt-3 fw-medium cat_name">PRO серія Майстер</p>
-                    </div>
-                </div>
-                <div class="cat_card">
-                    <div class="category-card ">
-                        <img src="{{ asset('images/catname5.png') }}" class="rounded-4 w-100" alt="">
-                        <p class="mt-3 fw-medium cat_name">Парфумована лінійка ART17</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
