@@ -43,29 +43,34 @@
         <p id="cart-empty-msg" class="text-muted d-none">Ваш кошик порожній.</p>
 
         <!-- Акційні товари -->
+        @if($featured->isNotEmpty())
         <h5 class="mt-5 mb-3">Акційні товари</h5>
 
-        <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
-          <img src="{{ asset('images/image.png') }}" alt="Пеловіт" class="product-img">
-          <div class="flex-grow-1">
-            <h6>Пеловіт-Р Класичний 500мл</h6>
-            <div class="fw-medium">690₴</div>
-          </div>
+        <div class="d-flex flex-column gap-2">
+          @foreach($featured as $product)
+          <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
+            <a href="{{ route('product', $product->slug) }}">
+              <img src="{{ $product->image ? asset($product->image) : asset('images/image.png') }}"
+                   alt="{{ e($product->name) }}" class="product-img">
+            </a>
+            <div class="flex-grow-1">
+              <h6><a href="{{ route('product', $product->slug) }}" class="text-dark text-decoration-none">{{ $product->name }}</a></h6>
+              <div class="fw-medium">{{ number_format($product->price, 0, '.', '') }}₴</div>
+            </div>
 
-          <div class="btn like_box rad-8 ">
-            <i class="like">
-              <x-icons.heart-like />
-            </i>
+            <button class="btn buy rad-16 catalog-add-btn"
+              data-id="{{ $product->id }}"
+              data-name="{{ e($product->name) }}"
+              data-price="{{ $product->price }}"
+              data-image="{{ $product->image }}"
+              data-slug="{{ $product->slug }}">
+              <span>Купити</span>
+              <x-icons.cart color="#FAF7F3" />
+            </button>
           </div>
-
-          <button class="btn buy rad-16 ">
-            <span>Купити</span>
-            <x-icons.cart color="#FAF7F3" />
-          </button>
+          @endforeach
         </div>
-
-        <!-- Repeat 3 more promotional items if needed -->
-        <!-- You can duplicate the block above -->
+        @endif
 
       </div>
 
@@ -215,29 +220,24 @@
   </div>
 </div>
 <script>
-    $(document).ready(function() {
-        $('#infoModal').modal('show');
+    document.addEventListener('DOMContentLoaded', function() {
         let selectedGiftId = null;
 
-        // Вибір подарунка
-        $('.gift-option').on('click', function(e) {
-            if ($(e.target).closest('.gift-detail-link').length) {
-                e.preventDefault();
-                alert('Тут буде детальний опис подарунка. Ви можете обрати його, натиснувши на всю картку.');
-                return;
-            }
-
-            $('.gift-option').removeClass('selected');
-            $(this).addClass('selected');
-            selectedGiftId = $(this).data('gift-id');
+        document.querySelectorAll('.gift-option').forEach(function(el) {
+            el.addEventListener('click', function(e) {
+                document.querySelectorAll('.gift-option').forEach(o => o.classList.remove('selected'));
+                el.classList.add('selected');
+                selectedGiftId = el.dataset.giftId;
+            });
         });
 
-
-        // Скидання при закритті
-        $('#loyaltyGiftModal').on('hidden.bs.modal', function() {
-            $('.gift-option').removeClass('selected');
-            selectedGiftId = null;
-        });
+        const loyaltyModal = document.getElementById('loyaltyGiftModal');
+        if (loyaltyModal) {
+            loyaltyModal.addEventListener('hidden.bs.modal', function() {
+                document.querySelectorAll('.gift-option').forEach(o => o.classList.remove('selected'));
+                selectedGiftId = null;
+            });
+        }
     });
 </script>
 

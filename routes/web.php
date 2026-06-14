@@ -27,7 +27,13 @@ Route::get('/contacts', function () {
     $team = \App\Models\TeamMember::orderBy('sort_order')->get();
     return view('contacts', compact('team'));
 });
-Route::get('/cart', fn() => view('cart'))->name('cart');
+Route::get('/cart', function () {
+    $featured = \App\Models\Product::where('is_active', true)
+        ->where('is_featured', true)
+        ->limit(4)
+        ->get();
+    return view('cart', compact('featured'));
+})->name('cart');
 Route::get('/order', fn() => view('order'))->name('order');
 Route::post('/order', [OrderController::class, 'store'])->name('order.store');
 Route::get('/order/success', fn() => view('order_success'))->name('order.success');
