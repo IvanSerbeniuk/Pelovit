@@ -202,9 +202,13 @@
                                             <div class="product-card card border-0 shadow-sm rad-16">
                                                 <div class="tag_brown">{{ $product->category->name ?? '' }}</div>
                                                 <div class="like"><x-icons.heart-like /></div>
-                                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                                <a href="{{ route('product', $product->slug) }}">
+                                                    <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                                </a>
                                                 <div class="card-body">
-                                                    <h6 class="card-title">{{ $product->name }}</h6>
+                                                    <h6 class="card-title">
+                                                        <a href="{{ route('product', $product->slug) }}" class="text-decoration-none text-dark">{{ $product->name }}</a>
+                                                    </h6>
                                                     <div class="wrapper__price_buy">
                                                         <div class="disc_price_wrapper">
                                                             <h4 class="price">{{ number_format($product->price, 0, '.', '') }}₴</h4>
@@ -212,10 +216,15 @@
                                                                 <div class="disc_price">{{ number_format($product->old_price, 0, '.', '') }}₴</div>
                                                             @endif
                                                         </div>
-                                                        <a href="{{ route('product', $product->slug) }}" class="btn buy rad-12">
+                                                        <button class="btn buy rad-12 catalog-add-btn"
+                                                            data-id="{{ $product->id }}"
+                                                            data-name="{{ e($product->name) }}"
+                                                            data-price="{{ $product->price }}"
+                                                            data-image="{{ $product->image }}"
+                                                            data-slug="{{ $product->slug }}">
                                                             <span>Купити</span>
                                                             <x-icons.cart color="#FAF7F3" />
-                                                        </a>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -246,9 +255,13 @@
                                             <div class="product-card card border-0 shadow-sm rad-16">
                                                 <div class="tag_brown">{{ $product->category->name ?? '' }}</div>
                                                 <div class="like"><x-icons.heart-like /></div>
-                                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                                <a href="{{ route('product', $product->slug) }}">
+                                                    <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                                </a>
                                                 <div class="card-body">
-                                                    <h6 class="card-title">{{ $product->name }}</h6>
+                                                    <h6 class="card-title">
+                                                        <a href="{{ route('product', $product->slug) }}" class="text-decoration-none text-dark">{{ $product->name }}</a>
+                                                    </h6>
                                                     <div class="wrapper__price_buy">
                                                         <div class="disc_price_wrapper">
                                                             <h4 class="price">{{ number_format($product->price, 0, '.', '') }}₴</h4>
@@ -256,10 +269,15 @@
                                                                 <div class="disc_price">{{ number_format($product->old_price, 0, '.', '') }}₴</div>
                                                             @endif
                                                         </div>
-                                                        <a href="{{ route('product', $product->slug) }}" class="btn buy rad-12">
+                                                        <button class="btn buy rad-12 catalog-add-btn"
+                                                            data-id="{{ $product->id }}"
+                                                            data-name="{{ e($product->name) }}"
+                                                            data-price="{{ $product->price }}"
+                                                            data-image="{{ $product->image }}"
+                                                            data-slug="{{ $product->slug }}">
                                                             <span>Купити</span>
                                                             <x-icons.cart color="#FAF7F3" />
-                                                        </a>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
