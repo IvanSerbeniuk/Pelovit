@@ -57,7 +57,7 @@ class ProductFormPage extends FormPage
             Box::make('Зображення', [
                 Image::make('Фото', 'image')
                     ->dir('products')
-                    ->disk('public'),
+                    ->disk('public_root'),
             ]),
         ];
     }

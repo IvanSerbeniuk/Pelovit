@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e7dbc92c7c162324f61c575a87061ef",
+    "content-hash": "6469a411951b0377a0c2dccbf59c378a",
     "packages": [
         {
             "name": "brick/math",
@@ -2336,6 +2336,135 @@
                 }
             ],
             "time": "2026-06-22T14:53:42+00:00"
+        },
+        {
+            "name": "moonshine/quill",
+            "version": "3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moonshine-software/quill.git",
+                "reference": "f23f0a36b10c83bd7ecbb529f1cc0a150ea45c1a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moonshine-software/quill/zipball/f23f0a36b10c83bd7ecbb529f1cc0a150ea45c1a",
+                "reference": "f23f0a36b10c83bd7ecbb529f1cc0a150ea45c1a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": "^8.0|^8.1|^8.2"
+            },
+            "conflict": {
+                "moonshine/moonshine": "<1.52"
+            },
+            "require-dev": {
+                "brianium/paratest": "^6.8",
+                "mockery/mockery": "^1.4.4",
+                "orchestra/testbench": "^4.0|^5.0|^6.0|^7.0|^8.0",
+                "phpstan/phpstan": "^1.4.7",
+                "phpunit/phpunit": "^9.5.8"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MoonShine\\Quill\\Providers\\QuillServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MoonShine\\Quill\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Danil Shutsky",
+                    "email": "info@cutcode.ru",
+                    "homepage": "https://cutcode.dev"
+                }
+            ],
+            "description": "Quill editor for MoonShine",
+            "homepage": "https://moonshine.cutcode.dev",
+            "keywords": [
+                "moonshine",
+                "quill"
+            ],
+            "support": {
+                "issues": "https://github.com/moonshine-software/quill/issues",
+                "source": "https://github.com/moonshine-software/quill"
+            },
+            "time": "2024-11-29T15:31:45+00:00"
+        },
+        {
+            "name": "moonshine/tinymce",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moonshine-software/tinymce.git",
+                "reference": "d7bfd0d112e431ecfb09f27399dad219df7ce4dd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moonshine-software/tinymce/zipball/d7bfd0d112e431ecfb09f27399dad219df7ce4dd",
+                "reference": "d7bfd0d112e431ecfb09f27399dad219df7ce4dd",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": "^8.2|^8.3"
+            },
+            "conflict": {
+                "moonshine/moonshine": "<3.0.0"
+            },
+            "require-dev": {
+                "moonshine/moonshine": "^4.0",
+                "orchestra/testbench": "^9.0",
+                "phpunit/phpunit": "^11.0.1",
+                "rector/rector": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MoonShine\\TinyMce\\Providers\\TinyMceServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MoonShine\\TinyMce\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Danil Shutsky",
+                    "email": "info@cutcode.ru",
+                    "homepage": "https://cutcode.dev"
+                }
+            ],
+            "description": "TinyMce editor for MoonShine",
+            "homepage": "https://moonshine-laravel.com",
+            "keywords": [
+                "moonshine",
+                "tinymce"
+            ],
+            "support": {
+                "issues": "https://github.com/moonshine-software/tinymce/issues",
+                "source": "https://github.com/moonshine-software/tinymce"
+            },
+            "time": "2025-11-11T10:06:23+00:00"
         },
         {
             "name": "nesbot/carbon",

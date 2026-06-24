@@ -15,6 +15,7 @@ use MoonShine\Support\ListOf;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Textarea;
+use MoonShine\TinyMce\Fields\TinyMce;
 use MoonShine\UI\Fields\Date;
 use MoonShine\UI\Fields\Switcher;
 use MoonShine\UI\Fields\Image;
@@ -38,7 +39,7 @@ class PostFormPage extends FormPage
             Box::make('Контент', [
                 Text::make('Заголовок', 'title')->required(),
                 Textarea::make('Анонс', 'excerpt'),
-                Textarea::make('Текст статті', 'body')->required()->rows(20),
+                TinyMce::make('Текст статті', 'body')->required(),
             ]),
             Box::make('Налаштування', [
                 Grid::make([
@@ -48,7 +49,7 @@ class PostFormPage extends FormPage
                         Date::make('Дата публікації', 'published_at'),
                     ])->columnSpan(6),
                     Column::make([
-                        Image::make('Зображення', 'image')->dir('posts')->disk('public'),
+                        Image::make('Зображення', 'image')->dir('posts')->disk('public_root'),
                         Switcher::make('Опублікована', 'is_published'),
                         Switcher::make('Обрана публікація', 'is_featured'),
                     ])->columnSpan(6),

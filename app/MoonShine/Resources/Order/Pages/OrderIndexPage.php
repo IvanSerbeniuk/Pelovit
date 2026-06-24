@@ -61,7 +61,11 @@ class OrderIndexPage extends IndexPage
      */
     protected function buttons(): ListOf
     {
-        return parent::buttons();
+        return new ListOf(\MoonShine\Contracts\UI\ActionButtonContract::class, [
+            $this->modifyEditButton($this->getResource()->getEditButton(isAsync: $this->isAsync())),
+            $this->modifyDeleteButton($this->getResource()->getDeleteButton(redirectAfterDelete: $this->getResource()->getRedirectAfterDelete(), isAsync: $this->isAsync())),
+            $this->modifyMassDeleteButton($this->getResource()->getMassDeleteButton(redirectAfterDelete: $this->getResource()->getRedirectAfterDelete(), isAsync: $this->isAsync())),
+        ]);
     }
 
     /**
