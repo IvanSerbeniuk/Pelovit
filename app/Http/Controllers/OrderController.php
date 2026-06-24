@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderConfirmation;
+use App\Mail\OrderNotification;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -28,7 +31,17 @@ class OrderController extends Controller
             return back()->withErrors(['items' => 'Кошик порожній.']);
         }
 
-        Order::create($validated);
+        $order = Order::create($validated);
+
+        // Клієнту — якщо вказав email
+        if ($order->email) {
+            Mail::to($order->email)->send(new OrderConfirmation($order));
+        }
+
+        // Адміну
+        if ($adminEmail = config('mail.admin_email')) {
+            Mail::to($adminEmail)->send(new OrderNotification($order));
+        }
 
         return redirect()->route('order.success');
     }
