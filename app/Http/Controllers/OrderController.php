@@ -33,14 +33,15 @@ class OrderController extends Controller
 
         $order = Order::create($validated);
 
-        // Клієнту — якщо вказав email
-        if ($order->email) {
-            Mail::to($order->email)->send(new OrderConfirmation($order));
-        }
-
-        // Адміну
-        if ($adminEmail = config('mail.admin_email')) {
-            Mail::to($adminEmail)->send(new OrderNotification($order));
+        try {
+            if ($order->email) {
+                Mail::to($order->email)->send(new OrderConfirmation($order));
+            }
+            if ($adminEmail = config('mail.admin_email')) {
+                Mail::to($adminEmail)->send(new OrderNotification($order));
+            }
+        } catch (\Exception $e) {
+            \Log::error('Mail send failed: ' . $e->getMessage());
         }
 
         return redirect()->route('order.success');
