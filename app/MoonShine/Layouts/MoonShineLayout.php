@@ -1,0 +1,52 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\MoonShine\Layouts;
+
+use MoonShine\Laravel\Layouts\AppLayout;
+use MoonShine\ColorManager\Palettes\PurplePalette;
+use MoonShine\ColorManager\ColorManager;
+use MoonShine\Contracts\ColorManager\ColorManagerContract;
+use MoonShine\Contracts\ColorManager\PaletteContract;
+use App\MoonShine\Resources\Order\OrderResource;
+use MoonShine\MenuManager\MenuItem;
+use App\MoonShine\Resources\Product\ProductResource;
+use App\MoonShine\Resources\Category\CategoryResource;
+use App\MoonShine\Resources\Post\PostResource;
+
+final class MoonShineLayout extends AppLayout
+{
+    /**
+     * @var null|class-string<PaletteContract>
+     */
+    protected ?string $palette = PurplePalette::class;
+
+    protected function assets(): array
+    {
+        return [
+            ...parent::assets(),
+        ];
+    }
+
+    protected function menu(): array
+    {
+        return [
+            ...parent::menu(),
+            MenuItem::make(OrderResource::class, 'Замовлення'),
+            MenuItem::make(ProductResource::class, 'Товари'),
+            MenuItem::make(CategoryResource::class, 'Категорії'),
+            MenuItem::make(PostResource::class, 'Журнал'),
+        ];
+    }
+
+    /**
+     * @param ColorManager $colorManager
+     */
+    protected function colors(ColorManagerContract $colorManager): void
+    {
+        parent::colors($colorManager);
+
+        // $colorManager->primary('#00000');
+    }
+}
