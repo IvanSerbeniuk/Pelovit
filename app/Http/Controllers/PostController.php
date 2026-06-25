@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PostController extends Controller
 {
@@ -23,7 +24,7 @@ class PostController extends Controller
         $featured = Post::published()->where('is_featured', true)->orderByDesc('published_at')->limit(2)->get();
         $categories = Post::published()->whereNotNull('category')->distinct()->orderBy('category')->pluck('category');
 
-        return view('catalog_journal', compact('posts', 'featured', 'categories'));
+        return Inertia::render('Journal/Index', compact('posts', 'featured', 'categories'));
     }
 
     public function show(string $slug)
@@ -37,6 +38,6 @@ class PostController extends Controller
             ->limit(3)
             ->get();
 
-        return view('article', compact('post', 'related'));
+        return Inertia::render('Journal/Show', compact('post', 'related'));
     }
 }

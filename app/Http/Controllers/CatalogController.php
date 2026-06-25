@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CatalogController extends Controller
 {
@@ -50,6 +51,10 @@ class CatalogController extends Controller
             ->paginate(12)
             ->withQueryString();
 
-        return view('catalog', compact('categories', 'products'));
+        return Inertia::render('Catalog/Index', [
+            'products'   => $products,
+            'categories' => $categories,
+            'filters'    => $request->only(['category', 'sort', 'brand', 'min_price', 'max_price']),
+        ]);
     }
 }

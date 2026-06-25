@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Inertia\Inertia;
 
 class ProductController extends Controller
 {
@@ -16,9 +17,10 @@ class ProductController extends Controller
         $related = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->where('is_active', true)
+            ->with('category')
             ->limit(4)
             ->get();
 
-        return view('product_page', compact('product', 'related'));
+        return Inertia::render('Product/Show', compact('product', 'related'));
     }
 }
