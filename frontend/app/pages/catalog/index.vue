@@ -31,6 +31,13 @@ function pageLabel(label: string) {
   if (label === 'pagination.next') return '&rsaquo;'
   return label
 }
+
+const selectedCategory = computed(() => route.query.category as string ?? '')
+
+function toggleCategory(slug: string) {
+  const next = selectedCategory.value === slug ? undefined : slug
+  router.push({ query: { ...route.query, category: next, page: undefined } })
+}
 </script>
 
 <template>
@@ -67,20 +74,26 @@ function pageLabel(label: string) {
     <div class="offcanvas-body">
       <div class="mb-4">
         <h6 class="fw-semibold mb-3">Категорії</h6>
-        <div v-for="cat in categories" :key="cat.id" class="mb-2">
-          <NuxtLink
-            :to="`/catalog?category=${cat.slug}`"
-            class="d-block text-decoration-none fw-medium"
-            :class="filters.category === cat.slug ? 'text-dark' : 'text-secondary'"
-          >{{ cat.name }}</NuxtLink>
+        <div v-for="cat in categories" :key="cat.id" class="mb-1">
+          <div class="filter-check">
+            <input
+              type="checkbox"
+              :id="`cat-${cat.slug}`"
+              :checked="selectedCategory === cat.slug"
+              @change="toggleCategory(cat.slug)"
+            >
+            <label :for="`cat-${cat.slug}`">{{ cat.name }}</label>
+          </div>
           <div v-if="cat.children?.length" class="ps-3 mt-1">
-            <NuxtLink
-              v-for="child in cat.children"
-              :key="child.id"
-              :to="`/catalog?category=${child.slug}`"
-              class="d-block text-decoration-none small py-1"
-              :class="filters.category === child.slug ? 'text-dark fw-semibold' : 'text-secondary'"
-            >— {{ child.name }}</NuxtLink>
+            <div v-for="child in cat.children" :key="child.id" class="filter-check filter-check--sm">
+              <input
+                type="checkbox"
+                :id="`cat-${child.slug}`"
+                :checked="selectedCategory === child.slug"
+                @change="toggleCategory(child.slug)"
+              >
+              <label :for="`cat-${child.slug}`">{{ child.name }}</label>
+            </div>
           </div>
         </div>
       </div>

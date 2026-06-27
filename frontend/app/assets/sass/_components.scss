@@ -236,6 +236,37 @@
   right: 80px;
 }
 
+// Filter checkboxes
+.filter-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+
+  input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    min-width: 17px;
+    border-radius: 4px;
+    border: 1.5px solid #c9b8b0;
+    accent-color: $brown-dark;
+    cursor: pointer;
+  }
+
+  label {
+    cursor: pointer;
+    font-size: .9rem;
+    color: #3a2926;
+    line-height: 1.3;
+    user-select: none;
+  }
+
+  &--sm label {
+    font-size: .82rem;
+    color: #6b5049;
+  }
+}
+
 // Search overlay
 .search-overlay {
   position: fixed;
