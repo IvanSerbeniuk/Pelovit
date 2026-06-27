@@ -25,6 +25,12 @@ function navigatePage(url: string | null) {
 }
 
 function fmt(n: number) { return Math.round(n) + '₴' }
+
+function pageLabel(label: string) {
+  if (label === 'pagination.previous') return '&lsaquo;'
+  if (label === 'pagination.next') return '&rsaquo;'
+  return label
+}
 </script>
 
 <template>
@@ -113,7 +119,7 @@ function fmt(n: number) { return Math.round(n) + '₴' }
           :class="link.active ? 'btn-dark' : 'btn-outline-secondary'"
           :disabled="!link.url"
           @click="navigatePage(link.url)"
-          v-html="link.label"
+          v-html="pageLabel(link.label)"
         ></button>
       </div>
     </div>
