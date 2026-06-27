@@ -55,9 +55,13 @@ class ProductFormPage extends FormPage
                 ]),
             ]),
             Box::make('Зображення', [
-                Image::make('Фото', 'image')
+                Image::make('Головне фото', 'image')
                     ->dir('products')
                     ->disk('public_root'),
+                Image::make('Галерея', 'images')
+                    ->dir('products')
+                    ->disk('public_root')
+                    ->multiple(),
             ]),
         ];
     }

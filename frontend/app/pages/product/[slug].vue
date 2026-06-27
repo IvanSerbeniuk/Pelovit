@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import { Thumbs } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/thumbs'
+
 const config = useRuntimeConfig()
 const route = useRoute()
 
@@ -40,6 +45,26 @@ const { imgSrc, addToCart: addToCartFn, toggleWishlist: toggleWishlistFn, wishli
 
 const qty = ref(1)
 const addedToCart = ref(false)
+const thumbsSwiper = ref(null)
+const mainSwiper = ref<any>(null)
+
+function setThumbsSwiper(swiper: any) { thumbsSwiper.value = swiper }
+function setMainSwiper(swiper: any) { mainSwiper.value = swiper }
+function galleryPrev() { mainSwiper.value?.slidePrev() }
+function galleryNext() { mainSwiper.value?.slideNext() }
+
+const galleryImages = computed(() => {
+  if (!product.value) return []
+  const imgs: string[] = []
+  if (product.value.image) imgs.push('/' + product.value.image)
+  if (Array.isArray(product.value.images)) {
+    product.value.images.forEach((img: string) => {
+      const src = '/' + img
+      if (!imgs.includes(src)) imgs.push(src)
+    })
+  }
+  return imgs
+})
 
 function incQty() { qty.value++ }
 function decQty() { if (qty.value > 1) qty.value-- }
@@ -78,17 +103,56 @@ const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 21 19" fill="none
       </nav>
 
       <div class="col-lg-5 left_content">
-        <div class="text-center">
-          <div class="share_wrapper">
-            <i class="share">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="17" cy="4" r="3" stroke="#333" stroke-width="1.5"/><circle cx="5" cy="11" r="3" stroke="#333" stroke-width="1.5"/><circle cx="17" cy="18" r="3" stroke="#333" stroke-width="1.5"/><path d="M8 9.5L14 5.5M8 12.5L14 16.5" stroke="#333" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </i>
-            <button class="like" style="background:none;border:none;cursor:pointer;" @click="handleToggleWishlist">
-              <span v-html="inWishlist ? HEART_FILLED : HEART_OUTLINE"></span>
+        <div class="share_wrapper">
+          <i class="share">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="17" cy="4" r="3" stroke="#333" stroke-width="1.5"/><circle cx="5" cy="11" r="3" stroke="#333" stroke-width="1.5"/><circle cx="17" cy="18" r="3" stroke="#333" stroke-width="1.5"/><path d="M8 9.5L14 5.5M8 12.5L14 16.5" stroke="#333" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </i>
+          <button class="like" style="background:none;border:none;cursor:pointer;" @click="handleToggleWishlist">
+            <span v-html="inWishlist ? HEART_FILLED : HEART_OUTLINE"></span>
+          </button>
+        </div>
+
+        <!-- Галерея -->
+        <template v-if="galleryImages.length > 1">
+          <div class="product-gallery-wrap">
+            <Swiper
+              :modules="[Thumbs]"
+              :thumbs="{ swiper: thumbsSwiper }"
+              class="product-gallery-main mb-2"
+              @swiper="setMainSwiper"
+            >
+              <SwiperSlide v-for="(img, i) in galleryImages" :key="i">
+                <img :src="img" :alt="product.name" class="img-fluid product-image shadow-sm rounded">
+              </SwiperSlide>
+            </Swiper>
+            <button class="gallery-nav-btn gallery-nav-prev" @click="galleryPrev" aria-label="Назад">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="gallery-nav-btn gallery-nav-next" @click="galleryNext" aria-label="Вперед">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
           </div>
-          <img :src="product.image ? '/' + product.image : '/images/image.png'"
-               class="img-fluid product-image shadow-sm rounded" :alt="product.name">
+          <Swiper
+            :modules="[Thumbs]"
+            :slides-per-view="4"
+            :space-between="8"
+            watch-slides-progress
+            @swiper="setThumbsSwiper"
+            class="product-gallery-thumbs"
+          >
+            <SwiperSlide v-for="(img, i) in galleryImages" :key="i">
+              <img :src="img" :alt="product.name + ' ' + (i + 1)" class="img-fluid rounded product-thumb-img">
+            </SwiperSlide>
+          </Swiper>
+        </template>
+
+        <!-- Одне фото -->
+        <div v-else class="text-center">
+          <img
+            :src="galleryImages[0] ?? '/images/image.png'"
+            class="img-fluid product-image shadow-sm rounded"
+            :alt="product.name"
+          >
         </div>
       </div>
 

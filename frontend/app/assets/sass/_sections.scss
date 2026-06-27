@@ -25,33 +25,29 @@
   font-size: 16px;
 }
 
-//.all-products-carousel-wrap {
-//  padding: 0 2.5rem;
-//}
+.section-nav-btns {
+  display: flex;
+  gap: 6px;
+}
 
-.all-products-carousel-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  width: 48px;
-  height: 48px;
+.section-nav-btn {
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  border: 1.5px solid $brown-bg;
+  border: 1.5px solid #d9cac4;
   background: #fff;
-  color: $brown-bg;
+  color: #422928;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s, color 0.2s;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s;
 
   &:hover {
-    background: $brown-bg;
+    background: #422928;
+    border-color: #422928;
     color: #fff;
   }
-
-  &.prev { left: -1.5rem; }
-  &.next { right: -1.5rem; }
 }
 
 // Contact Info

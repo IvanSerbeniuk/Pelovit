@@ -8,8 +8,10 @@ use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Components\Table\TableBuilder;
 use MoonShine\Contracts\UI\FieldContract;
+use App\Models\Order;
 use MoonShine\Laravel\QueryTags\QueryTag;
 use MoonShine\UI\Components\Metrics\Wrapped\Metric;
+use MoonShine\UI\Components\Metrics\Wrapped\ValueMetric;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Number;
@@ -89,7 +91,14 @@ class OrderIndexPage extends IndexPage
      */
     protected function queryTags(): array
     {
-        return [];
+        return [
+            QueryTag::make('Всі', fn($q) => $q),
+            QueryTag::make('Нові', fn($q) => $q->where('status', 'pending')),
+            QueryTag::make('Підтверджені', fn($q) => $q->where('status', 'confirmed')),
+            QueryTag::make('Відправлені', fn($q) => $q->where('status', 'shipped')),
+            QueryTag::make('Виконані', fn($q) => $q->where('status', 'completed')),
+            QueryTag::make('Скасовані', fn($q) => $q->where('status', 'cancelled')),
+        ];
     }
 
     /**
@@ -97,7 +106,23 @@ class OrderIndexPage extends IndexPage
      */
     protected function metrics(): array
     {
-        return [];
+        return [
+            ValueMetric::make('Всього замовлень')
+                ->value(Order::count())
+                ->columnSpan(3),
+
+            ValueMetric::make('Нові')
+                ->value(Order::where('status', 'pending')->count())
+                ->columnSpan(3),
+
+            ValueMetric::make('Виконані')
+                ->value(Order::where('status', 'completed')->count())
+                ->columnSpan(3),
+
+            ValueMetric::make('Виручка (₴)')
+                ->value(number_format((float) Order::where('status', '!=', 'cancelled')->sum('total'), 0, '.', ' '))
+                ->columnSpan(3),
+        ];
     }
 
     /**

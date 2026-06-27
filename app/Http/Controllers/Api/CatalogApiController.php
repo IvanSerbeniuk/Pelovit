@@ -44,9 +44,17 @@ class CatalogApiController extends Controller
             ->paginate(12)
             ->withQueryString();
 
+        $brands = Product::where('is_active', true)
+            ->whereNotNull('brand')
+            ->where('brand', '!=', '')
+            ->distinct()
+            ->orderBy('brand')
+            ->pluck('brand');
+
         return response()->json([
             'products'   => $products,
             'categories' => $categories,
+            'brands'     => $brands,
             'filters'    => $request->only(['category', 'sort', 'brand', 'min_price', 'max_price', 'q']),
         ]);
     }
