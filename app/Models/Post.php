@@ -17,6 +17,8 @@ class Post extends Model
         'published_at' => 'datetime',
     ];
 
+    protected $appends = ['formatted_date'];
+
     public function scopePublished($query)
     {
         return $query->where('is_published', true);

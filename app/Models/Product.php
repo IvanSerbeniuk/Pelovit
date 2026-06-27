@@ -20,6 +20,8 @@ class Product extends Model
         'old_price'   => 'decimal:2',
     ];
 
+    protected $appends = ['discount_percent'];
+
     public function category()
     {
         return $this->belongsTo(Category::class);
