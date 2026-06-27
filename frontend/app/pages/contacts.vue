@@ -16,10 +16,34 @@ const team = computed(() => data.value?.team ?? [])
     <div class="row g-5">
       <div class="col-lg-5">
         <div class="contact-info">
-          <p class="mb-4"><i class="fas fa-phone me-3"></i>+38 (063) 309-03-03</p>
-          <p class="mb-4"><i class="fas fa-envelope me-3"></i>aksimed@ukr.net</p>
-          <p class="mb-4"><i class="fas fa-map-marker-alt me-3"></i>вул. Успенська 59/ Пушкінська, Одеса</p>
-          <p><i class="fas fa-clock me-3"></i>пн–пт — 10:00 до 18:00</p>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+            <div>
+              <div style="font-size:.8rem;color:#9a8680;margin-bottom:2px;">Телефон</div>
+              <a href="tel:+380633090303" style="color:inherit;text-decoration:none;font-weight:500;">+38 (063) 309-03-03</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+            <div>
+              <div style="font-size:.8rem;color:#9a8680;margin-bottom:2px;">Email</div>
+              <a href="mailto:aksimed@ukr.net" style="color:inherit;text-decoration:none;font-weight:500;">aksimed@ukr.net</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div>
+              <div style="font-size:.8rem;color:#9a8680;margin-bottom:2px;">Адреса</div>
+              <span style="font-weight:500;">вул. Успенська 59 / Пушкінська, Одеса</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-clock"></i></div>
+            <div>
+              <div style="font-size:.8rem;color:#9a8680;margin-bottom:2px;">Графік роботи</div>
+              <span style="font-weight:500;">пн–пт, 10:00–18:00</span>
+            </div>
+          </div>
         </div>
       </div>
       <div class="col-lg-7">

@@ -1,42 +1,55 @@
 @use 'variables' as *;
 
 .contact-section {
-  .form-card {
-    background: #2a1e1e;
-    border-radius: 16px;
-    padding: 40px;
-  }
-
-  .map_section{
-    border-radius: 16px;
-    overflow: auto;
-    width: 1320px;
-  }
-  .contact-info{
-    gap: 2rem;
+  .contact-info {
     display: flex;
     flex-direction: column;
-    font-size: 20px;
+    gap: 1.25rem;
   }
-  .contact-info i{
-    color: #1A1A1A;
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.05rem;
+    color: $text-dark;
+
+    .contact-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: #f5ede9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      i {
+        color: $brown-dark;
+        font-size: 1.1rem;
+      }
+    }
+  }
+
+  .map_section {
+    border-radius: 16px;
+    overflow: hidden;
   }
 }
 
-.messenger_section{
+.messenger_section {
   .form-card {
     background: #2a1e1e;
     border-radius: 16px;
     padding: 40px;
   }
   .contact-info i {
-    color: #2a9d8f;
+    color: $brown-dark;
     width: 24px;
   }
-  .messenger-link{
+  .messenger-link {
     color: #1A1A1A;
   }
-
 }
 
 .col-lg-2-custom {
@@ -70,6 +83,6 @@
 
     .position { font-size: .85rem; color: #7a6a62; margin-bottom: 8px; }
 
-    .phone { font-size: .85rem; color: #422928; }
+    .phone { font-size: .85rem; color: $brown-dark; }
   }
 }
