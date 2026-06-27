@@ -50,9 +50,9 @@
 
           <!-- Desktop-only action icons -->
           <div class="d-none d-lg-flex align-items-center gap-2">
-            <NuxtLink to="/catalog" class="nav-icon text-dark" title="Пошук">
+            <button class="nav-icon text-dark border-0 bg-transparent p-0" title="Пошук" @click="openSearch">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#1A1A1A" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </NuxtLink>
+            </button>
 
             <a v-if="phone" :href="`tel:${phone.replace(/\D/g, '')}`" class="nav-icon text-dark" :title="phone">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 3h4l2 4.5-2.5 1.5a11 11 0 0 0 4.5 4.5L12.5 11 17 13v4a1 1 0 0 1-1 1C7.163 18 2 12.837 2 5a1 1 0 0 1 1-2z" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -72,10 +72,10 @@
 
           <!-- Mobile-only: search + phone in collapsed menu -->
           <div class="d-flex d-lg-none border-top pt-3 pb-1 mt-2 gap-4">
-            <NuxtLink to="/catalog" class="nav-menu-action text-decoration-none d-flex align-items-center gap-2">
+            <button class="nav-menu-action border-0 bg-transparent p-0 d-flex align-items-center gap-2" @click="openSearch">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#1A1A1A" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round"/></svg>
               Пошук
-            </NuxtLink>
+            </button>
             <a v-if="phone" :href="`tel:${phone.replace(/\D/g, '')}`" class="nav-menu-action text-decoration-none d-flex align-items-center gap-2">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 3h4l2 4.5-2.5 1.5a11 11 0 0 0 4.5 4.5L12.5 11 17 13v4a1 1 0 0 1-1 1C7.163 18 2 12.837 2 5a1 1 0 0 1 1-2z" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               {{ phone }}
@@ -84,6 +84,32 @@
         </div>
       </div>
     </nav>
+
+    <!-- Search overlay -->
+    <Teleport to="body">
+      <Transition name="search-fade">
+        <div v-if="searchOpen" class="search-overlay" @click.self="closeSearch">
+          <div class="search-box">
+            <form @submit.prevent="submitSearch" class="d-flex gap-2">
+              <input
+                ref="searchInput"
+                v-model="searchQuery"
+                type="text"
+                class="form-control form-control-lg"
+                placeholder="Пошук товарів..."
+                autocomplete="off"
+              >
+              <button type="submit" class="btn btn-dark px-4">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#fff" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </button>
+            </form>
+            <button class="search-overlay-close" @click="closeSearch" aria-label="Закрити">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
 
     <slot />
 
@@ -192,4 +218,32 @@ const wishlistStore = useWishlistStore()
 const cartCount = computed(() => cartStore.count)
 const wishlistCount = computed(() => wishlistStore.count)
 const phone = computed(() => settings.value?.phone || '+38 (063) 309-03-03')
+
+const router = useRouter()
+const searchOpen = ref(false)
+const searchQuery = ref('')
+const searchInput = ref<HTMLInputElement | null>(null)
+
+function openSearch() {
+  searchOpen.value = true
+  nextTick(() => searchInput.value?.focus())
+}
+
+function closeSearch() {
+  searchOpen.value = false
+  searchQuery.value = ''
+}
+
+function submitSearch() {
+  const q = searchQuery.value.trim()
+  if (!q) return
+  closeSearch()
+  router.push({ path: '/catalog', query: { q } })
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSearch()
+  })
+})
 </script>

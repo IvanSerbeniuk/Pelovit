@@ -94,7 +94,7 @@ function pageLabel(label: string) {
   <section class="py-5 bg-light all_categories">
     <div class="container">
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold">Каталог</h2>
+        <h2 class="fw-bold">{{ filters.q ? `Результати: «${filters.q}»` : 'Каталог' }}</h2>
         <div class="filters" data-bs-toggle="offcanvas" data-bs-target="#filterOffcanvas" style="cursor:pointer;">
           <div class="content">Фільтри</div>
           <i class="icon_filter">
