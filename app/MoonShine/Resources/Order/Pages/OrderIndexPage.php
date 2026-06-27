@@ -53,7 +53,7 @@ class OrderIndexPage extends IndexPage
                 'completed' => 'green',
                 'cancelled' => 'red',
                 default     => 'gray',
-            }),
+            })->updateOnPreview(),
             Date::make('Дата', 'created_at')->format('d.m.Y H:i')->sortable(),
         ];
     }

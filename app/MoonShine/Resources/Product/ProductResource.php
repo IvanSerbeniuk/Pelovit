@@ -12,6 +12,7 @@ use App\MoonShine\Resources\Product\Pages\ProductDetailPage;
 
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Support\Attributes\AsyncMethod;
 
 /**
  * @extends ModelResource<Product, ProductIndexPage, ProductFormPage, ProductDetailPage>
@@ -32,5 +33,21 @@ class ProductResource extends ModelResource
             ProductFormPage::class,
             ProductDetailPage::class,
         ];
+    }
+
+    #[AsyncMethod]
+    public function massActivate(): void
+    {
+        $ids = request()->get('ids', []);
+        Product::whereIn('id', $ids)->update(['is_active' => true]);
+        session()->put('toast', ['type' => 'success', 'message' => 'Товари активовано']);
+    }
+
+    #[AsyncMethod]
+    public function massDeactivate(): void
+    {
+        $ids = request()->get('ids', []);
+        Product::whereIn('id', $ids)->update(['is_active' => false]);
+        session()->put('toast', ['type' => 'success', 'message' => 'Товари деактивовано']);
     }
 }

@@ -83,7 +83,9 @@ class CategoryIndexPage extends IndexPage
      */
     protected function modifyListComponent(ComponentContract $component): ComponentContract
     {
-        return $component;
+        return $component->reorderable(
+            $this->getResource()->getAsyncMethodUrl('reorderCategories'),
+        );
     }
 
     /**

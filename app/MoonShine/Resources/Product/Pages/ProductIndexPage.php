@@ -18,6 +18,7 @@ use MoonShine\UI\Fields\Image;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use App\Models\Category;
 use App\MoonShine\Resources\Product\ProductResource;
+use MoonShine\UI\Components\ActionButton;
 use MoonShine\Support\ListOf;
 use Throwable;
 
@@ -56,6 +57,16 @@ class ProductIndexPage extends IndexPage
             $this->modifyEditButton($this->getResource()->getEditButton(isAsync: $this->isAsync())),
             $this->modifyDeleteButton($this->getResource()->getDeleteButton(redirectAfterDelete: $this->getResource()->getRedirectAfterDelete(), isAsync: $this->isAsync())),
             $this->modifyMassDeleteButton($this->getResource()->getMassDeleteButton(redirectAfterDelete: $this->getResource()->getRedirectAfterDelete(), isAsync: $this->isAsync())),
+            ActionButton::make('Активувати')
+                ->bulk($this->getResource()->getListComponentName())
+                ->method('massActivate', events: [$this->getResource()->getListEventName()])
+                ->success()
+                ->icon('check-circle'),
+            ActionButton::make('Деактивувати')
+                ->bulk($this->getResource()->getListComponentName())
+                ->method('massDeactivate', events: [$this->getResource()->getListEventName()])
+                ->warning()
+                ->icon('x-circle'),
         ]);
     }
 
@@ -65,6 +76,7 @@ class ProductIndexPage extends IndexPage
     protected function filters(): iterable
     {
         return [
+            BelongsTo::make('Категорія', 'category', fn($item) => $item->name, resource: \App\MoonShine\Resources\Category\CategoryResource::class)->nullable(),
             Text::make('Назва', 'name'),
             Text::make('Бренд', 'brand'),
             Switcher::make('Активний', 'is_active'),

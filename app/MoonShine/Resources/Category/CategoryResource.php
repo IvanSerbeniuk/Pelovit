@@ -12,6 +12,7 @@ use App\MoonShine\Resources\Category\Pages\CategoryDetailPage;
 
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Contracts\Core\PageContract;
+use MoonShine\Support\Attributes\AsyncMethod;
 
 /**
  * @extends ModelResource<Category, CategoryIndexPage, CategoryFormPage, CategoryDetailPage>
@@ -32,5 +33,15 @@ class CategoryResource extends ModelResource
             CategoryFormPage::class,
             CategoryDetailPage::class,
         ];
+    }
+
+    #[AsyncMethod]
+    public function reorderCategories(): void
+    {
+        $ids = array_filter(explode(',', (string) request()->input('data', '')));
+
+        foreach ($ids as $position => $id) {
+            Category::where('id', (int) $id)->update(['sort_order' => $position]);
+        }
     }
 }
