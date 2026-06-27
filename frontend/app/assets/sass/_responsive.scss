@@ -1,6 +1,48 @@
 @use 'variables' as *;
 
 @media (max-width: $bp-lg) {
+  // Navbar mobile collapse
+  .navbar {
+    .navbar-collapse {
+      border-top: 1px solid $border-light;
+      padding: .5rem 0 .75rem;
+
+      .navbar-nav {
+        gap: 0 !important;
+
+        .nav-item {
+          width: 100%;
+
+          &.cat-blue { border-radius: $radius-md; }
+
+          .nav-link {
+            font-size: 1rem;
+            padding: .7rem .5rem;
+            border-radius: 8px;
+          }
+
+          .wrapper {
+            margin: 0;
+            padding: .4rem .5rem;
+
+            .nav-link {
+              font-size: 1rem;
+              padding: .2rem .4rem;
+            }
+          }
+        }
+      }
+
+      .nav-menu-action {
+        color: $text-dark;
+        font-size: .9rem;
+        padding: .35rem 0;
+
+        svg { flex-shrink: 0; }
+      }
+    }
+  }
+
   .consultation-grid,
   .loyalty-content {
     flex-direction: column-reverse;
@@ -28,6 +70,29 @@
   }
 }
 @media (max-width: $bp-md) {
+  .cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  // Product page
+  .product_name_page {
+    .counter_cart_wrapper {
+      flex-wrap: wrap;
+      gap: .75rem;
+
+      .counter { margin-right: 0; }
+      .add_incart, .buy_in_oneclick { flex: 1; min-width: 140px; }
+    }
+
+    .reviews_section {
+      .wrapper_review {
+        flex-direction: column;
+      }
+      .table_rate { width: 100%; }
+      .rating-card { max-width: 100%; }
+    }
+  }
+
   .marquee-track {
     gap: 3rem;
     svg {
@@ -51,23 +116,68 @@
   .loyalty-benefits {
     grid-template-columns: 1fr;
   }
-  .hero-carousel{
-    .row.align-items-center{
-      display: flex;
-      flex-direction: column-reverse;
-      gap: 1rem;
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: .75rem;
+  }
+
+  .product-card {
+    .card-img-top {
+      height: 10rem;
+      object-fit: cover;
     }
+
+    .card-body {
+      padding: .6rem .75rem;
+    }
+
+    .card-title {
+      font-size: .8rem;
+      margin-bottom: .4rem;
+    }
+
+    .price {
+      font-size: .95rem;
+    }
+
+    .buy {
+      padding: 6px 10px;
+    }
+  }
+
+  // Cart
+  .cart-section {
+    .summary-box { padding: 1rem; }
+    .product-img { width: 50px; height: 50px; }
+  }
+
+  // Product page
+  .product_name_page {
+    .right_content .price { font-size: 1.6rem; }
+
+    .counter_cart_wrapper {
+      .add_incart, .buy_in_oneclick {
+        flex: none;
+        width: 100%;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    }
+
+    .promotion_ad .cards_promos {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .btn.buy span:first-child {
+    display: none;
+  }
+
+  .hero-carousel{
+    .hero { min-height: 55vh; }
     .row.align-items-center .mob{
       text-align: center !important;
-    }
-    .d-inline-block.card-pelov{
-      width: 60%;
-    }
-    .wrapper__price_buy .btn.buy span{
-      display: none;
-    }
-    .hero img{
-      height: 9rem;
     }
   }
 
@@ -83,11 +193,6 @@
     height: 13rem;
   }
 
-  .all_categories{
-    .btn.buy span{
-      display: none;
-    }
-  }
 
   .benefits-section .benefit-card{
     flex-direction: row;

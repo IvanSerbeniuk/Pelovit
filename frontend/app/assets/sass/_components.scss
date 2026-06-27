@@ -55,11 +55,14 @@
     background-color: $buy-btn-bg;
     color: $light-bg;
     border-radius: $radius-md;
-
-    svg path {
-      stroke: $light-bg;
-    }
   }
+}
+
+.buy svg path,
+.buy:hover svg path,
+.buy:focus svg path,
+.buy:active svg path {
+  stroke: $light-bg;
 }
 
 // Category Cards
