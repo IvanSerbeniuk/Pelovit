@@ -13,6 +13,7 @@ use MoonShine\UI\Components\Metrics\Wrapped\Metric;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Number;
+use MoonShine\UI\Fields\Range;
 use MoonShine\UI\Fields\Switcher;
 use MoonShine\UI\Fields\Image;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
@@ -80,6 +81,7 @@ class ProductIndexPage extends IndexPage
             BelongsTo::make('Категорія', 'category', fn($item) => $item->name, resource: \App\MoonShine\Resources\Category\CategoryResource::class)->nullable(),
             Text::make('Назва', 'name'),
             Text::make('Бренд', 'brand'),
+            Range::make('Ціна (₴)', 'price')->step(10)->nullable(),
             Switcher::make('Активний', 'is_active'),
             Switcher::make('Хіт', 'is_featured'),
         ];

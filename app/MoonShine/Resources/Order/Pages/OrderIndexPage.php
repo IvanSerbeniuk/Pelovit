@@ -18,6 +18,7 @@ use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Select;
 use MoonShine\UI\Fields\Date;
 use App\MoonShine\Resources\Order\OrderResource;
+use MoonShine\UI\Components\ActionButton;
 use MoonShine\Support\ListOf;
 use Throwable;
 
@@ -67,6 +68,16 @@ class OrderIndexPage extends IndexPage
             $this->modifyEditButton($this->getResource()->getEditButton(isAsync: $this->isAsync())),
             $this->modifyDeleteButton($this->getResource()->getDeleteButton(redirectAfterDelete: $this->getResource()->getRedirectAfterDelete(), isAsync: $this->isAsync())),
             $this->modifyMassDeleteButton($this->getResource()->getMassDeleteButton(redirectAfterDelete: $this->getResource()->getRedirectAfterDelete(), isAsync: $this->isAsync())),
+        ]);
+    }
+
+    protected function topRightButtons(): ListOf
+    {
+        return new ListOf(\MoonShine\Contracts\UI\ActionButtonContract::class, [
+            ActionButton::make('Завантажити CSV', route('admin.orders.export'))
+                ->icon('arrow-down-tray')
+                ->secondary(),
+            ...parent::topRightButtons()->toArray(),
         ]);
     }
 
