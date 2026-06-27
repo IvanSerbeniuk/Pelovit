@@ -54,7 +54,7 @@ function chunkArray(arr: any[], size: number) {
               <div class="col-lg-6 text-end mob">
                 <div class="bg-white text-dark p-3 rounded-4 shadow-sm d-inline-block card-pelov">
                   <div class="tag_brown">Обличчя</div>
-                  <img src="/images/classic300.png" alt="Pelovit-R" class="img-fluid rounded-3">
+                  <img :src="'/images/classic300.png'" alt="Pelovit-R" class="img-fluid rounded-3">
                   <h5 class="mt-3">Пеловіт-Р Класичний 500мл</h5>
                   <div class="mt-3 wrapper__price_buy">
                     <h4 class="price">6908 ₴</h4>
@@ -241,7 +241,7 @@ function chunkArray(arr: any[], size: number) {
         <NuxtLink to="/kontractne-vyrobnyctvo" class="btn btn-light rad-16 to_page">До сторінки</NuxtLink>
       </div>
       <div class="col-lg-6 text-end image-wrapper">
-        <img src="/images/pexel-mart.jpg" class="rounded-4 shadow" alt="Контрактне виробництво косметики">
+        <img :src="'/images/pexel-mart.jpg'" class="rounded-4 shadow" alt="Контрактне виробництво косметики">
       </div>
     </div>
   </div>

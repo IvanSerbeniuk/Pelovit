@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use 'variables' as *;
 
 body {
@@ -20,7 +21,7 @@ body, html {
   background-color: $brown-dark;
   color: #fff;
   border: none;
-  &:hover { background-color: darken($brown-dark, 8%); color: #fff; }
+  &:hover { background-color: color.adjust($brown-dark, $lightness: -8%); color: #fff; }
   &:focus { box-shadow: 0 0 0 .2rem rgba($brown-dark, .3); }
 }
 
