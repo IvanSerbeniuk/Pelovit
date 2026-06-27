@@ -30,6 +30,8 @@ class Product extends Model
 
     protected $fillable = [
         'category_id', 'name', 'slug', 'description',
+        'meta_title', 'meta_description', 'meta_keywords',
+        'og_title', 'og_description', 'no_index',
         'price', 'old_price', 'image', 'images',
         'brand', 'stock', 'is_active', 'is_featured',
     ];
@@ -38,6 +40,7 @@ class Product extends Model
         'images'      => 'array',
         'is_active'   => 'boolean',
         'is_featured' => 'boolean',
+        'no_index'    => 'boolean',
         'price'       => 'decimal:2',
         'old_price'   => 'decimal:2',
     ];

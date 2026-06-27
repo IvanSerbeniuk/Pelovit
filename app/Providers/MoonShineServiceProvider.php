@@ -14,6 +14,9 @@ use App\MoonShine\Resources\Order\OrderResource;
 use App\MoonShine\Resources\Product\ProductResource;
 use App\MoonShine\Resources\Category\CategoryResource;
 use App\MoonShine\Resources\Post\PostResource;
+use App\MoonShine\Resources\Banner\BannerResource;
+use App\MoonShine\Resources\Subscriber\SubscriberResource;
+use App\MoonShine\Pages\SettingsPage;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -30,9 +33,12 @@ class MoonShineServiceProvider extends ServiceProvider
                 ProductResource::class,
                 CategoryResource::class,
                 PostResource::class,
+                BannerResource::class,
+                SubscriberResource::class,
             ])
             ->pages([
                 ...$core->getConfig()->getPages(),
+                SettingsPage::class,
             ])
         ;
     }

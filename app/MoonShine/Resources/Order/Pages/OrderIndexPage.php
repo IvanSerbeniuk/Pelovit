@@ -17,6 +17,7 @@ use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Select;
 use MoonShine\UI\Fields\Date;
+use MoonShine\UI\Fields\DateRange;
 use App\MoonShine\Resources\Order\OrderResource;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\Support\ListOf;
@@ -87,6 +88,7 @@ class OrderIndexPage extends IndexPage
     protected function filters(): iterable
     {
         return [
+            DateRange::make('Дата замовлення', 'created_at')->nullable(),
             Select::make('Статус', 'status')->options([
                 'pending'   => 'Новий',
                 'confirmed' => 'Підтверджено',

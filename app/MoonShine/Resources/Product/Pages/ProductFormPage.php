@@ -76,6 +76,26 @@ class ProductFormPage extends FormPage
                     ])->columnSpan(4),
                 ]),
             ]),
+            Box::make('SEO', [
+                Grid::make([
+                    Column::make([
+                        Text::make('Meta Title', 'meta_title')
+                            ->hint('Рекомендована довжина: 50–60 символів. Якщо порожньо — береться назва товару.'),
+                        Textarea::make('Meta Description', 'meta_description')
+                            ->hint('Рекомендована довжина: 120–160 символів.'),
+                        Text::make('Meta Keywords', 'meta_keywords')
+                            ->hint('Ключові слова через кому. Більшість пошукових систем ігнорують.'),
+                    ])->columnSpan(6),
+                    Column::make([
+                        Text::make('OG Title', 'og_title')
+                            ->hint('Заголовок для соціальних мереж. Якщо порожньо — береться Meta Title.'),
+                        Textarea::make('OG Description', 'og_description')
+                            ->hint('Опис для соціальних мереж. Якщо порожньо — береться Meta Description.'),
+                        Switcher::make('Заборонити індексацію (noindex)', 'no_index')
+                            ->hint('Увімкніть щоб приховати сторінку з пошукових систем.'),
+                    ])->columnSpan(6),
+                ]),
+            ]),
             Box::make('Зображення', [
                 Image::make('Головне фото', 'image')
                     ->dir('products')

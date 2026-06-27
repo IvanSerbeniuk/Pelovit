@@ -16,6 +16,7 @@ use MoonShine\Support\ListOf;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Select;
+use MoonShine\UI\Fields\Json;
 use MoonShine\UI\Fields\Textarea;
 use MoonShine\TinyMce\Fields\TinyMce;
 use MoonShine\UI\Fields\Date;
@@ -61,6 +62,7 @@ class PostFormPage extends FormPage
                 Text::make('Заголовок', 'title')->required(),
                 Textarea::make('Анонс', 'excerpt'),
                 TinyMce::make('Текст статті', 'body')->required(),
+                Json::make('Теги', 'tags')->onlyValue()->creatable()->removable(),
             ]),
             Box::make('Налаштування', [
                 Grid::make([
