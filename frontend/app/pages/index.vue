@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import { Navigation } from 'swiper/modules'
+import 'swiper/css'
+
 useHead({
   title: 'PELOVIT-R — Косметика для здорової шкіри',
   meta: [
@@ -24,11 +28,6 @@ function postImg(post: any) {
   return post.image ? '/' + post.image : `https://picsum.photos/id/${100 + post.id}/600/400`
 }
 
-function chunkArray(arr: any[], size: number) {
-  const result = []
-  for (let i = 0; i < arr.length; i += size) result.push(arr.slice(i, i + size))
-  return result
-}
 </script>
 
 <template>
@@ -118,41 +117,23 @@ function chunkArray(arr: any[], size: number) {
       <h2 class="fw-bold">Всі товари</h2>
       <NuxtLink to="/catalog" class="view-all">Переглянути більше</NuxtLink>
     </div>
-    <div class="position-relative all-products-carousel-wrap d-none d-md-block">
-      <div id="allProductsCarouselDesktop" class="carousel slide" data-bs-ride="false">
-        <div class="carousel-inner">
-          <div v-for="(chunk, idx) in chunkArray(allProducts, 4)" :key="idx" :class="['carousel-item', idx === 0 ? 'active' : '']">
-            <div class="row g-4">
-              <div v-for="product in chunk" :key="product.id" class="col-3">
-                <ProductCard :product="product" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button class="all-products-carousel-btn prev" type="button" data-bs-target="#allProductsCarouselDesktop" data-bs-slide="prev">
+    <div class="position-relative all-products-carousel-wrap">
+      <Swiper
+        :modules="[Navigation]"
+        :slides-per-view="2"
+        :space-between="16"
+        :breakpoints="{ 768: { slidesPerView: 3 }, 992: { slidesPerView: 4 } }"
+        :navigation="{ prevEl: '.all-products-prev', nextEl: '.all-products-next' }"
+        :grab-cursor="true"
+      >
+        <SwiperSlide v-for="product in allProducts" :key="product.id">
+          <ProductCard :product="product" />
+        </SwiperSlide>
+      </Swiper>
+      <button class="all-products-carousel-btn prev all-products-prev">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <button class="all-products-carousel-btn next" type="button" data-bs-target="#allProductsCarouselDesktop" data-bs-slide="next">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </div>
-    <div class="position-relative all-products-carousel-wrap d-block d-md-none">
-      <div id="allProductsCarouselMobile" class="carousel slide" data-bs-ride="false">
-        <div class="carousel-inner">
-          <div v-for="(chunk, idx) in chunkArray(allProducts, 2)" :key="idx" :class="['carousel-item', idx === 0 ? 'active' : '']">
-            <div class="row g-4">
-              <div v-for="product in chunk" :key="product.id" class="col-6">
-                <ProductCard :product="product" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button class="all-products-carousel-btn prev" type="button" data-bs-target="#allProductsCarouselMobile" data-bs-slide="prev">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <button class="all-products-carousel-btn next" type="button" data-bs-target="#allProductsCarouselMobile" data-bs-slide="next">
+      <button class="all-products-carousel-btn next all-products-next">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
     </div>

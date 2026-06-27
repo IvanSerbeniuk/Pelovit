@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: true,
 
-  modules: ['@pinia/nuxt'],
+  modules: ['@pinia/nuxt', 'nuxt-swiper'],
 
   runtimeConfig: {
     public: {
