@@ -27,6 +27,6 @@ class Post extends Model
     public function getFormattedDateAttribute(): string
     {
         $date = $this->published_at ?? $this->created_at;
-        return $date->translatedFormat('j F Y');
+        return $date?->translatedFormat('j F Y') ?? '';
     }
 }

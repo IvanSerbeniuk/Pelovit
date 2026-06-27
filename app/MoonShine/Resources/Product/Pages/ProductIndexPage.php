@@ -17,6 +17,7 @@ use MoonShine\UI\Fields\Switcher;
 use MoonShine\UI\Fields\Image;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use App\Models\Category;
+use App\Models\Product;
 use App\MoonShine\Resources\Product\ProductResource;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\Support\ListOf;
@@ -89,7 +90,12 @@ class ProductIndexPage extends IndexPage
      */
     protected function queryTags(): array
     {
-        return [];
+        return [
+            QueryTag::make('Всі', fn($q) => $q),
+            QueryTag::make('Активні', fn($q) => $q->where('is_active', true)),
+            QueryTag::make('Хіти', fn($q) => $q->where('is_featured', true)),
+            QueryTag::make('Немає в наявності', fn($q) => $q->where('stock', 0)),
+        ];
     }
 
     /**
