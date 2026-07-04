@@ -12,7 +12,7 @@ useHead({
       <div class="loyalty-text">
         <h2>Оптові закупівлі Pelovit-R</h2>
         <p>Натуральна косметика та засоби оздоровлення напряму від виробника — без посередників і з гнучкими умовами співпраці.</p>
-        <button class="btn-register rad-16">Залишити заявку</button>
+        <a href="#opt-form" class="btn-register rad-16">Залишити заявку</a>
       </div>
       <div class="loyalty-benefits">
         <div class="benefit-card white">
@@ -90,7 +90,7 @@ useHead({
   </div>
 </section>
 
-<section class="consultation-section py-5">
+<section id="opt-form" class="consultation-section py-5">
   <div class="container">
     <div class="consultation-form">
       <h2>Залишити заявку</h2>

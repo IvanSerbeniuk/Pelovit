@@ -5,6 +5,7 @@ useHead({
 })
 
 const config = useRuntimeConfig()
+const { assetUrl } = useAsset()
 const { data } = await useFetch<any>(`${config.public.apiBase}/contacts`)
 const team = computed(() => data.value?.team ?? [])
 </script>
@@ -69,6 +70,24 @@ const team = computed(() => data.value?.team ?? [])
         src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3279.8955094662983!2d30.722343563286362!3d46.49097724401816!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sua!4v1778526474245!5m2!1sen!2sua"
         width="100%" height="419" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
       </iframe>
+    </div>
+    <div v-if="team.length > 0" class="mt-5">
+      <h3 class="fw-bold mb-4">Наша команда</h3>
+      <div class="row g-4">
+        <div v-for="member in team" :key="member.id" class="col-lg-3 col-md-4 col-6">
+          <div class="text-center">
+            <img
+              :src="assetUrl(member.image)"
+              :alt="member.name"
+              class="rounded-circle mb-3 object-fit-cover"
+              style="width:120px;height:120px;"
+            >
+            <h6 class="fw-semibold mb-1">{{ member.name }}</h6>
+            <p class="text-muted small mb-1">{{ member.position }}</p>
+            <a v-if="member.phone" :href="`tel:${member.phone}`" class="small text-decoration-none" style="color:inherit;">{{ member.phone }}</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>

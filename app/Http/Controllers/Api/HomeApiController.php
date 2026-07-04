@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Product;
@@ -33,6 +34,10 @@ class HomeApiController extends Controller
             ->limit(3)
             ->get();
 
-        return response()->json(compact('promotions', 'allProducts', 'categories', 'latestPosts'));
+        $banners = Banner::where('is_active', true)
+            ->orderBy('sort_order')
+            ->get();
+
+        return response()->json(compact('promotions', 'allProducts', 'categories', 'latestPosts', 'banners'));
     }
 }
