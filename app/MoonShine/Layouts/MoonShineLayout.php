@@ -14,6 +14,7 @@ use App\MoonShine\Resources\Product\ProductResource;
 use App\MoonShine\Resources\Category\CategoryResource;
 use App\MoonShine\Resources\Post\PostResource;
 use App\MoonShine\Resources\Banner\BannerResource;
+use App\MoonShine\Resources\TeamMember\TeamMemberResource;
 use App\MoonShine\Resources\Subscriber\SubscriberResource;
 use App\MoonShine\Pages\SettingsPage;
 use MoonShine\MenuManager\MenuItem;
@@ -45,6 +46,7 @@ final class MoonShineLayout extends AppLayout
             MenuGroup::make('Контент', [
                 MenuItem::make(BannerResource::class, 'Банери')->icon('photo'),
                 MenuItem::make(PostResource::class, 'Журнал')->icon('document-text'),
+                MenuItem::make(TeamMemberResource::class, 'Команда')->icon('user-group'),
             ])->icon('pencil-square'),
             MenuItem::make(SubscriberResource::class, 'Підписники')->icon('users'),
             MenuItem::make(SettingsPage::class, 'Налаштування')->icon('cog-6-tooth'),
