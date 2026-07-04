@@ -9,13 +9,19 @@ if (error.value) throw createError({ statusCode: 404, message: 'Статтю н�
 const post = computed(() => data.value?.post)
 const related = computed(() => data.value?.related ?? [])
 
+const canonicalUrl = computed(() => `${config.public.siteUrl}/journal/${route.params.slug}`)
+
 useHead({
   title: computed(() => `${post.value?.title ?? 'Стаття'} — Меджурнал PELOVIT-R`),
+  link: computed(() => [{ rel: 'canonical', href: canonicalUrl.value }]),
   meta: computed(() => [
     { name: 'description', content: post.value?.excerpt ?? post.value?.title },
+    { property: 'og:url', content: canonicalUrl.value },
     { property: 'og:title', content: post.value?.title },
+    { property: 'og:description', content: post.value?.excerpt ?? post.value?.title },
     { property: 'og:image', content: post.value?.image ? assetUrl(post.value.image) : '' },
     { property: 'og:type', content: 'article' },
+    { property: 'article:published_time', content: post.value?.published_at },
   ]),
 })
 

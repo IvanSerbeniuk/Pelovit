@@ -1,7 +1,15 @@
 <script setup lang="ts">
+const { siteUrl } = useRuntimeConfig().public
 useHead({
   title: 'Контакти — PELOVIT-R',
-  meta: [{ name: 'description', content: 'Контакти PELOVIT-R. Адреса: вул. Успенська 59, Одеса. Телефон: +38 (063) 309-03-03.' }],
+  link: [{ rel: 'canonical', href: `${siteUrl}/contacts` }],
+  meta: [
+    { name: 'description', content: 'Контакти PELOVIT-R. Адреса: вул. Успенська 59, Одеса. Телефон: +38 (063) 309-03-03.' },
+    { property: 'og:url', content: `${siteUrl}/contacts` },
+    { property: 'og:title', content: 'Контакти — PELOVIT-R' },
+    { property: 'og:description', content: 'Контакти PELOVIT-R. Адреса: вул. Успенська 59, Одеса. Телефон: +38 (063) 309-03-03.' },
+    { property: 'og:type', content: 'website' },
+  ],
 })
 
 const config = useRuntimeConfig()

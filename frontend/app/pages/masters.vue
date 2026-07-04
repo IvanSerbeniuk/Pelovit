@@ -1,7 +1,15 @@
 <script setup lang="ts">
+const { siteUrl } = useRuntimeConfig().public
 useHead({
   title: 'Майстрам — PELOVIT-R',
-  meta: [{ name: 'description', content: 'Відеопротоколи масажів з продуктами Pelovit-R. Безкоштовний відеопротокол та розрахунок процедури для майстрів.' }],
+  link: [{ rel: 'canonical', href: `${siteUrl}/masters` }],
+  meta: [
+    { name: 'description', content: 'Відеопротоколи масажів з продуктами Pelovit-R. Безкоштовний відеопротокол та розрахунок процедури для майстрів.' },
+    { property: 'og:url', content: `${siteUrl}/masters` },
+    { property: 'og:title', content: 'Майстрам — PELOVIT-R' },
+    { property: 'og:description', content: 'Відеопротоколи масажів з продуктами Pelovit-R. Безкоштовний відеопротокол та розрахунок процедури.' },
+    { property: 'og:type', content: 'website' },
+  ],
 })
 </script>
 

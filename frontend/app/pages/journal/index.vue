@@ -1,8 +1,14 @@
 <script setup lang="ts">
+const { siteUrl } = useRuntimeConfig().public
 useHead({
   title: 'Меджурнал — PELOVIT-R',
+  link: [{ rel: 'canonical', href: `${siteUrl}/journal` }],
   meta: [
     { name: 'description', content: 'Корисні статті про косметику, здоров\'я шкіри та лікувальні процедури від PELOVIT-R.' },
+    { property: 'og:url', content: `${siteUrl}/journal` },
+    { property: 'og:title', content: 'Меджурнал — PELOVIT-R' },
+    { property: 'og:description', content: 'Корисні статті про косметику, здоров\'я шкіри та лікувальні процедури від PELOVIT-R.' },
+    { property: 'og:type', content: 'website' },
   ],
 })
 

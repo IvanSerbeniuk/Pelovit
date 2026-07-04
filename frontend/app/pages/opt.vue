@@ -1,7 +1,15 @@
 <script setup lang="ts">
+const { siteUrl } = useRuntimeConfig().public
 useHead({
   title: 'Оптові закупівлі — PELOVIT-R',
-  meta: [{ name: 'description', content: 'Натуральна косметика та засоби оздоровлення напряму від виробника — без посередників і з гнучкими умовами співпраці.' }],
+  link: [{ rel: 'canonical', href: `${siteUrl}/opt` }],
+  meta: [
+    { name: 'description', content: 'Натуральна косметика та засоби оздоровлення напряму від виробника — без посередників і з гнучкими умовами співпраці.' },
+    { property: 'og:url', content: `${siteUrl}/opt` },
+    { property: 'og:title', content: 'Оптові закупівлі — PELOVIT-R' },
+    { property: 'og:description', content: 'Натуральна косметика напряму від виробника — без посередників і з гнучкими умовами співпраці.' },
+    { property: 'og:type', content: 'website' },
+  ],
 })
 </script>
 

@@ -15,11 +15,17 @@ if (error.value) throw createError({ statusCode: 404, message: 'Товар не 
 const product = computed(() => data.value?.product)
 const related = computed(() => data.value?.related ?? [])
 
+const { siteUrl } = useRuntimeConfig().public
+const canonicalUrl = computed(() => `${siteUrl}/product/${route.params.slug}`)
+
 useHead({
   title: computed(() => `${product.value?.name ?? 'Товар'} — PELOVIT-R`),
+  link: computed(() => [{ rel: 'canonical', href: canonicalUrl.value }]),
   meta: computed(() => [
     { name: 'description', content: product.value?.description ?? `${product.value?.name} — косметика PELOVIT-R. Замовляйте з доставкою по Україні.` },
+    { property: 'og:url', content: canonicalUrl.value },
     { property: 'og:title', content: `${product.value?.name} — PELOVIT-R` },
+    { property: 'og:description', content: product.value?.description ?? `${product.value?.name} — косметика PELOVIT-R.` },
     { property: 'og:image', content: product.value?.image ? assetUrl(product.value.image) : '' },
     { property: 'og:type', content: 'product' },
   ]),

@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:8000/api',
       assetBase: process.env.NUXT_PUBLIC_ASSET_BASE || 'http://localhost:8000',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
     },
   },
 
@@ -18,6 +19,10 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { property: 'og:site_name', content: 'PELOVIT-R' },
+        { property: 'og:locale', content: 'uk_UA' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:site', content: '@pelovit' },
       ],
       link: [
         {
