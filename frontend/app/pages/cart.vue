@@ -8,6 +8,7 @@ useHead({
 const config = useRuntimeConfig()
 const cartStore = useCartStore()
 const { imgSrc, addToCart } = useProduct()
+const { assetUrl } = useAsset()
 
 const { data: featuredData } = await useFetch<any>(`${config.public.apiBase}/home`, {
   transform: (d: any) => d.promotions ?? [],
@@ -87,7 +88,7 @@ const CART_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><p
             <div v-for="product in featured" :key="product.id"
                  class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
               <NuxtLink :to="`/product/${product.slug}`">
-                <img :src="product.image ? '/' + product.image : '/images/image.png'" :alt="product.name" class="product-img">
+                <img :src="assetUrl(product.image)" :alt="product.name" class="product-img">
               </NuxtLink>
               <div class="flex-grow-1">
                 <h6><NuxtLink :to="`/product/${product.slug}`" class="text-dark text-decoration-none">{{ product.name }}</NuxtLink></h6>

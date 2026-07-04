@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const config = useRuntimeConfig()
+const { assetUrl } = useAsset()
 const route = useRoute()
 
 const { data, error } = await useFetch<any>(`${config.public.apiBase}/journal/${route.params.slug}`)
@@ -13,7 +14,7 @@ useHead({
   meta: computed(() => [
     { name: 'description', content: post.value?.excerpt ?? post.value?.title },
     { property: 'og:title', content: post.value?.title },
-    { property: 'og:image', content: post.value?.image ? `/${post.value.image}` : '' },
+    { property: 'og:image', content: post.value?.image ? assetUrl(post.value.image) : '' },
     { property: 'og:type', content: 'article' },
   ]),
 })
@@ -31,7 +32,7 @@ function copyUrl() {
   <div class="container py-5">
     <h1 class="fw-bold mb-4">{{ post.title }}</h1>
     <div v-if="post.image" class="mb-4">
-      <img :src="'/' + post.image" class="img-fluid rounded-4 w-100 article-image" :alt="post.title">
+      <img :src="assetUrl(post.image)" class="img-fluid rounded-4 w-100 article-image" :alt="post.title">
     </div>
     <div class="d-flex justify-content-between align-items-center mb-5">
       <div class="wrapper_date">
@@ -59,7 +60,7 @@ function copyUrl() {
         <div class="card h-100">
           <div class="position-relative">
             <div class="card-img-top_wrapper">
-              <img :src="rel.image ? '/' + rel.image : `https://picsum.photos/id/${100 + rel.id}/800/600`"
+              <img :src="rel.image ? assetUrl(rel.image) : `https://picsum.photos/id/${100 + rel.id}/800/600`"
                    class="card-img-top" :alt="rel.title">
             </div>
             <span v-if="rel.category" class="badge position-absolute px-3 py-2">{{ rel.category }}</span>

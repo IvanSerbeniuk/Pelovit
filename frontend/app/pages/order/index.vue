@@ -5,6 +5,7 @@ useHead({ title: 'Оформлення замовлення — PELOVIT-R' })
 
 const config = useRuntimeConfig()
 const cartStore = useCartStore()
+const { assetUrl } = useAsset()
 const router = useRouter()
 
 const cartTotal = computed(() => cartStore.total)
@@ -135,7 +136,7 @@ async function submitOrder() {
               <p v-if="cartStore.items.length === 0" class="text-muted">Кошик порожній</p>
               <div v-for="item in cartStore.items" :key="item.id"
                    class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16 mb-2">
-                <img :src="item.image ? '/' + item.image : '/images/image.png'" :alt="item.name" class="product-img">
+                <img :src="assetUrl(item.image)" :alt="item.name" class="product-img">
                 <div class="flex-grow-1">
                   <h6>{{ item.name }}</h6>
                   <span class="text-muted small">{{ item.qty }} шт.</span>

@@ -7,6 +7,7 @@ useHead({
 })
 
 const config = useRuntimeConfig()
+const { assetUrl } = useAsset()
 const route = useRoute()
 const router = useRouter()
 
@@ -29,7 +30,7 @@ function navigatePage(url: string | null) {
 }
 
 function postImg(post: any) {
-  return post.image ? '/' + post.image : `https://picsum.photos/id/${100 + post.id}/600/400`
+  return post.image ? assetUrl(post.image) : `https://picsum.photos/id/${100 + post.id}/600/400`
 }
 </script>
 

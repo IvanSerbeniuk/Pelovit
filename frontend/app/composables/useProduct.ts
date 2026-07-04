@@ -5,9 +5,10 @@ export const useProduct = () => {
   const cart = useCartStore()
   const wishlist = useWishlistStore()
   const addedToCart = ref<Record<number, boolean>>({})
+  const config = useRuntimeConfig()
 
   function imgSrc(image: string | null) {
-    return image ? '/' + image : '/images/image.png'
+    return image ? `${config.public.assetBase}/${image}` : '/images/image.png'
   }
 
   function addToCart(product: { id: number; name: string; price: number | string; image: string | null; slug: string }) {

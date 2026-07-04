@@ -52,7 +52,15 @@ class CategoryFormPage extends FormPage
             Box::make([
                 Text::make('Назва', 'name')->required(),
                 Text::make('Slug', 'slug')->hint('Заповниться автоматично якщо порожньо'),
-                BelongsTo::make('Батьківська категорія', 'parent', fn($item) => $item->name, resource: \App\MoonShine\Resources\Category\CategoryResource::class)->nullable(),
+                BelongsTo::make('Батьківська категорія', 'parent', fn($item) => $item->name, resource: \App\MoonShine\Resources\Category\CategoryResource::class)
+                    ->nullable()
+                    ->valuesQuery(function ($query) {
+                        $currentId = $this->getResource()->getItem()?->getKey();
+                        if ($currentId) {
+                            $query->where('id', '!=', $currentId);
+                        }
+                        return $query;
+                    }),
                 Number::make('Порядок сортування', 'sort_order'),
                 Image::make('Зображення', 'image')->dir('categories')->disk('public_root'),
                 Switcher::make('Активна', 'is_active'),

@@ -5,6 +5,7 @@ import 'swiper/css'
 import 'swiper/css/thumbs'
 
 const config = useRuntimeConfig()
+const { assetUrl } = useAsset()
 const route = useRoute()
 
 const { data, error } = await useFetch<any>(`${config.public.apiBase}/products/${route.params.slug}`)
@@ -19,7 +20,7 @@ useHead({
   meta: computed(() => [
     { name: 'description', content: product.value?.description ?? `${product.value?.name} — косметика PELOVIT-R. Замовляйте з доставкою по Україні.` },
     { property: 'og:title', content: `${product.value?.name} — PELOVIT-R` },
-    { property: 'og:image', content: product.value?.image ? `/${product.value.image}` : '' },
+    { property: 'og:image', content: product.value?.image ? assetUrl(product.value.image) : '' },
     { property: 'og:type', content: 'product' },
   ]),
   script: computed(() => [{
@@ -29,7 +30,7 @@ useHead({
       '@type': 'Product',
       name: product.value?.name,
       description: product.value?.description,
-      image: product.value?.image ? `/${product.value.image}` : undefined,
+      image: product.value?.image ? assetUrl(product.value.image) : undefined,
       brand: { '@type': 'Brand', name: product.value?.brand ?? 'PELOVIT-R' },
       offers: {
         '@type': 'Offer',
@@ -56,10 +57,10 @@ function galleryNext() { mainSwiper.value?.slideNext() }
 const galleryImages = computed(() => {
   if (!product.value) return []
   const imgs: string[] = []
-  if (product.value.image) imgs.push('/' + product.value.image)
+  if (product.value.image) imgs.push(assetUrl(product.value.image))
   if (Array.isArray(product.value.images)) {
     product.value.images.forEach((img: string) => {
-      const src = '/' + img
+      const src = assetUrl(img)
       if (!imgs.includes(src)) imgs.push(src)
     })
   }
