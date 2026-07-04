@@ -228,17 +228,7 @@ function postImg(post: any) {
       <div class="consultation-form">
         <h2>Запишіться на персональну консультацію</h2>
         <p>Наш фахівець допоможе підібрати ідеальні засоби Pelovit саме для ваших потреб.</p>
-        <form>
-          <input type="text" class="width_input" placeholder="Ваше ім'я" required>
-          <input type="tel" class="width_input" placeholder="+38 (0..) ... ...." required>
-          <div class="contact-method">
-            <p>Спосіб зв'язку</p>
-            <label><input type="radio" name="contact" checked> Дзвінок</label>
-            <label><input type="radio" name="contact"> Telegram</label>
-            <label><input type="radio" name="contact"> Viber</label>
-          </div>
-          <button type="submit" class="submit-btn">Надіслати</button>
-        </form>
+        <LeadForm source="home" />
       </div>
       <div class="container faq-container">
         <h2 class="mb-4">Часті запитання</h2>

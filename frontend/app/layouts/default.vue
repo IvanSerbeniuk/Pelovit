@@ -124,19 +124,26 @@
             </p>
           </div>
           <div class="col-lg-5">
-            <form class="loyalty-form">
+            <div v-if="subscribeSuccess" class="loyalty-success">
+              <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="11" stroke="#422928" stroke-width="1.5"/>
+                <path d="M7.5 12l3 3 6-6" stroke="#422928" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <p class="mt-3 mb-0 fw-semibold">Дякуємо! Ви успішно підписались.</p>
+            </div>
+            <form v-else class="loyalty-form" @submit.prevent="submitSubscribe">
               <div class="mb-3">
-                <input type="text" class="form-control" placeholder="Ім'я" required>
-              </div>
-              <div class="mb-3">
-                <input type="tel" class="form-control" placeholder="Номер телефону" required>
+                <input v-model="subscribeForm.name" type="text" class="form-control" placeholder="Ім'я">
               </div>
               <div class="mb-4">
-                <input type="email" class="form-control" placeholder="Електронна пошта" required>
+                <input v-model="subscribeForm.email" type="email" class="form-control" placeholder="Електронна пошта" required>
               </div>
-              <button type="submit" class="btn btn-dark w-100 py-3 fw-medium rounded-3">Підписатись</button>
+              <p v-if="subscribeError" class="text-danger small mb-2">{{ subscribeError }}</p>
+              <button type="submit" class="btn btn-dark w-100 py-3 fw-medium rounded-3" :disabled="subscribeLoading">
+                {{ subscribeLoading ? 'Надсилання...' : 'Підписатись' }}
+              </button>
               <p class="text-center text-muted mt-3 small">
-                By clicking the button, I agree to the personal data processing policy.
+                Натискаючи кнопку, ви погоджуєтесь з обробкою персональних даних.
               </p>
             </form>
           </div>
@@ -219,6 +226,29 @@ const wishlistStore = useWishlistStore()
 const cartCount = computed(() => cartStore.count)
 const wishlistCount = computed(() => wishlistStore.count)
 const phone = computed(() => settings.value?.phone || '+38 (063) 309-03-03')
+
+const config = useRuntimeConfig()
+
+const subscribeForm = reactive({ name: '', email: '' })
+const subscribeLoading = ref(false)
+const subscribeSuccess = ref(false)
+const subscribeError = ref('')
+
+async function submitSubscribe() {
+  subscribeLoading.value = true
+  subscribeError.value = ''
+  try {
+    await $fetch(`${config.public.apiBase}/subscribe`, {
+      method: 'POST',
+      body: { name: subscribeForm.name || undefined, email: subscribeForm.email },
+    })
+    subscribeSuccess.value = true
+  } catch {
+    subscribeError.value = 'Сталася помилка. Перевірте email і спробуйте ще раз.'
+  } finally {
+    subscribeLoading.value = false
+  }
+}
 
 const router = useRouter()
 const searchOpen = ref(false)

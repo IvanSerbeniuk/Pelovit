@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Lead;
 use App\Models\Order;
 use App\Models\Setting;
 use App\Models\Subscriber;
@@ -52,5 +53,11 @@ Route::get('/admin/subscribers/export-csv', function () {
         ->header('Content-Type', 'text/csv; charset=UTF-8')
         ->header('Content-Disposition', 'attachment; filename="subscribers-' . now()->format('Y-m-d') . '.csv"');
 })->middleware(['moonshine', 'MoonShine\Laravel\Http\Middleware\Authenticate'])->name('admin.subscribers.export');
+
+Route::patch('/admin/leads/{lead}/status', function (Lead $lead, \Illuminate\Http\Request $request) {
+    $request->validate(['status' => 'required|in:new,in_progress,done']);
+    $lead->update(['status' => $request->status]);
+    return response()->json(['success' => true]);
+})->middleware(['moonshine', 'MoonShine\Laravel\Http\Middleware\Authenticate'])->name('admin.leads.status');
 
 require __DIR__.'/auth.php';

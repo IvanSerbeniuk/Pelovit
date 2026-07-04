@@ -16,6 +16,8 @@ use App\MoonShine\Resources\Category\CategoryResource;
 use App\MoonShine\Resources\Post\PostResource;
 use App\MoonShine\Resources\Banner\BannerResource;
 use App\MoonShine\Resources\Subscriber\SubscriberResource;
+use App\MoonShine\Resources\TeamMember\TeamMemberResource;
+use App\MoonShine\Resources\Lead\LeadResource;
 use App\MoonShine\Pages\SettingsPage;
 
 class MoonShineServiceProvider extends ServiceProvider
@@ -35,6 +37,8 @@ class MoonShineServiceProvider extends ServiceProvider
                 PostResource::class,
                 BannerResource::class,
                 SubscriberResource::class,
+                TeamMemberResource::class,
+                LeadResource::class,
             ])
             ->pages([
                 ...$core->getConfig()->getPages(),

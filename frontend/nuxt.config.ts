@@ -44,18 +44,17 @@ export default defineNuxtConfig({
 
   css: ['~/assets/sass/main.scss'],
 
+  routeRules: {
+    '/images/**': { proxy: 'http://localhost:8000/images/**' },
+    '/products/**': { proxy: 'http://localhost:8000/products/**' },
+  },
+
   vite: {
     css: {
       preprocessorOptions: {
         scss: {
           silenceDeprecations: ['legacy-js-api'],
         },
-      },
-    },
-    server: {
-      proxy: {
-        '/images': 'http://localhost:8000',
-        '/products': { target: 'http://localhost:8000', changeOrigin: true },
       },
     },
   },

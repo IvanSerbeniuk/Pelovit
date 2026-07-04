@@ -77,18 +77,7 @@ useHead({
         <div class="col-lg-6">
           <div class="consultation-form">
             <h4>Зв'язатись з нами</h4>
-            <form>
-              <input type="text" class="width_input" placeholder="Ваше ім'я" required>
-              <input type="tel" class="width_input" placeholder="+38 (0..) ... ...." required>
-              <div class="contact-method">
-                <p>Спосіб зв'язку</p>
-                <label><input type="radio" name="contact" checked> Дзвінок</label>
-                <label><input type="radio" name="contact"> Telegram</label>
-                <label><input type="radio" name="contact"> Viber</label>
-                <label><input type="radio" name="contact"> WhatsApp</label>
-              </div>
-              <button type="submit" class="submit-btn">Надіслати</button>
-            </form>
+            <LeadForm source="masters" :contact-methods="['call','telegram','viber','whatsapp']" />
             <div class="social-links mt-3">
               <p>Ви можете написати нам самі:</p>
               <div class="social-icons">

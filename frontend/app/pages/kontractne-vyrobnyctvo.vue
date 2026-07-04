@@ -99,18 +99,7 @@ onMounted(() => {
     <div class="consultation-form" style="grid-column: 1 / -1;">
       <h2>Замовити консультацію</h2>
       <p>Залиште контакти і наш менеджер зв'яжеться з вами.</p>
-      <form>
-        <input type="text" class="width_input" placeholder="Ваше ім'я" required>
-        <input type="tel" class="width_input" placeholder="+38 (0..) ... ...." required>
-        <input type="text" class="width_input" placeholder="Назва компанії / продукту">
-        <div class="contact-method">
-          <p>Спосіб зв'язку</p>
-          <label><input type="radio" name="contact" checked> Дзвінок</label>
-          <label><input type="radio" name="contact"> Telegram</label>
-          <label><input type="radio" name="contact"> Viber</label>
-        </div>
-        <button type="submit" class="submit-btn">Надіслати</button>
-      </form>
+      <LeadForm source="contract" :show-company="true" />
     </div>
   </div>
 </section>

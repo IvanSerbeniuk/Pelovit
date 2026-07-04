@@ -51,17 +51,7 @@ const team = computed(() => data.value?.team ?? [])
         <div class="consultation-form">
           <h2>Виникли питання?</h2>
           <p>Наш фахівець допоможе підібрати ідеальні засоби Pelovit.</p>
-          <form>
-            <input type="text" class="width_input" placeholder="Ваше ім'я" required>
-            <input type="tel" class="width_input" placeholder="+38 (0..) ... ...." required>
-            <div class="contact-method">
-              <p>Спосіб зв'язку</p>
-              <label><input type="radio" name="contact" checked> Дзвінок</label>
-              <label><input type="radio" name="contact"> Telegram</label>
-              <label><input type="radio" name="contact"> Viber</label>
-            </div>
-            <button type="submit" class="submit-btn">Надіслати</button>
-          </form>
+          <LeadForm source="contacts" />
         </div>
       </div>
     </div>

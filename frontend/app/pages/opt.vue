@@ -95,19 +95,7 @@ useHead({
     <div class="consultation-form">
       <h2>Залишити заявку</h2>
       <p>Зв'яжіться з нашим менеджером для обговорення умов співпраці.</p>
-      <form>
-        <input type="text" class="width_input" placeholder="Ваше ім'я" required>
-        <input type="tel" class="width_input" placeholder="+38 (0..) ... ...." required>
-        <input type="text" class="width_input" placeholder="Назва компанії">
-        <div class="contact-method">
-          <p>Спосіб зв'язку</p>
-          <label><input type="radio" name="contact" checked> Дзвінок</label>
-          <label><input type="radio" name="contact"> Telegram</label>
-          <label><input type="radio" name="contact"> Viber</label>
-          <label><input type="radio" name="contact"> WhatsApp</label>
-        </div>
-        <button type="submit" class="submit-btn">Надіслати</button>
-      </form>
+      <LeadForm source="opt" :show-company="true" :contact-methods="['call','telegram','viber','whatsapp']" />
     </div>
   </div>
 </section>
