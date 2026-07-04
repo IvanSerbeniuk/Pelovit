@@ -30,9 +30,32 @@
   gap: 6px;
 }
 
+.swiper-with-nav {
+  position: relative;
+
+  .swiper {
+    width: 100%;
+  }
+
+  .section-nav-btn--side {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+
+    &:first-child { left: -27px; }
+    &:last-child  { right: -27px; }
+
+    @media (max-width: 575px) {
+      display: none;
+    }
+  }
+}
+
 .section-nav-btn {
-  width: 36px;
-  height: 36px;
+  flex-shrink: 0;
+    width: 56px;
+    height: 56px;
   border-radius: 50%;
   border: 1.5px solid #d9cac4;
   background: #fff;

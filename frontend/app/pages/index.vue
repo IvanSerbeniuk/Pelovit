@@ -120,29 +120,27 @@ function postImg(post: any) {
   <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2 class="fw-bold">Всі товари</h2>
-      <div class="d-flex align-items-center gap-3">
-        <div class="section-nav-btns">
-          <button class="section-nav-btn" @click="allPrev" aria-label="Назад">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <button class="section-nav-btn" @click="allNext" aria-label="Вперед">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-        </div>
-        <NuxtLink to="/catalog" class="view-all">Переглянути більше</NuxtLink>
-      </div>
+      <NuxtLink to="/catalog" class="view-all">Переглянути більше</NuxtLink>
     </div>
-    <Swiper
-      :slides-per-view="2"
-      :space-between="16"
-      :breakpoints="{ 576: { slidesPerView: 2 }, 768: { slidesPerView: 3 }, 992: { slidesPerView: 4 } }"
-      :grab-cursor="true"
-      @swiper="onAllProductsSwiper"
-    >
-      <SwiperSlide v-for="product in allProducts" :key="product.id">
-        <ProductCard :product="product" />
-      </SwiperSlide>
-    </Swiper>
+    <div class="swiper-with-nav">
+      <button class="section-nav-btn section-nav-btn--side" @click="allPrev" aria-label="Назад">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <Swiper
+        :slides-per-view="2"
+        :space-between="16"
+        :breakpoints="{ 576: { slidesPerView: 2 }, 768: { slidesPerView: 3 }, 992: { slidesPerView: 4 } }"
+        :grab-cursor="true"
+        @swiper="onAllProductsSwiper"
+      >
+        <SwiperSlide v-for="product in allProducts" :key="product.id">
+          <ProductCard :product="product" />
+        </SwiperSlide>
+      </Swiper>
+      <button class="section-nav-btn section-nav-btn--side" @click="allNext" aria-label="Вперед">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
   </div>
 </section>
 
