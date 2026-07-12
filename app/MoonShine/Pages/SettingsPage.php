@@ -54,6 +54,45 @@ class SettingsPage extends Page
         $shopHtml = $field('Мінімальна сума для безкоштовної доставки (₴)', 'min_free_shipping', 'number', 'Залиште порожнім щоб вимкнути') .
             $field('Текст банера / оголошення', 'banner_text', 'text', 'Відображається у шапці сайту. Порожньо — банер прихований.');
 
+        $textarea = fn(string $label, string $key, string $hint = '') =>
+            "<div style='margin-bottom:16px'>
+                <label style='display:block;font-size:12px;font-weight:600;color:var(--color-base-text);opacity:.7;margin-bottom:6px'>{$label}</label>
+                <textarea name='{$key}' rows='3'
+                    style='width:100%;padding:8px 12px;border:1px solid var(--color-base-stroke);border-radius:8px;background:var(--color-body);color:var(--color-base-text);font-size:13px;outline:none;resize:vertical'>" . htmlspecialchars($s[$key] ?? '') . "</textarea>
+                " . ($hint ? "<span style='font-size:11px;color:var(--color-base-text);opacity:.45;margin-top:4px;display:block'>{$hint}</span>" : '') . "
+            </div>";
+
+        $globalSeoHtml =
+            $field('Google Analytics ID', 'google_analytics_id', 'text', 'Формат: G-XXXXXXXXXX або UA-XXXXXXXX-X') .
+            $field('Дефолтне OG Image (URL)', 'default_og_image', 'url', 'Зображення для сторінок без власного OG Image. Повна URL-адреса.') .
+            $textarea('Дефолтний опис сайту', 'site_description', 'Використовується як fallback description для сторінок без власного опису.');
+
+        $pageLabels = [
+            'home'     => 'Головна (/)',
+            'catalog'  => 'Каталог (/catalog)',
+            'journal'  => 'Меджурнал (/journal)',
+            'contacts' => 'Контакти (/contacts)',
+            'about'    => 'Про нас (/about)',
+            'opt'      => 'Опт (/opt)',
+            'masters'  => 'Майстрам (/masters)',
+            'contract' => 'Контрактне виробництво (/kontractne-vyrobnyctvo)',
+        ];
+
+        $pageSeoHtml = '';
+        foreach ($pageLabels as $pageKey => $pageLabel) {
+            $pageSeoHtml .= "<details style='margin-bottom:16px;border:1px solid var(--color-base-stroke);border-radius:8px;overflow:hidden'>
+                <summary style='padding:12px 16px;font-size:13px;font-weight:600;cursor:pointer;background:var(--color-body2,var(--color-body));list-style:none;display:flex;align-items:center;gap:8px'>
+                    <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M9 18l6-6-6-6'/></svg>
+                    {$pageLabel}
+                </summary>
+                <div style='padding:16px'>
+                    {$field('SEO Title', "seo_{$pageKey}_title", 'text', '50–60 символів. Якщо порожньо — береться хардкодний заголовок.')}
+                    {$textarea('SEO Description', "seo_{$pageKey}_description", '120–160 символів.')}
+                    {$field('OG Image (URL)', "seo_{$pageKey}_og_image", 'url', 'Повна URL-адреса зображення для соцмереж. Залиште порожнім — буде дефолтне.')}
+                </div>
+            </details>";
+        }
+
         $formHtml = "
         {$success}
         <form method='POST' action='{$action}'>
@@ -71,6 +110,15 @@ class SettingsPage extends Page
             <div style='margin-top:8px'>
                 <div style='font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--color-base-text);opacity:.45;margin-bottom:16px'>Магазин</div>
                 {$shopHtml}
+            </div>
+            <div style='margin-top:8px'>
+                <div style='font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--color-base-text);opacity:.45;margin-bottom:16px'>Глобальне SEO</div>
+                {$globalSeoHtml}
+            </div>
+            <div style='margin-top:8px'>
+                <div style='font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--color-base-text);opacity:.45;margin-bottom:16px'>SEO сторінок</div>
+                <p style='font-size:12px;color:var(--color-base-text);opacity:.55;margin-bottom:16px'>Натисніть на сторінку щоб розкрити SEO-поля. Порожні поля — використовується хардкодний текст із сайту.</p>
+                {$pageSeoHtml}
             </div>
             <button type='submit' style='padding:10px 28px;background:#422928;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer'>Зберегти</button>
         </form>";

@@ -23,6 +23,7 @@ export default defineEventHandler(async () => {
       const products: any[] = data?.products?.data ?? []
       if (!products.length) break
       for (const p of products) {
+        if (p.no_index) continue
         urls.push({
           loc: `/product/${p.slug}`,
           lastmod: p.updated_at?.slice(0, 10),
@@ -43,6 +44,7 @@ export default defineEventHandler(async () => {
       const posts: any[] = data?.posts?.data ?? []
       if (!posts.length) break
       for (const p of posts) {
+        if (p.no_index) continue
         urls.push({
           loc: `/journal/${p.slug}`,
           lastmod: p.published_at?.slice(0, 10),

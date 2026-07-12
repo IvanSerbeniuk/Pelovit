@@ -34,7 +34,22 @@ Route::get('/admin/orders/export-csv', function () {
 })->middleware(['moonshine', 'MoonShine\Laravel\Http\Middleware\Authenticate'])->name('admin.orders.export');
 
 Route::post('/admin/settings/save', function (\Illuminate\Http\Request $request) {
-    $keys = ['phone', 'phone_2', 'phone_3', 'email', 'instagram_url', 'facebook_url', 'telegram_url', 'viber_url', 'youtube_url', 'banner_text', 'min_free_shipping'];
+    $keys = [
+        'phone', 'phone_2', 'phone_3', 'email',
+        'instagram_url', 'facebook_url', 'telegram_url', 'viber_url', 'youtube_url',
+        'banner_text', 'min_free_shipping',
+        // Global SEO
+        'google_analytics_id', 'default_og_image', 'site_description',
+        // Per-page SEO
+        'seo_home_title', 'seo_home_description', 'seo_home_og_image',
+        'seo_catalog_title', 'seo_catalog_description', 'seo_catalog_og_image',
+        'seo_journal_title', 'seo_journal_description', 'seo_journal_og_image',
+        'seo_contacts_title', 'seo_contacts_description', 'seo_contacts_og_image',
+        'seo_about_title', 'seo_about_description', 'seo_about_og_image',
+        'seo_opt_title', 'seo_opt_description', 'seo_opt_og_image',
+        'seo_masters_title', 'seo_masters_description', 'seo_masters_og_image',
+        'seo_contract_title', 'seo_contract_description', 'seo_contract_og_image',
+    ];
     foreach ($keys as $key) {
         if ($request->has($key)) {
             Setting::set($key, $request->input($key, ''));
@@ -46,7 +61,7 @@ Route::post('/admin/settings/save', function (\Illuminate\Http\Request $request)
 Route::get('/admin/subscribers/export-csv', function () {
     $bom = "\xEF\xBB\xBF";
     $csv = $bom . implode(';', ['ID', 'Email', 'Імʼя', 'Активний', 'Дата']) . "\n";
-    Subscriber::orderBy('created_at', 'desc')->get()->each(function ($s) use (&$csv) {
+     Subscriber::orderBy('created_at', 'desc')->get()->each(function ($s) use (&$csv) {
         $csv .= implode(';', [$s->id, $s->email, '"' . ($s->name ?? '') . '"', $s->is_active ? 'Так' : 'Ні', $s->created_at->format('d.m.Y')]) . "\n";
     });
     return response($csv)

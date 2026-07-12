@@ -11,11 +11,14 @@ class Post extends Model
     protected $fillable = [
         'title', 'slug', 'excerpt', 'body', 'image',
         'category', 'tags', 'is_published', 'is_featured', 'published_at',
+        'meta_title', 'meta_description', 'meta_keywords',
+        'og_title', 'og_description', 'no_index',
     ];
 
     protected $casts = [
         'is_published' => 'boolean',
         'is_featured'  => 'boolean',
+        'no_index'     => 'boolean',
         'published_at' => 'datetime',
         'tags'         => 'array',
     ];

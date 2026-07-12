@@ -81,6 +81,26 @@ class PostFormPage extends FormPage
                     ])->columnSpan(6),
                 ]),
             ]),
+            Box::make('SEO', [
+                Grid::make([
+                    Column::make([
+                        Text::make('Meta Title', 'meta_title')
+                            ->hint('50–60 символів. Якщо порожньо — береться заголовок статті.'),
+                        Textarea::make('Meta Description', 'meta_description')
+                            ->hint('120–160 символів.'),
+                        Text::make('Meta Keywords', 'meta_keywords')
+                            ->hint('Ключові слова через кому.'),
+                    ])->columnSpan(6),
+                    Column::make([
+                        Text::make('OG Title', 'og_title')
+                            ->hint('Заголовок для соціальних мереж. Якщо порожньо — береться Meta Title.'),
+                        Textarea::make('OG Description', 'og_description')
+                            ->hint('Опис для соціальних мереж. Якщо порожньо — береться Meta Description.'),
+                        Switcher::make('Заборонити індексацію (noindex)', 'no_index')
+                            ->hint('Приховати сторінку з пошукових систем.'),
+                    ])->columnSpan(6),
+                ]),
+            ]),
         ];
     }
 

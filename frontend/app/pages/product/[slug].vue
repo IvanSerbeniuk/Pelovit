@@ -18,34 +18,52 @@ const related = computed(() => data.value?.related ?? [])
 const { siteUrl } = useRuntimeConfig().public
 const canonicalUrl = computed(() => `${siteUrl}/product/${route.params.slug}`)
 
+const seoTitle = computed(() =>
+  product.value?.meta_title || `${product.value?.name ?? 'Товар'} — PELOVIT-R`
+)
+const seoDesc = computed(() =>
+  product.value?.meta_description || product.value?.description || `${product.value?.name} — косметика PELOVIT-R. Замовляйте з доставкою по Україні.`
+)
+const seoOgTitle = computed(() =>
+  product.value?.og_title || product.value?.meta_title || `${product.value?.name} — PELOVIT-R`
+)
+const seoOgDesc = computed(() =>
+  product.value?.og_description || product.value?.meta_description || product.value?.description || ''
+)
+
 useHead({
-  title: computed(() => `${product.value?.name ?? 'Товар'} — PELOVIT-R`),
+  title: seoTitle,
   link: computed(() => [{ rel: 'canonical', href: canonicalUrl.value }]),
   meta: computed(() => [
-    { name: 'description', content: product.value?.description ?? `${product.value?.name} — косметика PELOVIT-R. Замовляйте з доставкою по Україні.` },
+    { name: 'description', content: seoDesc.value },
+    ...(product.value?.no_index ? [{ name: 'robots', content: 'noindex, nofollow' }] : []),
     { property: 'og:url', content: canonicalUrl.value },
-    { property: 'og:title', content: `${product.value?.name} — PELOVIT-R` },
-    { property: 'og:description', content: product.value?.description ?? `${product.value?.name} — косметика PELOVIT-R.` },
+    { property: 'og:title', content: seoOgTitle.value },
+    { property: 'og:description', content: seoOgDesc.value },
     { property: 'og:image', content: product.value?.image ? assetUrl(product.value.image) : '' },
     { property: 'og:type', content: 'product' },
   ]),
-  script: computed(() => [{
+  script: computed(() => product.value && !product.value.no_index ? [{
     type: 'application/ld+json',
     children: JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Product',
       name: product.value?.name,
-      description: product.value?.description,
+      description: seoDesc.value,
       image: product.value?.image ? assetUrl(product.value.image) : undefined,
+      sku: String(product.value?.id ?? ''),
       brand: { '@type': 'Brand', name: product.value?.brand ?? 'PELOVIT-R' },
       offers: {
         '@type': 'Offer',
+        url: canonicalUrl.value,
         price: product.value?.price,
         priceCurrency: 'UAH',
-        availability: 'https://schema.org/InStock',
+        availability: (product.value?.stock ?? 0) > 0
+          ? 'https://schema.org/InStock'
+          : 'https://schema.org/OutOfStock',
       },
     }),
-  }]),
+  }] : []),
 })
 
 const { imgSrc, addToCart: addToCartFn, toggleWishlist: toggleWishlistFn, wishlist } = useProduct()

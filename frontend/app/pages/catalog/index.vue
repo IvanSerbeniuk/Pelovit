@@ -1,15 +1,9 @@
 <script setup lang="ts">
-const { siteUrl } = useRuntimeConfig().public
-useHead({
-  title: 'Каталог товарів — PELOVIT-R',
-  link: [{ rel: 'canonical', href: `${siteUrl}/catalog` }],
-  meta: [
-    { name: 'description', content: 'Каталог косметики PELOVIT-R. Лікувальні препарати, доглядова косметика, парфумована лінійка ART17. Замовляйте з доставкою по Україні.' },
-    { property: 'og:url', content: `${siteUrl}/catalog` },
-    { property: 'og:title', content: 'Каталог товарів — PELOVIT-R' },
-    { property: 'og:description', content: 'Каталог косметики PELOVIT-R. Лікувальні препарати, доглядова косметика, парфумована лінійка ART17.' },
-    { property: 'og:type', content: 'website' },
-  ],
+useSeoPage({
+  pageKey: 'catalog',
+  fallbackTitle: 'Каталог товарів — PELOVIT-R',
+  fallbackDescription: 'Каталог косметики PELOVIT-R. Лікувальні препарати, доглядова косметика, парфумована лінійка ART17. Замовляйте з доставкою по Україні.',
+  canonicalPath: '/catalog',
 })
 
 const config = useRuntimeConfig()

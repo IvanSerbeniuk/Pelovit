@@ -1,15 +1,9 @@
 <script setup lang="ts">
-const { siteUrl } = useRuntimeConfig().public
-useHead({
-  title: 'Контрактне виробництво косметики — PELOVIT-R',
-  link: [{ rel: 'canonical', href: `${siteUrl}/kontractne-vyrobnyctvo` }],
-  meta: [
-    { name: 'description', content: 'Виготовляємо косметику під вашим брендом — від розробки формули до готової продукції. GMP ISO 22716.' },
-    { property: 'og:url', content: `${siteUrl}/kontractne-vyrobnyctvo` },
-    { property: 'og:title', content: 'Контрактне виробництво косметики — PELOVIT-R' },
-    { property: 'og:description', content: 'Виготовляємо косметику під вашим брендом — від розробки формули до готової продукції. GMP ISO 22716.' },
-    { property: 'og:type', content: 'website' },
-  ],
+useSeoPage({
+  pageKey: 'contract',
+  fallbackTitle: 'Контрактне виробництво косметики — PELOVIT-R',
+  fallbackDescription: 'Виготовляємо косметику під вашим брендом — від розробки формули до готової продукції. GMP ISO 22716.',
+  canonicalPath: '/kontractne-vyrobnyctvo',
 })
 
 onMounted(() => {

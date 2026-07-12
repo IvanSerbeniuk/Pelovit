@@ -1,15 +1,9 @@
 <script setup lang="ts">
-const { siteUrl } = useRuntimeConfig().public
-useHead({
-  title: 'Про нас — PELOVIT-R',
-  link: [{ rel: 'canonical', href: `${siteUrl}/about` }],
-  meta: [
-    { name: 'description', content: 'Аксімед — інноваційне підприємство з 1985 року. Розробляємо натуральну косметику на основі наукових досліджень.' },
-    { property: 'og:url', content: `${siteUrl}/about` },
-    { property: 'og:title', content: 'Про нас — PELOVIT-R' },
-    { property: 'og:description', content: 'Аксімед — інноваційне підприємство з 1985 року. Розробляємо натуральну косметику на основі наукових досліджень.' },
-    { property: 'og:type', content: 'website' },
-  ],
+useSeoPage({
+  pageKey: 'about',
+  fallbackTitle: 'Про нас — PELOVIT-R',
+  fallbackDescription: 'Аксімед — інноваційне підприємство з 1985 року. Розробляємо натуральну косметику на основі наукових досліджень.',
+  canonicalPath: '/about',
 })
 </script>
 

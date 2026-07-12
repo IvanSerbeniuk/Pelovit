@@ -7,14 +7,11 @@ function onAllProductsSwiper(s: any) { allProductsSwiper.value = s }
 function allPrev() { allProductsSwiper.value?.slidePrev() }
 function allNext() { allProductsSwiper.value?.slideNext() }
 
-useHead({
-  title: 'PELOVIT-R — Косметика для здорової шкіри',
-  meta: [
-    { name: 'description', content: 'PELOVIT-R — натуральна косметика з мінералами Куяльницького лиману. Лікувальні препарати, догляд за шкірою, контрактне виробництво.' },
-    { property: 'og:title', content: 'PELOVIT-R — Косметика для здорової шкіри' },
-    { property: 'og:description', content: 'Натуральна косметика з мінералами Куяльника для тіла, обличчя та оздоровлення.' },
-    { property: 'og:type', content: 'website' },
-  ],
+useSeoPage({
+  pageKey: 'home',
+  fallbackTitle: 'PELOVIT-R — Косметика для здорової шкіри',
+  fallbackDescription: 'PELOVIT-R — натуральна косметика з мінералами Куяльницького лиману. Лікувальні препарати, догляд за шкірою, контрактне виробництво.',
+  canonicalPath: '/',
 })
 
 const config = useRuntimeConfig()

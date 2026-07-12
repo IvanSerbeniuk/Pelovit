@@ -1,15 +1,9 @@
 <script setup lang="ts">
-const { siteUrl } = useRuntimeConfig().public
-useHead({
-  title: 'Оптові закупівлі — PELOVIT-R',
-  link: [{ rel: 'canonical', href: `${siteUrl}/opt` }],
-  meta: [
-    { name: 'description', content: 'Натуральна косметика та засоби оздоровлення напряму від виробника — без посередників і з гнучкими умовами співпраці.' },
-    { property: 'og:url', content: `${siteUrl}/opt` },
-    { property: 'og:title', content: 'Оптові закупівлі — PELOVIT-R' },
-    { property: 'og:description', content: 'Натуральна косметика напряму від виробника — без посередників і з гнучкими умовами співпраці.' },
-    { property: 'og:type', content: 'website' },
-  ],
+useSeoPage({
+  pageKey: 'opt',
+  fallbackTitle: 'Оптові закупівлі — PELOVIT-R',
+  fallbackDescription: 'Натуральна косметика та засоби оздоровлення напряму від виробника — без посередників і з гнучкими умовами співпраці.',
+  canonicalPath: '/opt',
 })
 </script>
 

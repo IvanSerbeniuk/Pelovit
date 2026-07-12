@@ -227,6 +227,14 @@ const cartCount = computed(() => cartStore.count)
 const wishlistCount = computed(() => wishlistStore.count)
 const phone = computed(() => settings.value?.phone || '+38 (063) 309-03-03')
 
+const gaId = computed(() => settings.value?.google_analytics_id || '')
+useHead(computed(() => gaId.value ? {
+  script: [
+    { src: `https://www.googletagmanager.com/gtag/js?id=${gaId.value}`, async: true },
+    { children: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${gaId.value}');` },
+  ],
+} : {}))
+
 const config = useRuntimeConfig()
 
 const subscribeForm = reactive({ name: '', email: '' })

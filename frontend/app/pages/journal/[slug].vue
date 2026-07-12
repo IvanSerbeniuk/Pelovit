@@ -11,14 +11,28 @@ const related = computed(() => data.value?.related ?? [])
 
 const canonicalUrl = computed(() => `${config.public.siteUrl}/journal/${route.params.slug}`)
 
+const seoTitle = computed(() =>
+  post.value?.meta_title || `${post.value?.title ?? 'Стаття'} — Меджурнал PELOVIT-R`
+)
+const seoDesc = computed(() =>
+  post.value?.meta_description || post.value?.excerpt || post.value?.title || ''
+)
+const seoOgTitle = computed(() =>
+  post.value?.og_title || post.value?.meta_title || post.value?.title || ''
+)
+const seoOgDesc = computed(() =>
+  post.value?.og_description || post.value?.meta_description || post.value?.excerpt || ''
+)
+
 useHead({
-  title: computed(() => `${post.value?.title ?? 'Стаття'} — Меджурнал PELOVIT-R`),
+  title: seoTitle,
   link: computed(() => [{ rel: 'canonical', href: canonicalUrl.value }]),
   meta: computed(() => [
-    { name: 'description', content: post.value?.excerpt ?? post.value?.title },
+    { name: 'description', content: seoDesc.value },
+    ...(post.value?.no_index ? [{ name: 'robots', content: 'noindex, nofollow' }] : []),
     { property: 'og:url', content: canonicalUrl.value },
-    { property: 'og:title', content: post.value?.title },
-    { property: 'og:description', content: post.value?.excerpt ?? post.value?.title },
+    { property: 'og:title', content: seoOgTitle.value },
+    { property: 'og:description', content: seoOgDesc.value },
     { property: 'og:image', content: post.value?.image ? assetUrl(post.value.image) : '' },
     { property: 'og:type', content: 'article' },
     { property: 'article:published_time', content: post.value?.published_at },
