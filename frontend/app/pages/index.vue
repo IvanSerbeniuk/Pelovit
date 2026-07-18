@@ -45,7 +45,7 @@ function postImg(post: any) {
         <div class="hero text-white" style="background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url(/images/gl_face.png);">
           <div class="container">
             <div class="col-lg-6 mob">
-              <h1 class="display-3 fw-bold mb-4">Краса починається зі здорової шкіри. test</h1>
+              <h1 class="display-3 fw-bold mb-4">Краса починається зі здорової шкіри.</h1>
               <p class="lead mb-5">Відкрийте для себе догляд для обличчя, що поєднує ефективність сучасних формул і силу натуральних компонентів.</p>
               <NuxtLink to="/catalog" class="btn btn-light btn-lg px-5 py-3 fw-medium rad-16">Дивитися товари</NuxtLink>
             </div>
