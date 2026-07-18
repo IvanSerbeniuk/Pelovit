@@ -11,7 +11,11 @@ const router = useRouter()
 const { data: settings } = useSettings()
 const { searchCities, getWarehouses } = useNovaPoshta()
 
+const COD_FEE = 20
+
 const cartTotal = computed(() => cartStore.total)
+const codFee = computed(() => (form.payment_method === 'cod' ? COD_FEE : 0))
+const orderTotal = computed(() => cartTotal.value + codFee.value)
 const submitting = ref(false)
 const errors = ref<Record<string, string>>({})
 
@@ -51,6 +55,7 @@ function selectCity(city: NovaPoshtaCity) {
   cityRef.value = city.ref
   citySuggestions.value = []
   cityDropdownOpen.value = false
+  delete errors.value.city
 
   form.branch = ''
   warehouses.value = []
@@ -96,6 +101,7 @@ function selectWarehouse(w: NovaPoshtaWarehouse) {
   form.branch = w.description
   warehouseSelected.value = true
   warehouseDropdownOpen.value = false
+  delete errors.value.branch
 }
 
 function onWarehouseBlur() {
@@ -104,8 +110,17 @@ function onWarehouseBlur() {
 
 async function submitOrder() {
   if (cartStore.items.length === 0) return
-  submitting.value = true
+
   errors.value = {}
+  const localErrors: Record<string, string> = {}
+  if (!cityRef.value) localErrors.city = 'Оберіть місто зі списку Нової пошти'
+  if (!form.branch.trim()) localErrors.branch = 'Оберіть відділення або поштомат'
+  if (Object.keys(localErrors).length > 0) {
+    errors.value = localErrors
+    return
+  }
+
+  submitting.value = true
 
   try {
     await $fetch(`${config.public.apiBase}/orders`, {
@@ -113,7 +128,7 @@ async function submitOrder() {
       body: {
         ...form,
         items: cartStore.items,
-        total: cartStore.total,
+        total: orderTotal.value,
       },
     })
     cartStore.clear()
@@ -170,11 +185,12 @@ async function submitOrder() {
             <div class="d-flex align-items-center gap-2 mb-3"><span>Нова пошта</span></div>
             <div class="row g-3">
               <div class="col-md-6 position-relative">
-                <label class="form-label">Місто / Населений пункт</label>
+                <label class="form-label">Місто / Населений пункт <span class="text-danger">*</span></label>
                 <input
                   v-model="form.city"
                   type="text"
                   class="form-control"
+                  :class="{'is-invalid': errors.city}"
                   placeholder="Почніть вводити назву міста"
                   autocomplete="off"
                   @input="onCityInput"
@@ -186,16 +202,18 @@ async function submitOrder() {
                     {{ c.name }} <span v-if="c.area" class="text-muted small">— {{ c.area }}</span>
                   </li>
                 </ul>
-                <div v-if="cityRef" class="text-success small mt-1">
+                <div v-if="errors.city" class="invalid-feedback d-block">{{ errors.city }}</div>
+                <div v-else-if="cityRef" class="text-success small mt-1">
                   <i class="fa-solid fa-check"></i> Місто підтверджено Новою поштою
                 </div>
               </div>
               <div class="col-md-6 position-relative">
-                <label class="form-label">Номер відділення / поштомату</label>
+                <label class="form-label">Номер відділення / поштомату <span class="text-danger">*</span></label>
                 <input
                   v-model="form.branch"
                   type="text"
                   class="form-control"
+                  :class="{'is-invalid': errors.branch}"
                   :placeholder="cityRef ? 'Почніть вводити номер або адресу' : 'Спочатку оберіть місто'"
                   autocomplete="off"
                   :disabled="!cityRef"
@@ -212,7 +230,8 @@ async function submitOrder() {
                     <li v-if="filteredWarehouses.length === 0" class="text-muted">Нічого не знайдено</li>
                   </template>
                 </ul>
-                <div v-if="warehouseSelected" class="text-success small mt-1">
+                <div v-if="errors.branch" class="invalid-feedback d-block">{{ errors.branch }}</div>
+                <div v-else-if="warehouseSelected" class="text-success small mt-1">
                   <i class="fa-solid fa-check"></i> Відділення підтверджено Новою поштою
                 </div>
               </div>
@@ -265,9 +284,17 @@ async function submitOrder() {
               </div>
             </div>
 
-            <div class="d-flex justify-content-between align-items-center bottom_sum pt-3">
-              <span class="fw-semibold">Сума замовлення</span>
+            <div class="d-flex justify-content-between align-items-center pt-3">
+              <span class="text-muted">Сума товарів</span>
               <span>{{ fmt(cartTotal) }}</span>
+            </div>
+            <div v-if="codFee > 0" class="d-flex justify-content-between align-items-center mt-2">
+              <span class="text-muted">Накладений платіж</span>
+              <span>+{{ fmt(codFee) }}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center bottom_sum pt-3 mt-2">
+              <span class="fw-semibold">Сума замовлення</span>
+              <span class="fw-semibold">{{ fmt(orderTotal) }}</span>
             </div>
 
             <button type="submit" class="btn btn-checkout-primary w-100 text-white mt-4" :disabled="submitting || cartStore.items.length === 0">

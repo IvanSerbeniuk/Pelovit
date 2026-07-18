@@ -15,6 +15,11 @@
   }
 }
 
+.pswp-item {
+  display: block;
+  cursor: zoom-in;
+}
+
 .gallery-nav-btn {
   position: absolute;
   top: 50%;
@@ -103,12 +108,48 @@
 .share_wrapper{
   position: relative;
   top: 22px;
+  z-index: 2;
   .share{
     position: absolute;
     right: 110px;
   }
   .like{
     right: 70px;
+  }
+}
+
+.btn-copy-link {
+  background: #422928;
+  border-color: #422928;
+  color: #fff;
+
+  &:hover, &:focus {
+    background: #2f1d1c;
+    border-color: #2f1d1c;
+    color: #fff;
+  }
+}
+
+.share-social {
+  a {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid #e0d5d0;
+    background: #faf8f6;
+    color: #422928;
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: background .15s, border-color .15s, color .15s;
+
+    &:hover {
+      background: #422928;
+      border-color: #422928;
+      color: #fff;
+    }
   }
 }
 

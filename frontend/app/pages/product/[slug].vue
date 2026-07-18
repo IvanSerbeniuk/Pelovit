@@ -3,6 +3,8 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Thumbs } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/thumbs'
+import PhotoSwipeLightbox from 'photoswipe/lightbox'
+import 'photoswipe/style.css'
 
 const config = useRuntimeConfig()
 const { assetUrl } = useAsset()
@@ -91,6 +93,34 @@ const galleryImages = computed(() => {
   return imgs
 })
 
+const galleryDims = reactive<Record<string, { w: number; h: number }>>({})
+
+function preloadDims(src: string) {
+  if (!import.meta.client || galleryDims[src]) return
+  const img = new Image()
+  img.onload = () => { galleryDims[src] = { w: img.naturalWidth, h: img.naturalHeight } }
+  img.src = src
+}
+
+watch(galleryImages, (imgs) => imgs.forEach(preloadDims), { immediate: true })
+
+const pswpGalleryEl = ref<HTMLElement | null>(null)
+let lightbox: PhotoSwipeLightbox | null = null
+
+onMounted(() => {
+  lightbox = new PhotoSwipeLightbox({
+    gallery: pswpGalleryEl.value!,
+    children: 'a.pswp-item',
+    pswpModule: () => import('photoswipe'),
+  })
+  lightbox.init()
+})
+
+onBeforeUnmount(() => {
+  lightbox?.destroy()
+  lightbox = null
+})
+
 function incQty() { qty.value++ }
 function decQty() { if (qty.value > 1) qty.value-- }
 
@@ -107,6 +137,10 @@ function handleToggleWishlist() {
 }
 
 const inWishlist = computed(() => product.value ? wishlist.has(product.value.id) : false)
+
+function copyProductUrl() {
+  navigator.clipboard.writeText(canonicalUrl.value)
+}
 
 const HEART_OUTLINE = `<svg width="22" height="22" viewBox="0 0 21 19" fill="none"><path d="M18.5152 9.264L10.2652 17.43L2.01516 9.264C1.43802 8.7024 0.983408 8.02732 0.679965 7.28138C0.376523 6.53544 0.230816 5.73475 0.252021 4.92973C0.273226 4.12471 0.460884 3.3328 0.803178 2.60387C1.14547 1.87494 1.63499 1.22477 2.2409 0.69432C2.84681 0.163862 3.55599 -0.23539 4.32378 -0.478301C5.09157 -0.721211 5.90134 -0.80251 6.70209 -0.71709C7.50285 -0.631669 8.27724 -0.381384 8.97652 0.018C9.67581 0.417444 10.2848 0.957312 10.7652 1.60364C11.2476 0.962001 11.8573 0.426853 12.5561 0.031C13.2549 -0.363491 14.0277 -0.610167 14.8262 -0.692918C15.6248 -0.775669 16.4318 -0.692711 17.1967 -0.449233C17.9617 -0.205754 18.6682 0.192987 19.272 0.722068C19.8758 1.25115 20.3638 1.89914 20.7057 2.62552C21.0475 3.35189 21.2357 4.14101 21.2585 4.94347C21.2813 5.74593 21.1383 6.54447 20.8383 7.2891C20.5383 8.03373 20.0879 8.70844 19.5152 9.271" stroke="#422928" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
 const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 21 19" fill="none"><path d="M18.5152 9.264L10.2652 17.43L2.01516 9.264C1.43802 8.7024 0.983408 8.02732 0.679965 7.28138C0.376523 6.53544 0.230816 5.73475 0.252021 4.92973C0.273226 4.12471 0.460884 3.3328 0.803178 2.60387C1.14547 1.87494 1.63499 1.22477 2.2409 0.69432C2.84681 0.163862 3.55599 -0.23539 4.32378 -0.478301C5.09157 -0.721211 5.90134 -0.80251 6.70209 -0.71709C7.50285 -0.631669 8.27724 -0.381384 8.97652 0.018C9.67581 0.417444 10.2848 0.957312 10.7652 1.60364C11.2476 0.962001 11.8573 0.426853 12.5561 0.031C13.2549 -0.363491 14.0277 -0.610167 14.8262 -0.692918C15.6248 -0.775669 16.4318 -0.692711 17.1967 -0.449233C17.9617 -0.205754 18.6682 0.192987 19.272 0.722068C19.8758 1.25115 20.3638 1.89914 20.7057 2.62552C21.0475 3.35189 21.2357 4.14101 21.2585 4.94347C21.2813 5.74593 21.1383 6.54447 20.8383 7.2891C20.5383 8.03373 20.0879 8.70844 19.5152 9.271" stroke="#422928" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#422928"/></svg>`
@@ -127,9 +161,9 @@ const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 21 19" fill="none
         </ol>
       </nav>
 
-      <div class="col-lg-5 left_content">
+      <div class="col-lg-5 left_content" ref="pswpGalleryEl">
         <div class="share_wrapper">
-          <i class="share">
+          <i class="share" role="button" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#shareModal">
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="17" cy="4" r="3" stroke="#333" stroke-width="1.5"/><circle cx="5" cy="11" r="3" stroke="#333" stroke-width="1.5"/><circle cx="17" cy="18" r="3" stroke="#333" stroke-width="1.5"/><path d="M8 9.5L14 5.5M8 12.5L14 16.5" stroke="#333" stroke-width="1.5" stroke-linecap="round"/></svg>
           </i>
           <button class="like" style="background:none;border:none;cursor:pointer;" @click="handleToggleWishlist">
@@ -147,7 +181,14 @@ const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 21 19" fill="none
               @swiper="setMainSwiper"
             >
               <SwiperSlide v-for="(img, i) in galleryImages" :key="i">
-                <img :src="img" :alt="product.name" class="img-fluid product-image shadow-sm rounded">
+                <a
+                  :href="img"
+                  class="pswp-item"
+                  :data-pswp-width="galleryDims[img]?.w || 1200"
+                  :data-pswp-height="galleryDims[img]?.h || 1200"
+                >
+                  <img :src="img" :alt="product.name" class="img-fluid product-image shadow-sm rounded">
+                </a>
               </SwiperSlide>
             </Swiper>
             <button class="gallery-nav-btn gallery-nav-prev" @click="galleryPrev" aria-label="Назад">
@@ -173,11 +214,18 @@ const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 21 19" fill="none
 
         <!-- Одне фото -->
         <div v-else class="text-center">
-          <img
-            :src="galleryImages[0] ?? '/images/image.png'"
-            class="img-fluid product-image shadow-sm rounded"
-            :alt="product.name"
+          <a
+            :href="galleryImages[0] ?? '/images/image.png'"
+            class="pswp-item"
+            :data-pswp-width="galleryDims[galleryImages[0]]?.w || 1200"
+            :data-pswp-height="galleryDims[galleryImages[0]]?.h || 1200"
           >
+            <img
+              :src="galleryImages[0] ?? '/images/image.png'"
+              class="img-fluid product-image shadow-sm rounded"
+              :alt="product.name"
+            >
+          </a>
         </div>
       </div>
 
@@ -250,5 +298,30 @@ const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 21 19" fill="none
       </section>
     </div>
   </section>
+</div>
+
+<div class="modal fade" id="shareModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold">Поділитися:</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body pt-2">
+        <div class="input-group mb-4">
+          <input type="text" class="form-control bg-light border-0" :value="canonicalUrl" readonly>
+          <button class="btn btn-copy-link px-4" type="button" @click="copyProductUrl">Скопіювати</button>
+        </div>
+        <div class="d-flex justify-content-center gap-3 share-social">
+          <a :href="`https://t.me/share/url?url=${encodeURIComponent(canonicalUrl)}`" target="_blank" rel="noopener" aria-label="Поділитися в Telegram">
+            <i class="fab fa-telegram"></i>
+          </a>
+          <a :href="`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonicalUrl)}`" target="_blank" rel="noopener" aria-label="Поділитися в Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 </template>
