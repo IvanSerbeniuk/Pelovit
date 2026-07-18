@@ -1,5 +1,10 @@
-node_modules
-vendor
 .git
 .env
+frontend
+node_modules
+vendor
 npm-debug.log
+database/database.sqlite
+storage/logs/*.log
+.claude
+.idea

@@ -1,0 +1,75 @@
+services:
+  db:
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${DB_DATABASE}
+      MARIADB_USER: ${DB_USERNAME}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  laravel:
+    build:
+      context: .
+      dockerfile: docker/laravel/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      APP_NAME: PELOVIT-R
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_KEY: ${APP_KEY}
+      APP_URL: ${APP_URL}
+      FRONTEND_URL: ${FRONTEND_URL}
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      SESSION_DRIVER: database
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+      MAIL_MAILER: ${MAIL_MAILER}
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      NOVA_POSHTA_API_KEY: ${NOVA_POSHTA_API_KEY}
+      LIQPAY_PUBLIC_KEY: ${LIQPAY_PUBLIC_KEY}
+      LIQPAY_PRIVATE_KEY: ${LIQPAY_PRIVATE_KEY}
+      LIQPAY_SANDBOX: ${LIQPAY_SANDBOX}
+      MOONSHINE_ROUTE_PREFIX: admin
+    volumes:
+      - laravel_storage:/var/www/html/storage
+      - uploads_products:/var/www/html/public/products
+      - uploads_categories:/var/www/html/public/categories
+      - uploads_images:/var/www/html/public/images
+    ports:
+      - "127.0.0.1:8000:8000"
+
+  nuxt:
+    build:
+      context: ./frontend
+    restart: unless-stopped
+    environment:
+      NUXT_PUBLIC_API_BASE: ${NUXT_PUBLIC_API_BASE}
+      NUXT_PUBLIC_ASSET_BASE: ${NUXT_PUBLIC_ASSET_BASE}
+      NUXT_PUBLIC_SITE_URL: ${NUXT_PUBLIC_SITE_URL}
+    ports:
+      - "127.0.0.1:3000:3000"
+
+volumes:
+  db_data:
+  laravel_storage:
+  uploads_products:
+  uploads_categories:
+  uploads_images:
