@@ -5,6 +5,7 @@ const props = defineProps<{
     name: string
     price: number | string
     old_price?: number | string | null
+    discount_percent?: number | null
     image: string | null
     slug: string
     category?: { name: string; slug: string } | null
@@ -24,6 +25,7 @@ const CART_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><p
 <template>
   <div class="product-card card border-0 shadow-sm rad-16">
     <div v-if="product.category" class="tag_brown">{{ product.category.name }}</div>
+    <div v-if="product.discount_percent" class="discount-badge">−{{ product.discount_percent }}%</div>
     <button
       class="like"
       :class="{ active: inWishlist }"

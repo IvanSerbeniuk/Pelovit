@@ -58,6 +58,32 @@
   }
 }
 
+// Discount badge (−N%)
+.discount-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #b5423a;
+  color: $white;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  padding: 5px 8px;
+  border-radius: $radius-sm;
+  white-space: nowrap;
+}
+
+.product-card .discount-badge {
+  position: absolute;
+  top: 12px;
+  right: 46px;
+  z-index: 2;
+}
+
+.discount-badge--inline {
+  font-size: 14px;
+}
+
 .buy svg path,
 .buy:hover svg path,
 .buy:focus svg path,

@@ -239,6 +239,7 @@ const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 21 19" fill="none
         <div class="d-flex align-items-center gap-3 mb-3">
           <h2 class="price mb-0">{{ Math.round(product.price) }}₴</h2>
           <span v-if="product.old_price" class="text-muted text-decoration-line-through fs-5">{{ Math.round(product.old_price) }}₴</span>
+          <span v-if="product.discount_percent" class="discount-badge discount-badge--inline">−{{ product.discount_percent }}%</span>
         </div>
 
         <div class="my-4 counter_cart_wrapper">

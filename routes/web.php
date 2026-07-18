@@ -10,7 +10,7 @@ Route::get('/admin/orders/export-csv', function () {
     $orders = Order::orderBy('created_at', 'desc')->get();
 
     $bom = "\xEF\xBB\xBF";
-    $csv = $bom . implode(';', ['ID', 'Імʼя', 'Прізвище', 'Телефон', 'Email', 'Місто', 'Відділення', 'Оплата', 'Статус', 'Сума', 'Дата']) . "\n";
+    $csv = $bom . implode(';', ['ID', 'Імʼя', 'Прізвище', 'Телефон', 'Email', 'Місто', 'Відділення', 'Оплата', 'Статус оплати', 'Статус', 'Сума', 'Дата']) . "\n";
 
     foreach ($orders as $order) {
         $csv .= implode(';', [
@@ -22,6 +22,7 @@ Route::get('/admin/orders/export-csv', function () {
             '"' . str_replace('"', '""', $order->city ?? '') . '"',
             '"' . str_replace('"', '""', $order->branch ?? '') . '"',
             '"' . $order->payment_method . '"',
+            '"' . $order->payment_status . '"',
             '"' . $order->status . '"',
             $order->total,
             $order->created_at->format('d.m.Y H:i'),

@@ -4,6 +4,7 @@ useHead({ title: 'Замовлення оформлено — PELOVIT-R' })
 const route = useRoute()
 const { data: settings } = useSettings()
 const isCardPayment = computed(() => route.query.payment_method === 'card')
+const isLiqpayPayment = computed(() => route.query.payment_method === 'liqpay')
 </script>
 
 <template>
@@ -15,6 +16,10 @@ const isCardPayment = computed(() => route.query.payment_method === 'card')
     </svg>
     <h1 class="fw-bold mb-3">Замовлення оформлено!</h1>
     <p class="text-muted mb-4">Дякуємо за покупку. Наш менеджер зв'яжеться з вами найближчим часом.</p>
+
+    <div v-if="isLiqpayPayment" class="alert alert-light border d-inline-block mx-auto mb-4" style="max-width: 460px;">
+      Дякуємо! Оплата обробляється. Щойно платіж підтвердиться, статус замовлення оновиться автоматично.
+    </div>
 
     <div v-if="isCardPayment && settings?.payment_card_number" class="alert alert-light border d-inline-block text-start mx-auto mb-4" style="max-width: 420px;">
       <div class="fw-semibold mb-1">Реквізити для оплати</div>

@@ -106,14 +106,15 @@ const CART_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><p
       <div class="col-lg-5">
         <div class="summary-box">
           <div class="d-flex justify-content-between mb-2 gray_cl">
-            <span>Знижка</span><span>0₴</span>
+            <span>Знижка<span v-if="cartStore.promo"> ({{ cartStore.promo.code }})</span></span>
+            <span>{{ cartStore.discount > 0 ? '−' + fmt(cartStore.discount) : '0₴' }}</span>
           </div>
           <div class="d-flex justify-content-between mb-3 gray_cl">
             <span>Сума</span><span>{{ fmt(cartTotal) }}</span>
           </div>
           <div class="d-flex justify-content-between mb-3">
             <span>Сума замовлення</span>
-            <span><strong>{{ fmt(cartTotal) }}</strong></span>
+            <span><strong>{{ fmt(Math.max(0, cartTotal - cartStore.discount)) }}</strong></span>
           </div>
           <NuxtLink to="/order" class="btn btn-brown w-100 py-3 fs-5 mb-3 rad-16" style="display:flex;align-items:center;justify-content:center;">
             Зробити замовлення

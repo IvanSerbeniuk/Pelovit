@@ -35,6 +35,9 @@
               <NuxtLink class="nav-link" to="/">Головна</NuxtLink>
             </li>
             <li class="nav-item">
+              <NuxtLink class="nav-link" to="/promotions">Акції</NuxtLink>
+            </li>
+            <li class="nav-item">
               <NuxtLink class="nav-link" to="/about">Про нас</NuxtLink>
             </li>
             <li class="nav-item">

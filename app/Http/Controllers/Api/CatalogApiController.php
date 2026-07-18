@@ -33,6 +33,7 @@ class CatalogApiController extends Controller
             ->when($request->brand, fn($q, $brand) => $q->where('brand', $brand))
             ->when($request->min_price, fn($q, $min) => $q->where('price', '>=', $min))
             ->when($request->max_price, fn($q, $max) => $q->where('price', '<=', $max))
+            ->when($request->boolean('on_sale'), fn($q) => $q->whereNotNull('old_price')->whereColumn('old_price', '>', 'price'))
             ->when($request->sort, function ($q, $sort) {
                 match ($sort) {
                     'price_asc'  => $q->orderBy('price'),

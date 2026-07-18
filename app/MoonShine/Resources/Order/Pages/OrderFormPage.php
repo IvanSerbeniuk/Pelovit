@@ -46,6 +46,11 @@ class OrderFormPage extends FormPage
                     'completed' => 'Виконано',
                     'cancelled' => 'Скасовано',
                 ]),
+                Select::make('Оплата', 'payment_status')->options([
+                    'pending' => 'Очікує',
+                    'paid'    => 'Оплачено',
+                    'failed'  => 'Не вдалась',
+                ]),
             ]),
             Box::make('Склад замовлення', [
                 Preview::make('Товари', 'items', function ($value) {
@@ -98,11 +103,13 @@ class OrderFormPage extends FormPage
                     Column::make([
                         Text::make('Місто', 'city')->readonly(),
                         Text::make('Відділення', 'branch')->readonly(),
-                        Select::make('Оплата', 'payment_method')->options([
-                            'card' => 'Карта',
-                            'cod'  => 'Накладний платіж',
+                        Select::make('Спосіб оплати', 'payment_method')->options([
+                            'card'   => 'Карта (реквізити)',
+                            'cod'    => 'Накладний платіж',
+                            'liqpay' => 'Карта онлайн (LiqPay)',
                         ])->readonly(),
                         Number::make('Сума', 'total')->readonly(),
+                        Text::make('ID платежу LiqPay', 'payment_id')->readonly(),
                     ])->columnSpan(6),
                 ]),
                 Textarea::make('Коментар', 'comment')->readonly(),

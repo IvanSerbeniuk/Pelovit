@@ -42,6 +42,15 @@ class OrderIndexPage extends IndexPage
             Text::make('Телефон', 'phone'),
             Text::make('Місто', 'city'),
             Number::make('Сума', 'total')->sortable(),
+            Select::make('Оплата', 'payment_status')->options([
+                'pending' => 'Очікує',
+                'paid'    => 'Оплачено',
+                'failed'  => 'Не вдалась',
+            ])->badge(fn($v) => match($v) {
+                'paid'    => 'green',
+                'failed'  => 'red',
+                default   => 'gray',
+            }),
             Select::make('Статус', 'status')->options([
                 'pending'   => 'Новий',
                 'confirmed' => 'Підтверджено',
@@ -106,6 +115,7 @@ class OrderIndexPage extends IndexPage
     {
         return [
             QueryTag::make('Всі', fn($q) => $q),
+            QueryTag::make('Оплачені', fn($q) => $q->where('payment_status', 'paid')),
             QueryTag::make('Нові', fn($q) => $q->where('status', 'pending')),
             QueryTag::make('Підтверджені', fn($q) => $q->where('status', 'confirmed')),
             QueryTag::make('Відправлені', fn($q) => $q->where('status', 'shipped')),

@@ -13,11 +13,57 @@ const { searchCities, getWarehouses } = useNovaPoshta()
 
 const COD_FEE = 20
 
+// ТИМЧАСОВО: доки не заданий ключ Нової пошти, дозволяємо вводити місто/відділення
+// вручну (без вибору зі списку), щоб можна було протестувати оплату LiqPay.
+// Повернути на true, коли запрацює автозаповнення Нової пошти.
+const REQUIRE_NP = false
+
 const cartTotal = computed(() => cartStore.total)
 const codFee = computed(() => (form.payment_method === 'cod' ? COD_FEE : 0))
-const orderTotal = computed(() => cartTotal.value + codFee.value)
+const orderTotal = computed(() => Math.max(0, cartTotal.value - cartStore.discount) + codFee.value)
 const submitting = ref(false)
 const errors = ref<Record<string, string>>({})
+
+// Промокод
+const promoInput = ref('')
+const promoApplying = ref(false)
+const promoMessage = ref('')
+const promoOk = ref(false)
+
+async function applyPromo() {
+  const code = promoInput.value.trim()
+  if (!code || promoApplying.value) return
+
+  promoApplying.value = true
+  promoMessage.value = ''
+  try {
+    const res = await $fetch<any>(`${config.public.apiBase}/promo/validate`, {
+      method: 'POST',
+      body: { code, subtotal: cartTotal.value },
+    })
+    if (res.valid) {
+      cartStore.applyPromo({ code: res.code, type: res.type, value: res.value, discount: res.discount })
+      promoOk.value = true
+      promoMessage.value = res.message
+    } else {
+      cartStore.clearPromo()
+      promoOk.value = false
+      promoMessage.value = res.message
+    }
+  } catch {
+    promoOk.value = false
+    promoMessage.value = 'Не вдалося перевірити промокод'
+  } finally {
+    promoApplying.value = false
+  }
+}
+
+function removePromo() {
+  cartStore.clearPromo()
+  promoInput.value = ''
+  promoMessage.value = ''
+  promoOk.value = false
+}
 
 const form = reactive({
   first_name: '',
@@ -108,13 +154,30 @@ function onWarehouseBlur() {
   setTimeout(() => { warehouseDropdownOpen.value = false }, 150)
 }
 
+function redirectToLiqPay(payload: { action_url: string; data: string; signature: string }) {
+  const f = document.createElement('form')
+  f.method = 'POST'
+  f.action = payload.action_url
+  f.acceptCharset = 'utf-8'
+  for (const [name, value] of Object.entries({ data: payload.data, signature: payload.signature })) {
+    const input = document.createElement('input')
+    input.type = 'hidden'
+    input.name = name
+    input.value = value
+    f.appendChild(input)
+  }
+  document.body.appendChild(f)
+  f.submit()
+}
+
 async function submitOrder() {
   if (cartStore.items.length === 0) return
 
   errors.value = {}
   const localErrors: Record<string, string> = {}
-  if (!cityRef.value) localErrors.city = 'Оберіть місто зі списку Нової пошти'
-  if (!form.branch.trim()) localErrors.branch = 'Оберіть відділення або поштомат'
+  if (REQUIRE_NP && !cityRef.value) localErrors.city = 'Оберіть місто зі списку Нової пошти'
+  else if (!form.city.trim()) localErrors.city = 'Вкажіть місто'
+  if (!form.branch.trim()) localErrors.branch = REQUIRE_NP ? 'Оберіть відділення або поштомат' : 'Вкажіть відділення'
   if (Object.keys(localErrors).length > 0) {
     errors.value = localErrors
     return
@@ -123,21 +186,38 @@ async function submitOrder() {
   submitting.value = true
 
   try {
-    await $fetch(`${config.public.apiBase}/orders`, {
+    const resp = await $fetch<{
+      order_id: number
+      liqpay?: { action_url: string; data: string; signature: string }
+    }>(`${config.public.apiBase}/orders`, {
       method: 'POST',
       body: {
         ...form,
         items: cartStore.items,
         total: orderTotal.value,
+        promo_code: cartStore.promo?.code ?? null,
       },
     })
     cartStore.clear()
+
+    // LiqPay: hand off to the payment gateway via an auto-submitted form.
+    if (resp.liqpay) {
+      redirectToLiqPay(resp.liqpay)
+      return
+    }
+
     router.push({ path: '/order/success', query: { payment_method: form.payment_method } })
   } catch (err: any) {
     if (err?.data?.errors) {
       errors.value = Object.fromEntries(
         Object.entries(err.data.errors).map(([k, v]: any) => [k, v[0]])
       )
+      // Промокод міг стати недійсним між застосуванням і відправкою
+      if (errors.value.promo_code) {
+        promoOk.value = false
+        promoMessage.value = errors.value.promo_code
+        cartStore.clearPromo()
+      }
     }
   } finally {
     submitting.value = false
@@ -214,9 +294,9 @@ async function submitOrder() {
                   type="text"
                   class="form-control"
                   :class="{'is-invalid': errors.branch}"
-                  :placeholder="cityRef ? 'Почніть вводити номер або адресу' : 'Спочатку оберіть місто'"
+                  :placeholder="(!REQUIRE_NP || cityRef) ? 'Почніть вводити номер або адресу' : 'Спочатку оберіть місто'"
                   autocomplete="off"
-                  :disabled="!cityRef"
+                  :disabled="REQUIRE_NP && !cityRef"
                   @input="onWarehouseInput"
                   @focus="onWarehouseFocus"
                   @blur="onWarehouseBlur"
@@ -243,6 +323,11 @@ async function submitOrder() {
           <div class="card-header-custom">Спосіб оплати</div>
           <div class="card-body p-4 pt-0">
             <div class="form-check mb-3 p-3">
+              <input v-model="form.payment_method" class="form-check-input" type="radio" value="liqpay" id="liqpayPayment">
+              <label class="form-check-label" for="liqpayPayment">Оплатити карткою онлайн</label>
+              <div class="text-muted small mt-1">Безпечна оплата карткою через LiqPay. Після підтвердження ви перейдете на сторінку оплати.</div>
+            </div>
+            <div class="form-check mb-3 p-3">
               <input v-model="form.payment_method" class="form-check-input" type="radio" value="card" id="cardPayment">
               <label class="form-check-label" for="cardPayment">Оплата на карту</label>
               <div class="text-muted small mt-1">Проведіть платіж безпосередньо на наш банківський рахунок.</div>
@@ -256,6 +341,7 @@ async function submitOrder() {
               <label class="form-check-label" for="cashOnDelivery">Оплата при отриманні</label>
               <div class="text-muted small mt-1">Накладений платіж + 20₴</div>
             </div>
+            <div v-if="errors.payment_method" class="invalid-feedback d-block px-3">{{ errors.payment_method }}</div>
           </div>
         </div>
 
@@ -284,9 +370,47 @@ async function submitOrder() {
               </div>
             </div>
 
+            <div class="promocode_block pt-3">
+              <label class="form-label mb-1">Промокод</label>
+              <div class="input-group">
+                <input
+                  v-model="promoInput"
+                  type="text"
+                  class="form-control"
+                  placeholder="Введіть промокод"
+                  :disabled="!!cartStore.promo"
+                  @keyup.enter.prevent="applyPromo"
+                >
+                <button
+                  v-if="!cartStore.promo"
+                  type="button"
+                  class="btn actualize px-3"
+                  :disabled="promoApplying || !promoInput.trim()"
+                  @click="applyPromo"
+                >
+                  {{ promoApplying ? '...' : 'Застосувати' }}
+                </button>
+                <button
+                  v-else
+                  type="button"
+                  class="btn actualize px-3"
+                  @click="removePromo"
+                >
+                  Прибрати
+                </button>
+              </div>
+              <div v-if="promoMessage" class="small mt-1" :class="promoOk ? 'text-success' : 'text-danger'">
+                {{ promoMessage }}
+              </div>
+            </div>
+
             <div class="d-flex justify-content-between align-items-center pt-3">
               <span class="text-muted">Сума товарів</span>
               <span>{{ fmt(cartTotal) }}</span>
+            </div>
+            <div v-if="cartStore.discount > 0" class="d-flex justify-content-between align-items-center mt-2">
+              <span class="text-muted">Знижка <span v-if="cartStore.promo">({{ cartStore.promo.code }})</span></span>
+              <span class="text-success">−{{ fmt(cartStore.discount) }}</span>
             </div>
             <div v-if="codFee > 0" class="d-flex justify-content-between align-items-center mt-2">
               <span class="text-muted">Накладений платіж</span>

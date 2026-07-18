@@ -18,6 +18,7 @@ use App\MoonShine\Resources\Banner\BannerResource;
 use App\MoonShine\Resources\Subscriber\SubscriberResource;
 use App\MoonShine\Resources\TeamMember\TeamMemberResource;
 use App\MoonShine\Resources\Lead\LeadResource;
+use App\MoonShine\Resources\PromoCode\PromoCodeResource;
 use App\MoonShine\Pages\SettingsPage;
 
 class MoonShineServiceProvider extends ServiceProvider
@@ -39,6 +40,7 @@ class MoonShineServiceProvider extends ServiceProvider
                 SubscriberResource::class,
                 TeamMemberResource::class,
                 LeadResource::class,
+                PromoCodeResource::class,
             ])
             ->pages([
                 ...$core->getConfig()->getPages(),

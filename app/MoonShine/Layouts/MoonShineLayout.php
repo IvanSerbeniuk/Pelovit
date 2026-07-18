@@ -17,6 +17,7 @@ use App\MoonShine\Resources\Banner\BannerResource;
 use App\MoonShine\Resources\TeamMember\TeamMemberResource;
 use App\MoonShine\Resources\Subscriber\SubscriberResource;
 use App\MoonShine\Resources\Lead\LeadResource;
+use App\MoonShine\Resources\PromoCode\PromoCodeResource;
 use App\MoonShine\Pages\SettingsPage;
 use MoonShine\MenuManager\MenuItem;
 use MoonShine\MenuManager\MenuGroup;
@@ -41,6 +42,7 @@ final class MoonShineLayout extends AppLayout
             ...parent::menu(),
             MenuItem::make(OrderResource::class, 'Замовлення')->icon('shopping-bag'),
             MenuItem::make(LeadResource::class, 'Ліди')->icon('inbox'),
+            MenuItem::make(PromoCodeResource::class, 'Промокоди')->icon('ticket'),
             MenuGroup::make('Каталог', [
                 MenuItem::make(ProductResource::class, 'Товари')->icon('squares-2x2'),
                 MenuItem::make(CategoryResource::class, 'Категорії')->icon('tag'),
