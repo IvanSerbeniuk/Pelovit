@@ -44,7 +44,6 @@ class ProductIndexPage extends IndexPage
             BelongsTo::make('Категорія', 'category', fn($item) => $item->name, resource: \App\MoonShine\Resources\Category\CategoryResource::class),
             Text::make('Бренд', 'brand'),
             Number::make('Ціна', 'price')->sortable(),
-            Number::make('Залишок', 'stock')->sortable(),
             Switcher::make('Активний', 'is_active')->updateOnPreview(),
             Switcher::make('Хіт', 'is_featured')->updateOnPreview(),
         ];
@@ -96,7 +95,6 @@ class ProductIndexPage extends IndexPage
             QueryTag::make('Всі', fn($q) => $q),
             QueryTag::make('Активні', fn($q) => $q->where('is_active', true)),
             QueryTag::make('Хіти', fn($q) => $q->where('is_featured', true)),
-            QueryTag::make('Немає в наявності', fn($q) => $q->where('stock', 0)),
         ];
     }
 

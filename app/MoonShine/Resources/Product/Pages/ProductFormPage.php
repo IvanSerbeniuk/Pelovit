@@ -70,7 +70,6 @@ class ProductFormPage extends FormPage
                     Column::make([
                         Number::make('Ціна (₴)', 'price')->required()->step(0.01),
                         Number::make('Стара ціна (₴)', 'old_price')->step(0.01)->nullable(),
-                        Number::make('Залишок', 'stock')->required(),
                         Switcher::make('Активний', 'is_active'),
                         Switcher::make('Хіт продажів', 'is_featured'),
                     ])->columnSpan(4),
