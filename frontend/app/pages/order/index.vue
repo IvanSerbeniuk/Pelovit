@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useCartStore } from '~/stores/cart'
+import type { NovaPoshtaCity, NovaPoshtaWarehouse } from '~/composables/useNovaPoshta'
 
 useHead({ title: 'Оформлення замовлення — PELOVIT-R' })
 
@@ -8,6 +9,7 @@ const cartStore = useCartStore()
 const { assetUrl } = useAsset()
 const router = useRouter()
 const { data: settings } = useSettings()
+const { searchCities, getWarehouses } = useNovaPoshta()
 
 const cartTotal = computed(() => cartStore.total)
 const submitting = ref(false)
@@ -25,6 +27,80 @@ const form = reactive({
 })
 
 function fmt(n: number) { return Math.round(n) + '₴' }
+
+// Нова Пошта: місто
+const cityRef = ref('')
+const citySuggestions = ref<NovaPoshtaCity[]>([])
+const cityDropdownOpen = ref(false)
+let cityDebounce: ReturnType<typeof setTimeout> | undefined
+
+function onCityInput() {
+  cityRef.value = ''
+  form.branch = ''
+  warehouses.value = []
+
+  clearTimeout(cityDebounce)
+  cityDebounce = setTimeout(async () => {
+    citySuggestions.value = await searchCities(form.city)
+    cityDropdownOpen.value = citySuggestions.value.length > 0
+  }, 300)
+}
+
+function selectCity(city: NovaPoshtaCity) {
+  form.city = city.area ? `${city.name}, ${city.area}` : city.name
+  cityRef.value = city.ref
+  citySuggestions.value = []
+  cityDropdownOpen.value = false
+
+  form.branch = ''
+  warehouses.value = []
+  loadWarehouses()
+}
+
+function onCityBlur() {
+  setTimeout(() => { cityDropdownOpen.value = false }, 150)
+}
+
+// Нова Пошта: відділення
+const warehouses = ref<NovaPoshtaWarehouse[]>([])
+const warehouseDropdownOpen = ref(false)
+const warehousesLoading = ref(false)
+const warehouseSelected = ref(false)
+
+async function loadWarehouses() {
+  if (!cityRef.value) return
+  warehousesLoading.value = true
+  try {
+    warehouses.value = await getWarehouses(cityRef.value)
+  } finally {
+    warehousesLoading.value = false
+  }
+}
+
+const filteredWarehouses = computed(() => {
+  if (!form.branch.trim()) return warehouses.value
+  const q = form.branch.toLowerCase()
+  return warehouses.value.filter((w) => w.description.toLowerCase().includes(q))
+})
+
+function onWarehouseInput() {
+  warehouseSelected.value = false
+  warehouseDropdownOpen.value = true
+}
+
+function onWarehouseFocus() {
+  warehouseDropdownOpen.value = true
+}
+
+function selectWarehouse(w: NovaPoshtaWarehouse) {
+  form.branch = w.description
+  warehouseSelected.value = true
+  warehouseDropdownOpen.value = false
+}
+
+function onWarehouseBlur() {
+  setTimeout(() => { warehouseDropdownOpen.value = false }, 150)
+}
 
 async function submitOrder() {
   if (cartStore.items.length === 0) return
@@ -93,13 +169,52 @@ async function submitOrder() {
           <div class="card-body p-4 pt-0">
             <div class="d-flex align-items-center gap-2 mb-3"><span>Нова пошта</span></div>
             <div class="row g-3">
-              <div class="col-md-6">
+              <div class="col-md-6 position-relative">
                 <label class="form-label">Місто / Населений пункт</label>
-                <input v-model="form.city" type="text" class="form-control" placeholder="Оберіть місто">
+                <input
+                  v-model="form.city"
+                  type="text"
+                  class="form-control"
+                  placeholder="Почніть вводити назву міста"
+                  autocomplete="off"
+                  @input="onCityInput"
+                  @focus="cityDropdownOpen = citySuggestions.length > 0"
+                  @blur="onCityBlur"
+                >
+                <ul v-if="cityDropdownOpen" class="np-dropdown">
+                  <li v-for="c in citySuggestions" :key="c.ref" @mousedown.prevent="selectCity(c)">
+                    {{ c.name }} <span v-if="c.area" class="text-muted small">— {{ c.area }}</span>
+                  </li>
+                </ul>
+                <div v-if="cityRef" class="text-success small mt-1">
+                  <i class="fa-solid fa-check"></i> Місто підтверджено Новою поштою
+                </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-6 position-relative">
                 <label class="form-label">Номер відділення / поштомату</label>
-                <input v-model="form.branch" type="text" class="form-control" placeholder="Відділення №">
+                <input
+                  v-model="form.branch"
+                  type="text"
+                  class="form-control"
+                  :placeholder="cityRef ? 'Почніть вводити номер або адресу' : 'Спочатку оберіть місто'"
+                  autocomplete="off"
+                  :disabled="!cityRef"
+                  @input="onWarehouseInput"
+                  @focus="onWarehouseFocus"
+                  @blur="onWarehouseBlur"
+                >
+                <ul v-if="warehouseDropdownOpen" class="np-dropdown">
+                  <li v-if="warehousesLoading" class="text-muted">Завантаження…</li>
+                  <template v-else>
+                    <li v-for="w in filteredWarehouses" :key="w.ref" @mousedown.prevent="selectWarehouse(w)">
+                      {{ w.description }}
+                    </li>
+                    <li v-if="filteredWarehouses.length === 0" class="text-muted">Нічого не знайдено</li>
+                  </template>
+                </ul>
+                <div v-if="warehouseSelected" class="text-success small mt-1">
+                  <i class="fa-solid fa-check"></i> Відділення підтверджено Новою поштою
+                </div>
               </div>
             </div>
           </div>

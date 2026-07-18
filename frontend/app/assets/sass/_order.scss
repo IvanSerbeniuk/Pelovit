@@ -143,6 +143,33 @@ body{
     border-radius: 16px;
   }
 
+  .np-dropdown {
+    position: absolute;
+    z-index: 20;
+    top: 100%;
+    left: 0.75rem;
+    right: 0.75rem;
+    margin-top: 4px;
+    max-height: 240px;
+    overflow-y: auto;
+    background: #ffffff;
+    border: 1px solid #F5EDE8;
+    border-radius: 12px;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+    padding: 0.4rem 0;
+    list-style: none;
+
+    li {
+      padding: 0.5rem 0.9rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: #2d3e50;
+    }
+    li:hover {
+      background-color: #FAF7F3;
+    }
+  }
+
 
 
   @media (max-width: 768px) {
