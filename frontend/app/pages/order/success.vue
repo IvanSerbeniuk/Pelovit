@@ -1,5 +1,9 @@
 <script setup lang="ts">
 useHead({ title: 'Замовлення оформлено — PELOVIT-R' })
+
+const route = useRoute()
+const { data: settings } = useSettings()
+const isCardPayment = computed(() => route.query.payment_method === 'card')
 </script>
 
 <template>
@@ -11,7 +15,16 @@ useHead({ title: 'Замовлення оформлено — PELOVIT-R' })
     </svg>
     <h1 class="fw-bold mb-3">Замовлення оформлено!</h1>
     <p class="text-muted mb-4">Дякуємо за покупку. Наш менеджер зв'яжеться з вами найближчим часом.</p>
-    <NuxtLink to="/" class="btn btn-dark px-5 py-3 rad-16">На головну</NuxtLink>
+
+    <div v-if="isCardPayment && settings?.payment_card_number" class="alert alert-light border d-inline-block text-start mx-auto mb-4" style="max-width: 420px;">
+      <div class="fw-semibold mb-1">Реквізити для оплати</div>
+      <div>Номер картки: <strong>{{ settings.payment_card_number }}</strong></div>
+      <div v-if="settings.payment_card_holder">Одержувач: <strong>{{ settings.payment_card_holder }}</strong></div>
+    </div>
+
+    <div>
+      <NuxtLink to="/" class="btn btn-dark px-5 py-3 rad-16">На головну</NuxtLink>
+    </div>
   </div>
 </section>
 </template>

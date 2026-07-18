@@ -54,6 +54,9 @@ class SettingsPage extends Page
         $shopHtml = $field('Мінімальна сума для безкоштовної доставки (₴)', 'min_free_shipping', 'number', 'Залиште порожнім щоб вимкнути') .
             $field('Текст банера / оголошення', 'banner_text', 'text', 'Відображається у шапці сайту. Порожньо — банер прихований.');
 
+        $paymentHtml = $field('Номер картки для оплати', 'payment_card_number', 'text', 'Показується клієнту при виборі "Оплата на карту" — на сторінці замовлення, сторінці успіху та в листі-підтвердженні.') .
+            $field('Одержувач (ПІБ)', 'payment_card_holder', 'text', 'Необовʼязково. Показується поруч із номером картки.');
+
         $textarea = fn(string $label, string $key, string $hint = '') =>
             "<div style='margin-bottom:16px'>
                 <label style='display:block;font-size:12px;font-weight:600;color:var(--color-base-text);opacity:.7;margin-bottom:6px'>{$label}</label>
@@ -110,6 +113,10 @@ class SettingsPage extends Page
             <div style='margin-top:8px'>
                 <div style='font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--color-base-text);opacity:.45;margin-bottom:16px'>Магазин</div>
                 {$shopHtml}
+            </div>
+            <div style='margin-top:8px'>
+                <div style='font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--color-base-text);opacity:.45;margin-bottom:16px'>Оплата</div>
+                {$paymentHtml}
             </div>
             <div style='margin-top:8px'>
                 <div style='font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--color-base-text);opacity:.45;margin-bottom:16px'>Глобальне SEO</div>

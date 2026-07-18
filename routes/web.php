@@ -38,6 +38,7 @@ Route::post('/admin/settings/save', function (\Illuminate\Http\Request $request)
         'phone', 'phone_2', 'phone_3', 'email',
         'instagram_url', 'facebook_url', 'telegram_url', 'viber_url', 'youtube_url',
         'banner_text', 'min_free_shipping',
+        'payment_card_number', 'payment_card_holder',
         // Global SEO
         'google_analytics_id', 'default_og_image', 'site_description',
         // Per-page SEO

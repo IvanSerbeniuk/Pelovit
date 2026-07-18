@@ -7,6 +7,7 @@ const config = useRuntimeConfig()
 const cartStore = useCartStore()
 const { assetUrl } = useAsset()
 const router = useRouter()
+const { data: settings } = useSettings()
 
 const cartTotal = computed(() => cartStore.total)
 const submitting = ref(false)
@@ -40,7 +41,7 @@ async function submitOrder() {
       },
     })
     cartStore.clear()
-    router.push('/order/success')
+    router.push({ path: '/order/success', query: { payment_method: form.payment_method } })
   } catch (err: any) {
     if (err?.data?.errors) {
       errors.value = Object.fromEntries(
@@ -111,6 +112,10 @@ async function submitOrder() {
               <input v-model="form.payment_method" class="form-check-input" type="radio" value="card" id="cardPayment">
               <label class="form-check-label" for="cardPayment">Оплата на карту</label>
               <div class="text-muted small mt-1">Проведіть платіж безпосередньо на наш банківський рахунок.</div>
+              <div v-if="form.payment_method === 'card' && settings?.payment_card_number" class="alert alert-light border mt-2 mb-0 py-2 px-3 small">
+                Номер картки: <strong>{{ settings.payment_card_number }}</strong>
+                <span v-if="settings.payment_card_holder"><br>Одержувач: <strong>{{ settings.payment_card_holder }}</strong></span>
+              </div>
             </div>
             <div class="form-check p-3 rounded-3">
               <input v-model="form.payment_method" class="form-check-input" type="radio" value="cod" id="cashOnDelivery">

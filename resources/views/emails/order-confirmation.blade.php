@@ -35,6 +35,17 @@
 - **Коментар:** {{ $order->comment }}
 @endif
 
+@if($order->payment_method === 'card' && $paymentCardNumber)
+---
+
+## Реквізити для оплати
+
+- **Номер картки:** {{ $paymentCardNumber }}
+@if($paymentCardHolder)
+- **Одержувач:** {{ $paymentCardHolder }}
+@endif
+@endif
+
 ---
 
 З повагою,<br>
