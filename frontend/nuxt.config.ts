@@ -40,6 +40,10 @@ export default defineNuxtConfig({
         { name: 'twitter:site', content: '@pelovit' },
       ],
       link: [
+        // Раннє з'єднання з CDN шрифтів — інакше DNS+TLS до gstatic починається
+        // лише після завантаження CSS і затримує промальовування тексту.
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&display=swap',
@@ -48,10 +52,8 @@ export default defineNuxtConfig({
           rel: 'stylesheet',
           href: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
         },
-        {
-          rel: 'stylesheet',
-          href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css',
-        },
+        // Font Awesome прибрано — усі 9 іконок, що використовувались,
+        // тепер інлайнові SVG у компоненті <AppIcon>.
       ],
       script: [
         {

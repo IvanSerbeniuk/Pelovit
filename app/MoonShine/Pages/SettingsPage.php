@@ -51,6 +51,9 @@ class SettingsPage extends Page
             $field('Viber', 'viber_url', 'url') .
             $field('YouTube', 'youtube_url', 'url');
 
+        $appHtml = $field('App Store (iOS)', 'app_store_url', 'url', 'Порожньо — у футері показується «Незабаром в App Store».') .
+            $field('Google Play (Android)', 'google_play_url', 'url', 'Порожньо — у футері показується «Незабаром в Google Play».');
+
         $shopHtml = $field('Мінімальна сума для безкоштовної доставки (₴)', 'min_free_shipping', 'number', 'Залиште порожнім щоб вимкнути') .
             $field('Текст банера / оголошення', 'banner_text', 'text', 'Відображається у шапці сайту. Порожньо — банер прихований.');
 
@@ -109,6 +112,10 @@ class SettingsPage extends Page
                     <div style='font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--color-base-text);opacity:.45;margin-bottom:16px'>Соціальні мережі</div>
                     {$socialHtml}
                 </div>
+            </div>
+            <div style='margin-top:8px'>
+                <div style='font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--color-base-text);opacity:.45;margin-bottom:16px'>Мобільний застосунок</div>
+                {$appHtml}
             </div>
             <div style='margin-top:8px'>
                 <div style='font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--color-base-text);opacity:.45;margin-bottom:16px'>Магазин</div>

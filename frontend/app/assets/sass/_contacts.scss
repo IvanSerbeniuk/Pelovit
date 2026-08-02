@@ -24,9 +24,11 @@
       align-items: center;
       justify-content: center;
 
-      i {
+      // Іконки тепер інлайнові SVG (<AppIcon>) замість Font Awesome:
+      // розмір керується font-size, колір — currentColor.
+      svg {
         color: $brown-dark;
-        font-size: 1.1rem;
+        font-size: 1.35rem;
       }
     }
   }

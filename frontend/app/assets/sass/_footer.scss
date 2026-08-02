@@ -6,6 +6,12 @@
   background: #f9f3eb;
 }
 
+// Заголовки колонок футера — h3 заради ієрархії, розмір як у колишнього h6.
+.footer-heading {
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
 .loyalty-form {
   .form-control {
     background: rgba(211, 211, 211, 0.4);
@@ -32,6 +38,57 @@
 
     &:hover {
       background: #2c1f1a;
+    }
+  }
+}
+
+// Кнопки завантаження застосунку (App Store / Google Play) у футері.
+.app-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.app-badge {
+  flex: 1 1 190px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: #422928;
+  color: #fff;
+  text-decoration: none;
+  transition: background .2s ease;
+
+  &:hover {
+    background: #2c1f1a;
+    color: #fff !important;
+    text-decoration: none !important;
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+    font-size: 1.05rem;
+    font-weight: 600;
+    white-space: nowrap;
+
+    small {
+      font-size: .72rem;
+      font-weight: 400;
+      opacity: .75;
+    }
+  }
+
+  // Посилання ще немає — показуємо той самий бейдж, але без переходу.
+  &--soon {
+    background: rgba(66, 41, 40, .45);
+    cursor: default;
+
+    &:hover {
+      background: rgba(66, 41, 40, .45);
     }
   }
 }

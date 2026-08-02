@@ -114,41 +114,66 @@
       </Transition>
     </Teleport>
 
-    <slot />
+    <main>
+      <slot />
+    </main>
 
     <section class="loyalty-footer py-5">
       <div class="container">
         <div class="row align-items-center g-5">
           <div class="col-lg-7">
-            <h2 class="fw-bold display-5 mb-3">Приєднуйтесь до нашої програми лояльності!</h2>
+            <h2 class="fw-bold display-5 mb-3">Завантажуйте наш застосунок!</h2>
             <p class="lead text-muted">
-              Реєструйтеся на сайті та отримуйте бонуси за покупки,<br>
-              спеціальні пропозиції та персональні знижки.
+              Отримуйте бонуси за покупки, спеціальні пропозиції<br>
+              та персональні знижки.
             </p>
           </div>
           <div class="col-lg-5">
-            <div v-if="subscribeSuccess" class="loyalty-success">
-              <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="11" stroke="#422928" stroke-width="1.5"/>
-                <path d="M7.5 12l3 3 6-6" stroke="#422928" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <p class="mt-3 mb-0 fw-semibold">Дякуємо! Ви успішно підписались.</p>
+            <div class="app-badges">
+              <!-- Поки посилання не заповнене в налаштуваннях, кнопка неактивна:
+                   краще «Незабаром», ніж перехід у нікуди. -->
+              <a
+                v-if="settings?.app_store_url"
+                :href="settings.app_store_url"
+                target="_blank"
+                rel="noopener"
+                class="app-badge"
+              >
+                <AppIcon name="apple" size="30" />
+                <span class="app-badge__text">
+                  <small>Завантажити в</small>
+                  App Store
+                </span>
+              </a>
+              <span v-else class="app-badge app-badge--soon">
+                <AppIcon name="apple" size="30" />
+                <span class="app-badge__text">
+                  <small>Незабаром в</small>
+                  App Store
+                </span>
+              </span>
+
+              <a
+                v-if="settings?.google_play_url"
+                :href="settings.google_play_url"
+                target="_blank"
+                rel="noopener"
+                class="app-badge"
+              >
+                <AppIcon name="google-play" size="30" />
+                <span class="app-badge__text">
+                  <small>Завантажити в</small>
+                  Google Play
+                </span>
+              </a>
+              <span v-else class="app-badge app-badge--soon">
+                <AppIcon name="google-play" size="30" />
+                <span class="app-badge__text">
+                  <small>Незабаром в</small>
+                  Google Play
+                </span>
+              </span>
             </div>
-            <form v-else class="loyalty-form" @submit.prevent="submitSubscribe">
-              <div class="mb-3">
-                <input v-model="subscribeForm.name" type="text" class="form-control" placeholder="Ім'я">
-              </div>
-              <div class="mb-4">
-                <input v-model="subscribeForm.email" type="email" class="form-control" placeholder="Електронна пошта" required>
-              </div>
-              <p v-if="subscribeError" class="text-danger small mb-2">{{ subscribeError }}</p>
-              <button type="submit" class="btn btn-dark w-100 py-3 fw-medium rounded-3" :disabled="subscribeLoading">
-                {{ subscribeLoading ? 'Надсилання...' : 'Підписатись' }}
-              </button>
-              <p class="text-center text-muted mt-3 small">
-                Натискаючи кнопку, ви погоджуєтесь з обробкою персональних даних.
-              </p>
-            </form>
           </div>
         </div>
 
@@ -159,7 +184,7 @@
             <h3 class="fw-bold mb-4">PELOVIT</h3>
           </div>
           <div class="col-md-6 col-lg-3">
-            <h6 class="fw-semibold mb-3">Навігація</h6>
+            <h3 class="footer-heading fw-semibold mb-3">Навігація</h3>
             <ul class="list-unstyled">
               <li class="mb-2"><NuxtLink to="/about" class="text-dark text-decoration-none">Про нас</NuxtLink></li>
               <li class="mb-2"><NuxtLink to="/catalog" class="text-dark text-decoration-none">Препарати</NuxtLink></li>
@@ -170,7 +195,7 @@
             </ul>
           </div>
           <div class="col-md-6 col-lg-3">
-            <h6 class="fw-semibold mb-3">Категорія товарів</h6>
+            <h3 class="footer-heading fw-semibold mb-3">Категорія товарів</h3>
             <ul class="list-unstyled">
               <li class="mb-2"><NuxtLink to="/catalog" class="text-dark text-decoration-none">Парфумована лінійка ART17</NuxtLink></li>
               <li class="mb-2"><NuxtLink to="/catalog" class="text-dark text-decoration-none">Лікувальні препарати</NuxtLink></li>
@@ -180,7 +205,7 @@
             </ul>
           </div>
           <div class="col-md-6 col-lg-3">
-            <h6 class="fw-semibold mb-3">Контакти</h6>
+            <h3 class="footer-heading fw-semibold mb-3">Контакти</h3>
             <ul class="list-unstyled">
               <li v-if="settings?.email" class="mb-3">
                 <a :href="`mailto:${settings.email}`" class="text-dark text-decoration-none">✉ {{ settings.email }}</a>
@@ -192,17 +217,17 @@
               </li>
             </ul>
             <div class="d-flex gap-3 mt-3">
-              <a v-if="settings?.instagram_url" :href="settings.instagram_url" target="_blank" rel="noopener" class="text-dark fs-4">
-                <i class="fab fa-instagram"></i>
+              <a v-if="settings?.instagram_url" :href="settings.instagram_url" target="_blank" rel="noopener" class="text-dark fs-4" aria-label="Instagram">
+                <AppIcon name="instagram" />
               </a>
-              <a v-if="settings?.facebook_url" :href="settings.facebook_url" target="_blank" rel="noopener" class="text-dark fs-4">
-                <i class="fab fa-facebook"></i>
+              <a v-if="settings?.facebook_url" :href="settings.facebook_url" target="_blank" rel="noopener" class="text-dark fs-4" aria-label="Facebook">
+                <AppIcon name="facebook" />
               </a>
-              <a v-if="settings?.youtube_url" :href="settings.youtube_url" target="_blank" rel="noopener" class="text-dark fs-4">
-                <i class="fab fa-youtube"></i>
+              <a v-if="settings?.youtube_url" :href="settings.youtube_url" target="_blank" rel="noopener" class="text-dark fs-4" aria-label="YouTube">
+                <AppIcon name="youtube" />
               </a>
-              <a v-if="settings?.telegram_url" :href="settings.telegram_url" target="_blank" rel="noopener" class="text-dark fs-4">
-                <i class="fab fa-telegram"></i>
+              <a v-if="settings?.telegram_url" :href="settings.telegram_url" target="_blank" rel="noopener" class="text-dark fs-4" aria-label="Telegram">
+                <AppIcon name="telegram" />
               </a>
             </div>
           </div>
@@ -239,27 +264,6 @@ useHead(computed(() => gaId.value ? {
 } : {}))
 
 const config = useRuntimeConfig()
-
-const subscribeForm = reactive({ name: '', email: '' })
-const subscribeLoading = ref(false)
-const subscribeSuccess = ref(false)
-const subscribeError = ref('')
-
-async function submitSubscribe() {
-  subscribeLoading.value = true
-  subscribeError.value = ''
-  try {
-    await $fetch(`${config.public.apiBase}/subscribe`, {
-      method: 'POST',
-      body: { name: subscribeForm.name || undefined, email: subscribeForm.email },
-    })
-    subscribeSuccess.value = true
-  } catch {
-    subscribeError.value = 'Сталася помилка. Перевірте email і спробуйте ще раз.'
-  } finally {
-    subscribeLoading.value = false
-  }
-}
 
 const router = useRouter()
 const searchOpen = ref(false)

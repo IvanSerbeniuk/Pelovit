@@ -32,6 +32,15 @@
     border-top: 1px solid $border-light;
   }
 
+  // Заголовок картки — h3 заради коректної ієрархії; розміри фіксуємо тут,
+  // щоб він виглядав як колишній h6.
+  .card-title {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: .5rem;
+  }
+
   .wrapper__price_buy {
     display: flex;
     justify-content: space-between;

@@ -30,6 +30,8 @@ const CART_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><p
       class="like"
       :class="{ active: inWishlist }"
       style="background:none;border:none;cursor:pointer;"
+      :aria-label="inWishlist ? `Видалити ${product.name} з обраного` : `Додати ${product.name} до обраного`"
+      :aria-pressed="inWishlist"
       @click="toggleWishlist(product)"
     >
       <span v-html="inWishlist ? HEART_FILLED : HEART_OUTLINE"></span>
@@ -38,9 +40,11 @@ const CART_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><p
       <img :src="imgSrc(product.image)" class="card-img-top" :alt="product.name" loading="lazy" decoding="async">
     </NuxtLink>
     <div class="card-body">
-      <h6 class="card-title">
+      <!-- h3, а не h6: секції на сторінках — h2, тож h6 ламав ієрархію заголовків.
+           Вигляд не змінюється — розмір задано в .product-card .card-title. -->
+      <h3 class="card-title">
         <NuxtLink :to="`/product/${product.slug}`" class="text-decoration-none text-dark">{{ product.name }}</NuxtLink>
-      </h6>
+      </h3>
       <div class="wrapper__price_buy">
         <div class="disc_price_wrapper">
           <h4 class="price">{{ Math.round(Number(product.price)) }}₴</h4>

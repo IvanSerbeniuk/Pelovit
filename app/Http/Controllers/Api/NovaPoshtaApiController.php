@@ -21,7 +21,7 @@ class NovaPoshtaApiController extends Controller
             return response()->json([]);
         }
 
-        $cities = Cache::remember('np_cities_' . mb_strtolower($query), now()->addDay(), function () use ($query) {
+        return response()->json($this->cached('np_cities_'.mb_strtolower($query), now()->addDay(), function () use ($query) {
             $items = $this->call('Address', 'getCities', [
                 'FindByString' => $query,
                 'Limit' => 20,
@@ -36,9 +36,7 @@ class NovaPoshtaApiController extends Controller
                 ->filter(fn (array $city) => $city['ref'] && $city['name'])
                 ->values()
                 ->all();
-        });
-
-        return response()->json($cities);
+        }));
     }
 
     public function warehouses(Request $request): JsonResponse
@@ -49,7 +47,7 @@ class NovaPoshtaApiController extends Controller
             return response()->json([]);
         }
 
-        $warehouses = Cache::remember('np_warehouses_' . $cityRef, now()->addHours(6), function () use ($cityRef) {
+        $warehouses = $this->cached('np_warehouses_'.$cityRef, now()->addHours(6), function () use ($cityRef) {
             $items = $this->call('Address', 'getWarehouses', [
                 'CityRef' => $cityRef,
                 'Limit' => 500,
@@ -68,6 +66,28 @@ class NovaPoshtaApiController extends Controller
         });
 
         return response()->json($warehouses);
+    }
+
+    /**
+     * Кешує лише непорожню відповідь. Через Cache::remember збій API або
+     * відсутній ключ осідали в кеші на добу, і підказки не з'являлися ще довго
+     * після того, як проблему вже полагодили.
+     */
+    private function cached(string $key, \DateTimeInterface $ttl, \Closure $callback): array
+    {
+        $cached = Cache::get($key);
+
+        if (is_array($cached)) {
+            return $cached;
+        }
+
+        $fresh = $callback();
+
+        if ($fresh !== []) {
+            Cache::put($key, $fresh, $ttl);
+        }
+
+        return $fresh;
     }
 
     private function call(string $model, string $method, array $properties): array
@@ -94,7 +114,7 @@ class NovaPoshtaApiController extends Controller
 
             return $json['success'] ?? false ? ($json['data'] ?? []) : [];
         } catch (\Throwable $e) {
-            Log::warning('Nova Poshta API request failed: ' . $e->getMessage());
+            Log::warning('Nova Poshta API request failed: '.$e->getMessage());
 
             return [];
         }

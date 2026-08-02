@@ -78,6 +78,17 @@ const form = reactive({
   comment: '',
 })
 
+// У формі одне поле, а бекенд, листи й адмінка оперують окремими
+// first_name/last_name — ділимо введене по першому пробілу.
+const fullName = ref('')
+
+function splitFullName(value: string) {
+  const parts = value.trim().replace(/\s+/g, ' ').split(' ')
+  return { first_name: parts.shift() ?? '', last_name: parts.join(' ') }
+}
+
+const nameError = computed(() => errors.value.first_name || errors.value.last_name)
+
 function fmt(n: number) { return Math.round(n) + '₴' }
 
 // Нова Пошта: місто
@@ -177,6 +188,16 @@ async function submitOrder() {
 
   errors.value = {}
   const localErrors: Record<string, string> = {}
+
+  // Прізвище на бекенді обов'язкове, тож самого лише імені замало.
+  const { first_name, last_name } = splitFullName(fullName.value)
+  if (!first_name) localErrors.first_name = 'Вкажіть ім\'я та прізвище'
+  else if (!last_name) localErrors.last_name = 'Вкажіть також прізвище'
+  form.first_name = first_name
+  form.last_name = last_name
+
+  if (!form.phone.trim()) localErrors.phone = 'Вкажіть мобільний телефон'
+
   if (REQUIRE_NP && !cityRef.value) localErrors.city = 'Оберіть місто зі списку Нової пошти'
   else if (!form.city.trim()) localErrors.city = 'Вкажіть місто'
   if (!form.branch.trim()) localErrors.branch = REQUIRE_NP ? 'Оберіть відділення або поштомат' : 'Вкажіть відділення'
@@ -250,18 +271,13 @@ async function submitOrder() {
           <div class="card-header-custom">Контактні дані</div>
           <div class="card-body p-4 pt-0">
             <div class="row g-3">
-              <div class="col-md-6">
-                <label class="form-label fw-medium">Ваше ім'я <span class="text-danger">*</span></label>
-                <input v-model="form.first_name" type="text" class="form-control" :class="{'is-invalid': errors.first_name}" placeholder="Введіть імʼя" required>
-                <div v-if="errors.first_name" class="invalid-feedback">{{ errors.first_name }}</div>
+              <div class="col-12">
+                <label class="form-label fw-medium">Ім'я та прізвище <span class="text-danger">*</span></label>
+                <input v-model="fullName" type="text" class="form-control" :class="{'is-invalid': nameError}" placeholder="Введіть ім'я та прізвище" required>
+                <div v-if="nameError" class="invalid-feedback">{{ nameError }}</div>
               </div>
               <div class="col-md-6">
-                <label class="form-label fw-medium">Ваше прізвище <span class="text-danger">*</span></label>
-                <input v-model="form.last_name" type="text" class="form-control" :class="{'is-invalid': errors.last_name}" placeholder="Введіть прізвище" required>
-                <div v-if="errors.last_name" class="invalid-feedback">{{ errors.last_name }}</div>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label fw-medium">Мобільний телефон</label>
+                <label class="form-label fw-medium">Мобільний телефон <span class="text-danger">*</span></label>
                 <input v-model="form.phone" type="tel" class="form-control" :class="{'is-invalid': errors.phone}" placeholder="Введіть телефон" required>
                 <div v-if="errors.phone" class="invalid-feedback">{{ errors.phone }}</div>
               </div>
@@ -298,7 +314,7 @@ async function submitOrder() {
                 </ul>
                 <div v-if="errors.city" class="invalid-feedback d-block">{{ errors.city }}</div>
                 <div v-else-if="cityRef" class="text-success small mt-1">
-                  <i class="fa-solid fa-check"></i> Місто підтверджено Новою поштою
+                  <AppIcon name="check" /> Місто підтверджено Новою поштою
                 </div>
               </div>
               <div class="col-md-6 position-relative">
@@ -326,7 +342,7 @@ async function submitOrder() {
                 </ul>
                 <div v-if="errors.branch" class="invalid-feedback d-block">{{ errors.branch }}</div>
                 <div v-else-if="warehouseSelected" class="text-success small mt-1">
-                  <i class="fa-solid fa-check"></i> Відділення підтверджено Новою поштою
+                  <AppIcon name="check" /> Відділення підтверджено Новою поштою
                 </div>
               </div>
             </div>

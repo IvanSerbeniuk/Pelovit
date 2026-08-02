@@ -242,7 +242,7 @@ const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none
           <button class="btn btn-dark btn-lg px-5 me-3 add_incart" @click="handleAddToCart">
             Отримай 10% знижки у застосунку
           </button>
-          <button class="btn btn-outline-dark px-5 btn-lg buy_in_oneclick">Купити в один клік</button>
+          <button class="btn btn-outline-dark px-5 btn-lg buy_in_oneclick">Додати в кошик</button>
         </div>
 
         <div class="description_wrapper_dropdown">
@@ -306,10 +306,10 @@ const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none
         </div>
         <div class="d-flex justify-content-center gap-3 share-social">
           <a :href="`https://t.me/share/url?url=${encodeURIComponent(canonicalUrl)}`" target="_blank" rel="noopener" aria-label="Поділитися в Telegram">
-            <i class="fab fa-telegram"></i>
+            <AppIcon name="telegram" />
           </a>
           <a :href="`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonicalUrl)}`" target="_blank" rel="noopener" aria-label="Поділитися в Facebook">
-            <i class="fab fa-facebook-f"></i>
+            <AppIcon name="facebook" />
           </a>
         </div>
       </div>

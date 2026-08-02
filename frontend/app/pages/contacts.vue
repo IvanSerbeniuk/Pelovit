@@ -20,28 +20,28 @@ const team = computed(() => data.value?.team ?? [])
       <div class="col-lg-5">
         <div class="contact-info">
           <div class="contact-item">
-            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+            <div class="contact-icon"><AppIcon name="phone" /></div>
             <div>
               <div style="font-size:.8rem;color:#9a8680;margin-bottom:2px;">Телефон</div>
               <a href="tel:+380633090303" style="color:inherit;text-decoration:none;font-weight:500;">+38 (063) 309-03-03</a>
             </div>
           </div>
           <div class="contact-item">
-            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+            <div class="contact-icon"><AppIcon name="envelope" /></div>
             <div>
               <div style="font-size:.8rem;color:#9a8680;margin-bottom:2px;">Email</div>
               <a href="mailto:aksimed@ukr.net" style="color:inherit;text-decoration:none;font-weight:500;">aksimed@ukr.net</a>
             </div>
           </div>
           <div class="contact-item">
-            <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div class="contact-icon"><AppIcon name="map-marker" /></div>
             <div>
               <div style="font-size:.8rem;color:#9a8680;margin-bottom:2px;">Адреса</div>
               <span style="font-weight:500;">вул. Успенська 59 / Пушкінська, Одеса</span>
             </div>
           </div>
           <div class="contact-item">
-            <div class="contact-icon"><i class="fas fa-clock"></i></div>
+            <div class="contact-icon"><AppIcon name="clock" /></div>
             <div>
               <div style="font-size:.8rem;color:#9a8680;margin-bottom:2px;">Графік роботи</div>
               <span style="font-weight:500;">пн–пт, 10:00–18:00</span>
