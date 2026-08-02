@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             PostSeeder::class,
             CalculatorSeeder::class,
+            ContractContentSeeder::class,
         ]);
     }
 }

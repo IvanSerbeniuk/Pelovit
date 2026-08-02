@@ -19,8 +19,11 @@ use App\MoonShine\Resources\Subscriber\SubscriberResource;
 use App\MoonShine\Resources\TeamMember\TeamMemberResource;
 use App\MoonShine\Resources\Lead\LeadResource;
 use App\MoonShine\Resources\PromoCode\PromoCodeResource;
+use App\MoonShine\Resources\BrandCase\BrandCaseResource;
 use App\MoonShine\Resources\CalculatorOption\CalculatorOptionResource;
 use App\MoonShine\Resources\CalculatorTier\CalculatorTierResource;
+use App\MoonShine\Resources\Faq\FaqResource;
+use App\MoonShine\Resources\Testimonial\TestimonialResource;
 use App\MoonShine\Pages\SettingsPage;
 
 class MoonShineServiceProvider extends ServiceProvider
@@ -45,6 +48,9 @@ class MoonShineServiceProvider extends ServiceProvider
                 PromoCodeResource::class,
                 CalculatorOptionResource::class,
                 CalculatorTierResource::class,
+                TestimonialResource::class,
+                BrandCaseResource::class,
+                FaqResource::class,
             ])
             ->pages([
                 ...$core->getConfig()->getPages(),

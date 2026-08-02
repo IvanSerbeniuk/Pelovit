@@ -36,40 +36,41 @@ const steps = [
   'Аксимед відправляє ваше замовлення та сертифікати',
 ]
 
-const testimonialSlides = [
-  [
-    {
-      quote: '«Сприйняття мене, як професіонала, змінилося»',
-      text: 'Коли люди дізнаються, що в мене є засоби власної розробки, а потім бачать, що вони ефективні, то починають цінити мене, як справжнього професіонала.',
-      image: 'images/pexel_oly.jpg',
-      name: 'Юлія',
-      role: 'косметолог',
-    },
-    {
-      quote: '«Кількість клієнтів підвищилася»',
-      text: 'Замовила розробку зігріваючої маски для масажу та крему для рук з мінералами під власною маркою Blossom Nails. Манікюр з їх використанням дуже подобається клієнтам.',
-      image: 'images/skin_portrait.png',
-      name: 'Тетяна',
-      role: 'майстер манікюру',
-    },
-  ],
-  [
-    {
-      quote: '«Звичні процедури стали ефективнішими»',
-      text: 'Масаж з остеопатичними техніками дає прекрасні результати. Клієнти помічають різницю і завжди повертаються.',
-      image: 'images/skin_portrait.png',
-      name: 'Олена',
-      role: 'масажист',
-    },
-    {
-      quote: '«Мої клієнти тепер питають саме мої засоби»',
-      text: 'Після запуску власної лінійки косметики клієнти стали частіше записуватись і питати саме мої продукти.',
-      image: 'images/pexel_oly.jpg',
-      name: 'Ірина',
-      role: 'трихолог',
-    },
-  ],
-]
+// Відгуки, кейси і FAQ живуть у БД: раніше додати новий відгук міг лише
+// розробник, бо вони були захардкожені прямо тут.
+const { data: content } = await useFetch<any>(`${config.public.apiBase}/contract`)
+
+const testimonials = computed<any[]>(() => content.value?.testimonials ?? [])
+const brandCases = computed<any[]>(() => content.value?.cases ?? [])
+const faqs = computed<any[]>(() => content.value?.faqs ?? [])
+
+// Карусель показує по два відгуки на слайд.
+const testimonialSlides = computed(() => {
+  const slides: any[][] = []
+  for (let i = 0; i < testimonials.value.length; i += 2) {
+    slides.push(testimonials.value.slice(i, i + 2))
+  }
+  return slides
+})
+
+// FAQPage-розмітка: питання про мінімальний тираж і терміни люди
+// шукають у пошуку, а не тільки на сайті.
+useHead({
+  script: computed(() => (faqs.value.length
+    ? [{
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: faqs.value.map(faq => ({
+            '@type': 'Question',
+            name: faq.question,
+            acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+          })),
+        }),
+      }]
+    : [])),
+})
 
 // --- Калькулятор ---
 // Прайс живе в БД і редагується в адмінці (Калькулятор: опції / знижки за тираж),
@@ -89,6 +90,11 @@ const formulaId = ref<number | null>(null)
 const packagingId = ref<number | null>(null)
 const labelId = ref<number | null>(null)
 const boxId = ref<number | null>(null)
+// Верхня межа тиражу мусить покривати відповідь «більше 1000 шт» в опитуванні,
+// інакше повзунок і підсумок розійдуться.
+const QTY_MIN = 10
+const QTY_MAX = 2000
+
 const volume = ref(30)
 const quantity = ref(100)
 
@@ -192,6 +198,44 @@ function bubbleStyle(value: number, min: number, max: number) {
   return { left: `calc(${percent * 100}% + ${(0.5 - percent) * 28}px)` }
 }
 
+// Конфігурація живе в URL: клієнт може повернутись до розрахунку або
+// переслати його, а менеджер — надіслати готове посилання.
+const route = useRoute()
+const router = useRouter()
+
+onMounted(() => {
+  const q = route.query
+  const num = (v: unknown) => (v === undefined ? null : Number(v))
+
+  if (num(q.product)) productId.value = num(q.product)
+  if (num(q.formula)) formulaId.value = num(q.formula)
+  if (num(q.packaging)) packagingId.value = num(q.packaging)
+  if (num(q.label)) labelId.value = num(q.label)
+  if (num(q.box)) boxId.value = num(q.box)
+  if (num(q.volume)) volume.value = Math.min(Math.max(num(q.volume)!, 10), 100)
+  if (num(q.qty)) quantity.value = Math.min(Math.max(num(q.qty)!, QTY_MIN), QTY_MAX)
+
+  // Слідкуємо за станом лише після відновлення з URL, інакше перший же
+  // watch затер би параметри, з якими прийшов користувач.
+  watch(
+    [productId, formulaId, packagingId, labelId, boxId, volume, quantity],
+    () => {
+      router.replace({
+        query: {
+          ...route.query,
+          product: productId.value ?? undefined,
+          formula: formulaId.value ?? undefined,
+          packaging: packagingId.value ?? undefined,
+          label: labelId.value ?? undefined,
+          box: boxId.value ?? undefined,
+          volume: volume.value,
+          qty: quantity.value,
+        },
+      })
+    },
+  )
+})
+
 const calculatorEl = ref<HTMLElement | null>(null)
 
 // Кнопка «Розрахувати вартість» під товаром має підставляти цей товар
@@ -202,6 +246,20 @@ function calculateFor(product: { name?: string }) {
   )
   if (matched) productId.value = matched.id
   calculatorEl.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+// Опитування не живе окремо від калькулятора: обраний тип продукту і тираж
+// одразу підставляються в розрахунок.
+const quizSummary = ref('')
+
+function onQuizFinish(payload: { summary: string, product: string | null, quantity: number | null }) {
+  quizSummary.value = payload.summary
+
+  const matched = productTypes.value.find(type => type.name === payload.product)
+  if (matched) productId.value = matched.id
+  if (payload.quantity) {
+    quantity.value = Math.min(Math.max(payload.quantity, QTY_MIN), QTY_MAX)
+  }
 }
 
 // --- Таймер акції на пробники ---
@@ -258,6 +316,11 @@ const { data: brandProducts, pending: brandProductsPending } = await useAsyncDat
 
 <template>
 <div class="kontractne_vyrobnyctvo_page">
+  <!-- Сторінка довга: на мобільному форма швидко зникає з поля зору. -->
+  <div class="mobile-cta">
+    <a href="#consultation" class="mobile-cta__btn">Отримати консультацію</a>
+  </div>
+
   <section class="breadrembs-section">
     <div class="container">
       <nav aria-label="breadcrumb">
@@ -302,7 +365,7 @@ const { data: brandProducts, pending: brandProductsPending } = await useAsyncDat
       <div class="row cards">
         <div v-for="item in audiences" :key="item.name" class="cat_card">
           <div class="category-card">
-            <img :src="assetUrl(item.image)" class="rounded-4 w-100" :alt="item.name" loading="lazy" decoding="async">
+            <AppPicture :src="item.image" :alt="item.name" img-class="rounded-4 w-100" />
             <p class="mt-3 fw-medium cat_name">{{ item.name }}</p>
           </div>
         </div>
@@ -419,8 +482,16 @@ const { data: brandProducts, pending: brandProductsPending } = await useAsyncDat
           <div class="mb-4">
             <label class="form-label" for="calc-quantity">Обрати кількість</label>
             <div class="range-wrap">
-              <div class="range-bubble" :style="bubbleStyle(quantity, 10, 500)">{{ quantity }} шт</div>
-              <input id="calc-quantity" v-model.number="quantity" type="range" class="form-range custom-range" min="10" max="500" step="10">
+              <div class="range-bubble" :style="bubbleStyle(quantity, QTY_MIN, QTY_MAX)">{{ quantity }} шт</div>
+              <input
+                id="calc-quantity"
+                v-model.number="quantity"
+                type="range"
+                class="form-range custom-range"
+                :min="QTY_MIN"
+                :max="QTY_MAX"
+                step="10"
+              >
             </div>
           </div>
 
@@ -601,7 +672,7 @@ const { data: brandProducts, pending: brandProductsPending } = await useAsyncDat
       </div>
 
       <div class="mt-5 hero-image">
-        <img :src="assetUrl('images/skincare_routine.png')" alt="Косметика Аксимед" class="img-fluid" loading="lazy" decoding="async">
+        <AppPicture src="images/skincare_routine.png" alt="Косметика Аксимед" img-class="img-fluid" />
       </div>
     </div>
   </section>
@@ -636,7 +707,7 @@ const { data: brandProducts, pending: brandProductsPending } = await useAsyncDat
           <div class="offer-card mb-5">
             <div class="row align-items-center">
               <div class="col-md-4 text-center">
-                <img :src="assetUrl('images/amber_test.png')" alt="Пробники продукції" class="img-fluid" style="max-height: 160px;" loading="lazy" decoding="async">
+                <AppPicture src="images/amber_test.png" alt="Пробники продукції" img-class="img-fluid offer-card__image" />
               </div>
               <div class="col-md-7">
                 <h5 class="fw-bold">ОТРИМАЙТЕ 3 безкоштовні пробники нашої продукції</h5>
@@ -651,13 +722,13 @@ const { data: brandProducts, pending: brandProductsPending } = await useAsyncDat
             </div>
           </div>
 
-          <a href="#tester-form" class="btn btn-dark btn-lg w-100 py-4 fs-5 rad-16">Розпочати опитування</a>
+          <ContractQuiz @finish="onQuizFinish" />
         </div>
 
         <div class="col-lg-5 right_side">
           <div id="tester-form" class="consultation-form">
             <h4>Замовити тестер</h4>
-            <LeadForm source="contract-tester" :contact-methods="contactMethods" />
+            <LeadForm source="contract-tester" :contact-methods="contactMethods" :details="quizSummary" />
             <ContactSocials />
           </div>
         </div>
@@ -685,7 +756,7 @@ const { data: brandProducts, pending: brandProductsPending } = await useAsyncDat
       </div>
 
       <div class="main-image mb-5">
-        <img :src="assetUrl('images/makeup_pencil.png')" alt="Пеловіт" class="img-fluid" loading="lazy" decoding="async">
+        <AppPicture src="images/makeup_pencil.png" alt="Пеловіт" img-class="img-fluid" />
       </div>
 
       <div class="table-responsive mt-5">
@@ -723,7 +794,34 @@ const { data: brandProducts, pending: brandProductsPending } = await useAsyncDat
     </div>
   </section>
 
-  <section class="testimonials-section">
+  <!-- Кейси наповнюються в адмінці; поки їх немає — секція не показується,
+       щоб не було порожнього блока з обіцянками. -->
+  <section v-if="brandCases.length" class="cases-section">
+    <div class="container">
+      <h2 class="section-title">Бренди, які ми вже зробили</h2>
+      <p class="cases-lead">Реальні лінійки, випущені під брендом наших клієнтів.</p>
+
+      <div class="row g-4">
+        <div v-for="item in brandCases" :key="item.id" class="col-lg-4 col-md-6">
+          <article class="case-card h-100">
+            <div v-if="item.image" class="case-card__image">
+              <img :src="assetUrl(item.image)" :alt="item.brand_name" loading="lazy" decoding="async">
+            </div>
+            <div class="case-card__body">
+              <h3 class="case-card__brand">{{ item.brand_name }}</h3>
+              <p v-if="item.client_name" class="case-card__client">
+                {{ item.client_name }}<span v-if="item.client_role">, {{ item.client_role }}</span>
+              </p>
+              <p v-if="item.description" class="case-card__text">{{ item.description }}</p>
+              <p v-if="item.result" class="case-card__result">{{ item.result }}</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section v-if="testimonials.length" class="testimonials-section">
     <div class="container">
       <h2 class="section-title">Відгуки про співпрацю</h2>
 
@@ -731,17 +829,17 @@ const { data: brandProducts, pending: brandProductsPending } = await useAsyncDat
         <div class="carousel-inner">
           <div v-for="(slide, i) in testimonialSlides" :key="i" class="carousel-item" :class="{ active: i === 0 }">
             <div class="row g-4">
-              <div v-for="item in slide" :key="item.name" class="col-md-6">
+              <div v-for="item in slide" :key="item.id" class="col-md-6">
                 <div class="testimonial-card">
                   <div class="wrapper_review">
                     <div class="quote-text">{{ item.quote }}</div>
                     <div class="testimonial-text">{{ item.text }}</div>
                   </div>
                   <div class="client-info">
-                    <img :src="assetUrl(item.image)" :alt="item.name" class="client-avatar" loading="lazy" decoding="async">
+                    <img :src="assetUrl(item.image)" :alt="item.author_name" class="client-avatar" loading="lazy" decoding="async">
                     <div>
-                      <strong>{{ item.name }}</strong><br>
-                      <small>{{ item.role }}</small>
+                      <strong>{{ item.author_name }}</strong><br>
+                      <small>{{ item.author_role }}</small>
                     </div>
                   </div>
                 </div>
@@ -817,12 +915,12 @@ const { data: brandProducts, pending: brandProductsPending } = await useAsyncDat
       <div class="row g-4 mt-4">
         <div class="col-lg-6">
           <div class="lab-image">
-            <img :src="assetUrl('images/pexel_arnempodrez.jpg')" alt="Науковець з колбою" class="img-fluid" loading="lazy" decoding="async">
+            <AppPicture src="images/pexel_arnempodrez.jpg" alt="Науковець з колбою" img-class="img-fluid" />
           </div>
         </div>
         <div class="col-lg-6">
           <div class="lab-image">
-            <img :src="assetUrl('images/science_in_laboratory.png')" alt="Лабораторія Аксимед" class="img-fluid" loading="lazy" decoding="async">
+            <AppPicture src="images/science_in_laboratory.png" alt="Лабораторія Аксимед" img-class="img-fluid" />
           </div>
         </div>
       </div>
@@ -833,7 +931,7 @@ const { data: brandProducts, pending: brandProductsPending } = await useAsyncDat
     <div class="container">
       <h3 class="title_nagoroda text-center mb-5">Робота Аксимед неодноразово відмічена нагородами</h3>
       <div class="nagoroda_img">
-        <img :src="assetUrl('images/nagorods.png')" alt="Нагороди Аксимед" class="img-fluid" loading="lazy" decoding="async">
+        <AppPicture src="images/nagorods.png" alt="Нагороди Аксимед" img-class="img-fluid" />
       </div>
     </div>
   </section>
@@ -844,12 +942,42 @@ const { data: brandProducts, pending: brandProductsPending } = await useAsyncDat
       <div class="row g-5 justify-content-center">
         <div class="col-lg-5 col-md-6">
           <div class="cert-card">
-            <img :src="assetUrl('images/sertificate1.png')" alt="Сертифікат GMP ISO 22716 — англійська версія" class="cert-image" loading="lazy" decoding="async">
+            <AppPicture src="images/sertificate1.png" alt="Сертифікат GMP ISO 22716 — англійська версія" img-class="cert-image" />
           </div>
         </div>
         <div class="col-lg-5 col-md-6">
           <div class="cert-card">
-            <img :src="assetUrl('images/sertificate2.png')" alt="Сертифікат GMP ISO 22716 — українська версія" class="cert-image" loading="lazy" decoding="async">
+            <AppPicture src="images/sertificate2.png" alt="Сертифікат GMP ISO 22716 — українська версія" img-class="cert-image" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section v-if="faqs.length" class="faq-section">
+    <div class="container">
+      <h2 class="section-title">Часті питання</h2>
+
+      <div class="accordion faq-accordion" id="contractFaq">
+        <div v-for="(faq, i) in faqs" :key="faq.id" class="accordion-item">
+          <h3 class="accordion-header">
+            <button
+              class="accordion-button"
+              :class="{ collapsed: i !== 0 }"
+              type="button"
+              data-bs-toggle="collapse"
+              :data-bs-target="`#faq-${faq.id}`"
+              :aria-expanded="i === 0"
+              :aria-controls="`faq-${faq.id}`"
+            >{{ faq.question }}</button>
+          </h3>
+          <div
+            :id="`faq-${faq.id}`"
+            class="accordion-collapse collapse"
+            :class="{ show: i === 0 }"
+            data-bs-parent="#contractFaq"
+          >
+            <div class="accordion-body">{{ faq.answer }}</div>
           </div>
         </div>
       </div>
