@@ -1,15 +1,28 @@
+// Складання під Capacitor: BUILD_TARGET=app npm run build:app
+// У режимі застосунку SSR вимкнено — WebView вантажить статику з диска пристрою.
+const isApp = process.env.BUILD_TARGET === 'app'
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  ssr: true,
+  ssr: !isApp,
 
   modules: ['@pinia/nuxt', 'nuxt-swiper'],
 
   runtimeConfig: {
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:8000/api',
-      assetBase: process.env.NUXT_PUBLIC_ASSET_BASE || 'http://localhost:8000',
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+      // У застосунку немає локального сервера, тому дефолти мусять бути
+      // абсолютними: WebView звертається до продакшн-бекенду напряму.
+      apiBase:
+        process.env.NUXT_PUBLIC_API_BASE ||
+        (isApp ? 'https://develop-site.online/api' : 'http://localhost:8000/api'),
+      assetBase:
+        process.env.NUXT_PUBLIC_ASSET_BASE ||
+        (isApp ? 'https://develop-site.online' : 'http://localhost:8000'),
+      siteUrl:
+        process.env.NUXT_PUBLIC_SITE_URL ||
+        (isApp ? 'https://develop-site.online' : 'http://localhost:3000'),
+      isApp,
     },
   },
 
@@ -49,10 +62,16 @@ export default defineNuxtConfig({
 
   css: ['~/assets/sass/main.scss'],
 
-  routeRules: {
-    '/images/**': { proxy: 'http://localhost:8000/images/**' },
-    '/products/**': { proxy: 'http://localhost:8000/products/**' },
-  },
+  // Проксі працює лише на веб-збірці (Nitro). У застосунку зображення
+  // тягнуться напряму з assetBase через useAsset().
+  routeRules: isApp
+    ? {}
+    : {
+        '/images/**': { proxy: 'http://localhost:8000/images/**' },
+        '/products/**': { proxy: 'http://localhost:8000/products/**' },
+      },
+
+  nitro: isApp ? { preset: 'static' } : {},
 
   vite: {
     css: {

@@ -35,7 +35,7 @@ const CART_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><p
       <span v-html="inWishlist ? HEART_FILLED : HEART_OUTLINE"></span>
     </button>
     <NuxtLink :to="`/product/${product.slug}`">
-      <img :src="imgSrc(product.image)" class="card-img-top" :alt="product.name">
+      <img :src="imgSrc(product.image)" class="card-img-top" :alt="product.name" loading="lazy" decoding="async">
     </NuxtLink>
     <div class="card-body">
       <h6 class="card-title">

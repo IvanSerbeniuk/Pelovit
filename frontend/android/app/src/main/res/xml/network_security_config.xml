@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- 10.0.2.2 — це хост-машина з точки зору емулятора. Незашифрований
+         трафік дозволено лише для неї, щоб ганяти debug-збірку проти
+         локального Laravel. Продакшн і далі ходить лише через HTTPS. -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">10.0.2.2</domain>
+        <domain includeSubdomains="false">localhost</domain>
+    </domain-config>
+
+    <base-config cleartextTrafficPermitted="false" />
+</network-security-config>

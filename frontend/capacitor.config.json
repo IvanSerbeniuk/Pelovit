@@ -1,0 +1,20 @@
+{
+  "appId": "ua.pelovit.app",
+  "appName": "PELOVIT-R",
+  "webDir": ".output/public",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "backgroundColor": "#ffffff",
+      "showSpinner": false,
+      "androidScaleType": "CENTER_CROP"
+    },
+    "StatusBar": {
+      "style": "LIGHT",
+      "backgroundColor": "#ffffff"
+    }
+  }
+}

@@ -215,13 +215,13 @@ const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 21 19" fill="none
         <!-- Одне фото -->
         <div v-else class="text-center">
           <a
-            :href="galleryImages[0] ?? '/images/image.png'"
+            :href="galleryImages[0] ?? assetUrl(null)"
             class="pswp-item"
             :data-pswp-width="galleryDims[galleryImages[0]]?.w || 1200"
             :data-pswp-height="galleryDims[galleryImages[0]]?.h || 1200"
           >
             <img
-              :src="galleryImages[0] ?? '/images/image.png'"
+              :src="galleryImages[0] ?? assetUrl(null)"
               class="img-fluid product-image shadow-sm rounded"
               :alt="product.name"
             >

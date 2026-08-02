@@ -57,7 +57,7 @@ function postImg(post: any) {
         <div class="card h-100">
           <div class="position-relative">
             <div class="card-img-top_wrapper">
-              <img :src="postImg(post)" class="card-img-top" :alt="post.title">
+              <img :src="postImg(post)" class="card-img-top" :alt="post.title" loading="lazy" decoding="async">
             </div>
             <span v-if="post.category" class="badge position-absolute px-3 py-2">{{ post.category }}</span>
           </div>
@@ -96,7 +96,7 @@ function postImg(post: any) {
               <div class="card h-100">
                 <div class="position-relative">
                   <div class="card-img-top_wrapper">
-                    <img :src="postImg(post)" class="card-img-top" :alt="post.title">
+                    <img :src="postImg(post)" class="card-img-top" :alt="post.title" loading="lazy" decoding="async">
                   </div>
                   <span v-if="post.category" class="badge position-absolute top-3 start-3">{{ post.category }}</span>
                 </div>

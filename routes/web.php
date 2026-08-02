@@ -5,6 +5,24 @@ use App\Models\Lead;
 use App\Models\Order;
 use App\Models\Setting;
 use App\Models\Subscriber;
+use App\Services\LiqPayService;
+
+/*
+ * Точка входу в оплату для мобільного застосунку.
+ *
+ * Capacitor відкриває платіж у зовнішньому браузері через Browser.open(), а той
+ * уміє лише GET — тоді як LiqPay чекає POST з data + signature. Цей маршрут
+ * віддає сторінку, яка сабмітить форму сама. Посилання підписане й короткоживуче,
+ * інакше будь-хто міг би відкрити чужий платіж, знаючи лише id замовлення.
+ */
+Route::get('/pay/{order}', function (Order $order, LiqPayService $liqpay) {
+    abort_unless($order->payment_method === 'liqpay', 404);
+    abort_if($order->payment_status === 'paid', 410, 'Замовлення вже оплачене.');
+
+    return response()
+        ->view('liqpay.redirect', ['liqpay' => $liqpay->checkoutData($order, forApp: true)])
+        ->header('Cache-Control', 'no-store');
+})->middleware('signed')->name('liqpay.pay');
 
 Route::get('/admin/orders/export-csv', function () {
     $orders = Order::orderBy('created_at', 'desc')->get();

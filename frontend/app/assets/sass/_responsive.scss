@@ -94,9 +94,10 @@
   }
 
   .marquee-track {
-    gap: 3rem;
     svg {
       height: 100px;
+      width: auto;
+      margin-right: 3rem;
     }
   }
   .articles-grid,

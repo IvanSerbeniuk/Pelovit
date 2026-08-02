@@ -17,11 +17,20 @@ class LiqPayService
     public const CHECKOUT_URL = 'https://www.liqpay.ua/api/3/checkout';
 
     /**
+     * Deep link scheme registered by the Capacitor app.
+     */
+    public const APP_SCHEME = 'pelovit://';
+
+    /**
      * Build the checkout payload for an order.
+     *
+     * When $forApp is true the result_url points at the app's deep link instead
+     * of the website, so the external browser hands control back to the app
+     * after payment rather than leaving the user on a web page.
      *
      * @return array{action_url: string, data: string, signature: string}
      */
-    public function checkoutData(Order $order): array
+    public function checkoutData(Order $order, bool $forApp = false): array
     {
         $params = [
             'public_key' => (string) config('services.liqpay.public_key'),
@@ -32,8 +41,10 @@ class LiqPayService
             'description' => "Замовлення №{$order->id} — PELOVIT-R",
             'order_id' => $this->orderReference($order),
             'server_url' => rtrim((string) config('app.url'), '/').'/api/liqpay/callback',
-            'result_url' => rtrim((string) config('app.frontend_url'), '/')
-                ."/order/success?payment_method=liqpay&order_id={$order->id}",
+            'result_url' => $forApp
+                ? self::APP_SCHEME."order/success?payment_method=liqpay&order_id={$order->id}"
+                : rtrim((string) config('app.frontend_url'), '/')
+                    ."/order/success?payment_method=liqpay&order_id={$order->id}",
             'sandbox' => config('services.liqpay.sandbox') ? 1 : 0,
         ];
 

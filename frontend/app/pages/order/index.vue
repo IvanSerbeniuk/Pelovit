@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Capacitor } from '@capacitor/core'
+import { Browser } from '@capacitor/browser'
 import { useCartStore } from '~/stores/cart'
 import type { NovaPoshtaCity, NovaPoshtaWarehouse } from '~/composables/useNovaPoshta'
 
@@ -186,11 +188,16 @@ async function submitOrder() {
   submitting.value = true
 
   try {
+    const isNative = Capacitor.isNativePlatform()
+
     const resp = await $fetch<{
       order_id: number
       liqpay?: { action_url: string; data: string; signature: string }
+      payment_url?: string
     }>(`${config.public.apiBase}/orders`, {
       method: 'POST',
+      // За цим заголовком бекенд віддає посилання на оплату замість форми.
+      headers: isNative ? { 'X-App-Platform': Capacitor.getPlatform() } : {},
       body: {
         ...form,
         items: cartStore.items,
@@ -199,6 +206,13 @@ async function submitOrder() {
       },
     })
     cartStore.clear()
+
+    // У застосунку оплата відкривається в системному браузері: у WebView
+    // ламається 3-D Secure. Повернення — по deep link, який ловить плагін.
+    if (isNative && resp.payment_url) {
+      await Browser.open({ url: resp.payment_url })
+      return
+    }
 
     // LiqPay: hand off to the payment gateway via an auto-submitted form.
     if (resp.liqpay) {

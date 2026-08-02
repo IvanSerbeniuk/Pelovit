@@ -97,7 +97,7 @@
     inset: 0;
     background-image:
             radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
-            url('../images/Topographic.png');
+            url('/app-images/Topographic.png');
     background-size: cover;
     background-position: center;
     opacity: 0.12;
@@ -145,7 +145,7 @@
 .card_liman {
   background-image:
           linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
-          url('../images/face_washing.png');
+          url('/app-images/face_washing.png');
   background-size: cover;
   background-position: center;
   border-radius: 24px;
@@ -222,6 +222,7 @@
 .icon-wrapper {
   width: 80px;
   height: 80px;
+  flex-shrink: 0;
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
@@ -275,7 +276,6 @@
   .marquee-track {
     display: flex;
     align-items: center;
-    gap: 4.5rem;
     animation: marquee 40s linear infinite;
     width: max-content;
       will-change: transform;
@@ -283,6 +283,10 @@
       svg {
       opacity: 0.75;
       transition: opacity 0.3s;
+      // spacing lives on the item, not as a gap: the track holds two identical
+      // sets, so the -50% shift only lines up if the trailing space is included
+      margin-right: 4.5rem;
+      flex-shrink: 0;
 
       &:hover {
         opacity: 1;
@@ -292,6 +296,12 @@
 
   &:hover .marquee-track {
     animation-play-state: paused;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-wrapper .marquee-track {
+    animation: none;
   }
 }
 @keyframes marquee {

@@ -10,6 +10,7 @@ use App\Services\OrderNotifier;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
 
 class OrderApiController extends Controller
@@ -86,6 +87,21 @@ class OrderApiController extends Controller
         // confirmation emails to the payment callback and hand the checkout
         // payload back to the client so it can redirect to LiqPay.
         if ($order->payment_method === 'liqpay') {
+            // Застосунок не може сабмітити форму у власному WebView — 3-D Secure
+            // там ламається. Замість пейлоада він отримує підписане посилання,
+            // яке відкриває в зовнішньому браузері.
+            if ($request->header('X-App-Platform')) {
+                return response()->json([
+                    'success' => true,
+                    'order_id' => $order->id,
+                    'payment_url' => URL::temporarySignedRoute(
+                        'liqpay.pay',
+                        now()->addMinutes(30),
+                        ['order' => $order->id],
+                    ),
+                ], 201);
+            }
+
             return response()->json([
                 'success' => true,
                 'order_id' => $order->id,

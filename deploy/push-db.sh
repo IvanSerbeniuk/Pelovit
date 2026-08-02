@@ -18,8 +18,14 @@ LDB="$(envval DB_DATABASE)"; LUSER="$(envval DB_USERNAME)"; LPASS="$(envval DB_P
 
 echo "Локальна БД '${LDB}'  →  ${REMOTE}:${REMOTE_DIR} (контейнер db, база '${PROD_DB}')"
 
+# Не переносимо службові/сесійні таблиці та адмінів MoonShine —
+# щоб зберегти прод-адміна і не тягнути runtime-сміття.
+SKIP="sessions cache cache_locks jobs job_batches failed_jobs moonshine_users moonshine_user_roles"
+IGNORE=""
+for t in $SKIP; do IGNORE="$IGNORE --ignore-table=${LDB}.${t}"; done
+
 mysqldump -u"${LUSER}" -p"${LPASS}" --no-tablespaces --single-transaction \
-          --default-character-set=utf8mb4 "${LDB}" \
+          --default-character-set=utf8mb4 ${IGNORE} "${LDB}" \
   | ssh "${REMOTE}" "cd ${REMOTE_DIR} && docker compose exec -T db sh -c 'exec mariadb -uroot -p\"\$MARIADB_ROOT_PASSWORD\" ${PROD_DB}'"
 
 echo "Готово. Перевір каталог на https://develop-site.online"

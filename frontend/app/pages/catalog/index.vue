@@ -89,7 +89,7 @@ const activeFiltersCount = computed(() => {
         <div v-for="cat in categories" :key="cat.id" class="cat_card">
           <NuxtLink :to="`/catalog?category=${cat.slug}`" class="text-decoration-none d-block">
             <div class="category-card rounded-4 overflow-hidden" :class="{ active: filters.category === cat.slug }">
-              <img :src="assetUrl(cat.image)" class="rounded-4 w-100" :alt="cat.name">
+              <img :src="assetUrl(cat.image)" class="rounded-4 w-100" :alt="cat.name" loading="lazy" decoding="async">
               <p class="mt-3 fw-medium cat_name">{{ cat.name }}</p>
             </div>
           </NuxtLink>
