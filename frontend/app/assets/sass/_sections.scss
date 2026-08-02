@@ -16,15 +16,41 @@
     top: 13px;
   }
 }
-.all_categories .filters{
-  display: flex;
-  gap: 0.5rem;
-  border-bottom: 1px solid;
-  height: 1.9rem;
-  font-weight: 600;
-  font-size: 16px;
-    display: flex;
+.all_categories {
+  .catalog-head h2 {
+    font-size: clamp(1.35rem, 5vw, 2rem);
+    line-height: 1.2;
+  }
+
+  .filters {
+    display: inline-flex;
     align-items: center;
+    gap: 0.5rem;
+    flex: 0 0 auto;
+    padding-bottom: 4px;
+    border-bottom: 1px solid;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1;
+    white-space: nowrap;
+
+    .content {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .icon_filter {
+      display: inline-flex;
+      align-items: center;
+
+      svg {
+        display: block;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
 }
 
 .section-nav-btns {
