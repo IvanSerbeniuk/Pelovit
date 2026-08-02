@@ -60,6 +60,15 @@ const CART_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><p
           <div class="step-circle">3</div>
         </div>
 
+        <!-- Вміст кошика лежить у localStorage, якого немає на сервері: без
+             ClientOnly серверна розмітка (порожній кошик) не збігається з
+             клієнтською і Vue лається на розбіжність гідратації. -->
+        <ClientOnly>
+          <template #fallback>
+            <div class="cart_wrapper gap-2 d-flex flex-column mt-4">
+              <p class="text-muted">Завантаження кошика…</p>
+            </div>
+          </template>
         <div class="cart_wrapper gap-2 d-flex flex-column mt-4">
           <p v-if="cartStore.items.length === 0" class="text-muted">Ваш кошик порожній.</p>
           <div v-for="item in cartStore.items" :key="item.id"
@@ -81,6 +90,7 @@ const CART_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><p
             </div>
           </div>
         </div>
+        </ClientOnly>
 
         <template v-if="featured.length > 0">
           <h5 class="mt-5 mb-3">Акційні товари</h5>
@@ -105,6 +115,7 @@ const CART_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><p
 
       <div class="col-lg-5">
         <div class="summary-box">
+          <ClientOnly>
           <div class="d-flex justify-content-between mb-2 gray_cl">
             <span>Знижка<span v-if="cartStore.promo"> ({{ cartStore.promo.code }})</span></span>
             <span>{{ cartStore.discount > 0 ? '−' + fmt(cartStore.discount) : '0₴' }}</span>
@@ -116,6 +127,7 @@ const CART_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><p
             <span>Сума замовлення</span>
             <span><strong>{{ fmt(Math.max(0, cartTotal - cartStore.discount)) }}</strong></span>
           </div>
+          </ClientOnly>
           <NuxtLink to="/order" class="btn btn-brown w-100 py-3 fs-5 mb-3 rad-16" style="display:flex;align-items:center;justify-content:center;">
             Зробити замовлення
           </NuxtLink>

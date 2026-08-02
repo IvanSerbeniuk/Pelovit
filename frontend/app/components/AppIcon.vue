@@ -6,6 +6,16 @@ const props = withDefaults(defineProps<{ name: string; size?: string | number }>
   size: '1em',
 })
 
+// Розмір задається стилем, а не атрибутами width/height: у SVGElement це
+// readonly-властивості, і спроба присвоїти їх під час гідратації валить
+// «Failed setting prop "width" on <svg>». Статичні 24×24 лишаються як фолбек
+// до застосування стилів, щоб іконка не блимала дефолтними 300×150.
+const dimension = computed(() =>
+  typeof props.size === 'number' || /^\d+$/.test(String(props.size))
+    ? `${props.size}px`
+    : String(props.size),
+)
+
 // stroke-іконки (lucide-стиль)
 const stroke: Record<string, string> = {
   phone: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.22 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/>',
@@ -32,14 +42,16 @@ const brand: Record<string, string> = {
 <template>
   <svg
     v-if="stroke[props.name]"
-    :width="props.size" :height="props.size" viewBox="0 0 24 24" fill="none"
+    width="24" height="24" :style="{ width: dimension, height: dimension }"
+    viewBox="0 0 24 24" fill="none"
     stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
     aria-hidden="true" focusable="false"
     v-html="stroke[props.name]"
   />
   <svg
     v-else-if="brand[props.name]"
-    :width="props.size" :height="props.size" viewBox="0 0 24 24" fill="currentColor"
+    width="24" height="24" :style="{ width: dimension, height: dimension }"
+    viewBox="0 0 24 24" fill="currentColor"
     aria-hidden="true" focusable="false"
     v-html="brand[props.name]"
   />

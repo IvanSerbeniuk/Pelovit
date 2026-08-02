@@ -9,11 +9,11 @@
         <!-- Mobile-only: wishlist + cart always visible next to toggler -->
         <div class="d-flex d-lg-none gap-1 ms-auto me-1 align-items-center">
           <NuxtLink to="/wishlist" class="nav-icon text-dark position-relative" title="Обране">
-            <span v-if="wishlistCount > 0" class="cart-badge">{{ wishlistCount }}</span>
+            <ClientOnly><span v-if="wishlistCount > 0" class="cart-badge">{{ wishlistCount }}</span></ClientOnly>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.5 4.04 3 5.5l7 7Z" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </NuxtLink>
           <NuxtLink to="/cart" class="nav-icon position-relative text-decoration-none" title="Кошик">
-            <span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
+            <ClientOnly><span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span></ClientOnly>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6.33105 8H17.67C17.9584 7.99997 18.2434 8.06229 18.5054 8.1827C18.7674 8.30311 19.0003 8.47876 19.1881 8.6976C19.3759 8.91645 19.5141 9.17331 19.5933 9.45059C19.6726 9.72786 19.6909 10.019 19.647 10.304L18.392 18.456C18.2831 19.1644 17.9241 19.8105 17.38 20.2771C16.836 20.7438 16.1428 21.0002 15.426 21H8.57405C7.85745 21 7.16453 20.7434 6.62068 20.2768C6.07683 19.8102 5.71797 19.1643 5.60905 18.456L4.35405 10.304C4.31022 10.019 4.32854 9.72786 4.40775 9.45059C4.48697 9.17331 4.62521 8.91645 4.81299 8.6976C5.00078 8.47876 5.23367 8.30311 5.49569 8.1827C5.75772 8.06229 6.04268 7.99997 6.33105 8Z" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 11V6C9 5.20435 9.31607 4.44129 9.87868 3.87868C10.4413 3.31607 11.2044 3 12 3C12.7956 3 13.5587 3.31607 14.1213 3.87868C14.6839 4.44129 15 5.20435 15 6V11" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </NuxtLink>
         </div>
@@ -62,12 +62,12 @@
             </a>
 
             <NuxtLink to="/wishlist" class="nav-icon text-dark position-relative" title="Обране">
-              <span v-if="wishlistCount > 0" id="wishlist-count" class="cart-badge">{{ wishlistCount }}</span>
+              <ClientOnly><span v-if="wishlistCount > 0" id="wishlist-count" class="cart-badge">{{ wishlistCount }}</span></ClientOnly>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.5 4.04 3 5.5l7 7Z" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </NuxtLink>
 
             <NuxtLink to="/cart" class="nav-cart position-relative text-decoration-none" title="Кошик">
-              <span v-if="cartCount > 0" id="cart-count" class="cart-badge">{{ cartCount }}</span>
+              <ClientOnly><span v-if="cartCount > 0" id="cart-count" class="cart-badge">{{ cartCount }}</span></ClientOnly>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6.33105 8H17.67C17.9584 7.99997 18.2434 8.06229 18.5054 8.1827C18.7674 8.30311 19.0003 8.47876 19.1881 8.6976C19.3759 8.91645 19.5141 9.17331 19.5933 9.45059C19.6726 9.72786 19.6909 10.019 19.647 10.304L18.392 18.456C18.2831 19.1644 17.9241 19.8105 17.38 20.2771C16.836 20.7438 16.1428 21.0002 15.426 21H8.57405C7.85745 21 7.16453 20.7434 6.62068 20.2768C6.07683 19.8102 5.71797 19.1643 5.60905 18.456L4.35405 10.304C4.31022 10.019 4.32854 9.72786 4.40775 9.45059C4.48697 9.17331 4.62521 8.91645 4.81299 8.6976C5.00078 8.47876 5.23367 8.30311 5.49569 8.1827C5.75772 8.06229 6.04268 7.99997 6.33105 8Z" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 11V6C9 5.20435 9.31607 4.44129 9.87868 3.87868C10.4413 3.31607 11.2044 3 12 3C12.7956 3 13.5587 3.31607 14.1213 3.87868C14.6839 4.44129 15 5.20435 15 6V11" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               <span class="cart-label">Кошик</span>
             </NuxtLink>
@@ -129,7 +129,7 @@
             </p>
           </div>
           <div class="col-lg-5">
-            <div class="app-badges">
+            <div id="app-badges" class="app-badges">
               <!-- Поки посилання не заповнене в налаштуваннях, кнопка неактивна:
                    краще «Незабаром», ніж перехід у нікуди. -->
               <a
