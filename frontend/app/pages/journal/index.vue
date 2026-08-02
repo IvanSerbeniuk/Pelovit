@@ -12,25 +12,81 @@ const route = useRoute()
 const router = useRouter()
 
 const { data } = await useFetch<any>(`${config.public.apiBase}/journal`, {
-  query: route.query,
-  watch: [route.query],
+  // Саме computed, а не route.query: під час навігації роутер підставляє новий
+  // об'єкт query, тож знімок лишався зі старими параметрами і дані не оновлювались.
+  query: computed(() => route.query),
+  // posts.links не використовуються (пагінація рахується з current_page/last_page),
+  // а в payload сторінки вони їхали разом із неперекладеними ключами.
+  transform: (res: any) => {
+    if (res?.posts?.links) delete res.posts.links
+    return res
+  },
 })
 
-const posts = computed(() => data.value?.posts ?? { data: [], last_page: 1, links: [] })
+const posts = computed(() => data.value?.posts ?? { data: [], current_page: 1, last_page: 1 })
 const featured = computed(() => data.value?.featured ?? [])
 const categories = computed(() => data.value?.categories ?? [])
 
 const currentCategory = computed(() => route.query.category as string ?? '')
 const search = computed(() => route.query.search as string ?? '')
 
-function navigatePage(url: string | null) {
-  if (!url) return
-  const parsed = new URL(url)
-  router.push({ query: { ...route.query, page: parsed.searchParams.get('page') } })
+const currentPage = computed(() => Number(posts.value.current_page ?? 1))
+const lastPage = computed(() => Number(posts.value.last_page ?? 1))
+
+// Своя пагінація замість posts.links: Laravel віддає в label ключі
+// 'pagination.previous'/'pagination.next', бо для локалі uk немає перекладів.
+const pageNumbers = computed(() => {
+  const total = lastPage.value
+  const current = currentPage.value
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1)
+
+  const pages = new Set([1, total, current])
+  for (let i = current - 1; i <= current + 1; i++) {
+    if (i > 1 && i < total) pages.add(i)
+  }
+  return [...pages].sort((a, b) => a - b)
+})
+
+const total = computed(() => Number(posts.value.total ?? 0))
+const hasFilters = computed(() => Boolean(currentCategory.value || search.value))
+
+// Множина для «Знайдено N статей / статті / стаття».
+function pluralPosts(n: number) {
+  const mod10 = n % 10
+  const mod100 = n % 100
+  if (mod10 === 1 && mod100 !== 11) return 'стаття'
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'статті'
+  return 'статей'
+}
+
+async function goToPage(page: number) {
+  if (page < 1 || page > lastPage.value || page === currentPage.value) return
+  await router.push({ query: { ...route.query, page: page > 1 ? String(page) : undefined } })
+  // Без цього після кліку на «2» лишаєшся внизу сторінки й бачиш той самий підвал.
+  document.getElementById('articles')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+function clearSearch() {
+  router.push({ query: { ...route.query, search: undefined, page: undefined } })
+}
+
+function resetFilters() {
+  router.push({ path: '/journal' })
+}
+
+function submitSearch(event: Event) {
+  const value = (event.target as HTMLFormElement).search.value.trim()
+  // Категорію зберігаємо, сторінку скидаємо — інакше можна опинитися
+  // на 3-й сторінці результату, де всього одна.
+  router.push({
+    query: { ...route.query, search: value || undefined, page: undefined },
+  })
 }
 
 function postImg(post: any) {
-  return post.image ? assetUrl(post.image) : `https://picsum.photos/id/${100 + post.id}/600/400`
+  // Локальна заглушка замість picsum.photos: сторонній сервіс тягнув
+  // випадкові фото не в тему і додавав зайвий домен у критичний шлях.
+  return post.image ? assetUrl(post.image) : '/journal-placeholder.svg'
 }
 </script>
 
@@ -39,10 +95,11 @@ function postImg(post: any) {
   <div class="container py-3">
     <div class="d-flex justify-content-between align-items-center">
       <h1 class="fw-bold">Меджурнал</h1>
-      <form @submit.prevent="router.push({ query: { search: ($event.target as any).search.value } })" class="d-flex" style="max-width:420px;width:100%;">
-        <div class="input-group" style="border-radius:16px;border:1px solid #DEDEDE;overflow:hidden;">
-          <span class="input-group-text"><i class="bi bi-search"></i></span>
-          <input type="text" name="search" class="form-control" placeholder="Пошук по блогу" :value="search">
+      <form class="d-flex journal-search" @submit.prevent="submitSearch">
+        <div class="input-group">
+          <span class="input-group-text"><AppIcon name="search" /></span>
+          <input type="text" name="search" class="form-control" placeholder="Пошук по блогу" :value="search" aria-label="Пошук по блогу">
+          <button type="submit" class="btn btn-dark px-4">Знайти</button>
         </div>
       </form>
     </div>
@@ -50,7 +107,7 @@ function postImg(post: any) {
 </header>
 
 <section v-if="featured.length > 0" class="container publications_box py-5">
-  <h5 class="mb-4">Останні публікації</h5>
+  <h2 class="fs-5 mb-4">Останні публікації</h2>
   <div class="row g-4">
     <div v-for="post in featured" :key="post.id" class="col-lg-6">
       <NuxtLink :to="`/journal/${post.slug}`" class="text-decoration-none text-dark">
@@ -63,7 +120,8 @@ function postImg(post: any) {
           </div>
           <div class="card-body d-flex flex-column">
             <p class="text-muted small data">{{ post.formatted_date }}</p>
-            <h5 class="card-title">{{ post.title }}</h5>
+            <h3 class="card-title fs-5">{{ post.title }}</h3>
+            <p v-if="post.excerpt" class="card-excerpt text-muted mb-0">{{ post.excerpt }}</p>
           </div>
         </div>
       </NuxtLink>
@@ -75,21 +133,59 @@ function postImg(post: any) {
   <div class="container py-5">
     <div class="row">
       <div class="col-lg-3 mb-5">
-        <h5 class="mb-3">Категорії</h5>
+        <h2 class="fs-5 mb-3">Категорії</h2>
         <div class="sidebar">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <NuxtLink to="/catalog-journal" class="nav-link" :class="{ active: !currentCategory }">Всі</NuxtLink>
+              <NuxtLink
+                :to="{ path: '/journal', query: { search: search || undefined } }"
+                class="nav-link d-flex justify-content-between align-items-center gap-2"
+                :class="{ active: !currentCategory }"
+              >
+                <span>Всі</span>
+                <span class="cat-count">{{ categories.reduce((sum: number, c: any) => sum + c.total, 0) }}</span>
+              </NuxtLink>
             </li>
-            <li v-for="cat in categories" :key="cat" class="nav-item">
-              <NuxtLink :to="`/catalog-journal?category=${cat}`" class="nav-link" :class="{ active: currentCategory === cat }">{{ cat }}</NuxtLink>
+            <li v-for="cat in categories" :key="cat.name" class="nav-item">
+              <NuxtLink
+                :to="{ path: '/journal', query: { category: cat.name, search: search || undefined } }"
+                class="nav-link d-flex justify-content-between align-items-center gap-2"
+                :class="{ active: currentCategory === cat.name }"
+              >
+                <span>{{ cat.name }}</span>
+                <span class="cat-count">{{ cat.total }}</span>
+              </NuxtLink>
             </li>
           </ul>
         </div>
       </div>
 
       <div class="col-lg-9">
-        <p v-if="!posts.data?.length" class="text-muted py-4">Публікацій не знайдено.</p>
+        <!-- Скільки знайшли + активні фільтри, які можна зняти в один клік -->
+        <div class="journal-results d-flex flex-wrap align-items-center gap-2 mb-4">
+          <span class="text-muted">Знайдено {{ total }} {{ pluralPosts(total) }}</span>
+
+          <button v-if="currentCategory" type="button" class="filter-chip" @click="resetFilters">
+            {{ currentCategory }}
+            <span aria-hidden="true">✕</span>
+            <span class="visually-hidden">Скинути категорію</span>
+          </button>
+
+          <button v-if="search" type="button" class="filter-chip" @click="clearSearch">
+            Пошук: {{ search }}
+            <span aria-hidden="true">✕</span>
+            <span class="visually-hidden">Скинути пошук</span>
+          </button>
+        </div>
+
+        <div v-if="!posts.data?.length" class="journal-empty text-center py-5">
+          <p class="mb-2 fw-medium">Публікацій не знайдено.</p>
+          <p class="text-muted mb-4">Спробуйте змінити запит або подивіться всі статті.</p>
+          <button v-if="hasFilters" type="button" class="btn btn-dark px-4" @click="resetFilters">
+            Скинути фільтри
+          </button>
+        </div>
+
         <div v-else class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4" id="articles">
           <div v-for="post in posts.data" :key="post.id" class="col">
             <NuxtLink :to="`/journal/${post.slug}`" class="text-decoration-none text-dark">
@@ -102,24 +198,43 @@ function postImg(post: any) {
                 </div>
                 <div class="card-body">
                   <p class="text-muted small">{{ post.formatted_date }}</p>
-                  <h6 class="card-title">{{ post.title }}</h6>
+                  <h3 class="card-title fs-6">{{ post.title }}</h3>
+                  <p v-if="post.excerpt" class="card-excerpt text-muted mb-0">{{ post.excerpt }}</p>
                 </div>
               </div>
             </NuxtLink>
           </div>
         </div>
 
-        <div v-if="posts.last_page > 1" class="mt-5 d-flex justify-content-center gap-1">
+        <nav v-if="lastPage > 1" class="mt-5 d-flex justify-content-center align-items-center gap-1" aria-label="Сторінки">
           <button
-            v-for="link in posts.links"
-            :key="link.label"
-            class="btn btn-sm"
-            :class="link.active ? 'btn-dark' : 'btn-outline-secondary'"
-            :disabled="!link.url"
-            @click="navigatePage(link.url)"
-            v-html="link.label"
-          ></button>
-        </div>
+            class="btn btn-sm btn-outline-secondary d-flex align-items-center"
+            :disabled="currentPage === 1"
+            aria-label="Попередня сторінка"
+            @click="goToPage(currentPage - 1)"
+          >
+            <AppIcon name="chevron-left" />
+          </button>
+
+          <template v-for="(page, i) in pageNumbers" :key="page">
+            <span v-if="i > 0 && page - pageNumbers[i - 1] > 1" class="px-1 text-muted">…</span>
+            <button
+              class="btn btn-sm"
+              :class="page === currentPage ? 'btn-dark' : 'btn-outline-secondary'"
+              :aria-current="page === currentPage ? 'page' : undefined"
+              @click="goToPage(page)"
+            >{{ page }}</button>
+          </template>
+
+          <button
+            class="btn btn-sm btn-outline-secondary d-flex align-items-center"
+            :disabled="currentPage === lastPage"
+            aria-label="Наступна сторінка"
+            @click="goToPage(currentPage + 1)"
+          >
+            <AppIcon name="chevron-right" />
+          </button>
+        </nav>
       </div>
     </div>
   </div>

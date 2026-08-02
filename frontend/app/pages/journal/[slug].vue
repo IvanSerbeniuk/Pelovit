@@ -80,7 +80,7 @@ function copyUrl() {
         <div class="card h-100">
           <div class="position-relative">
             <div class="card-img-top_wrapper">
-              <img loading="lazy" decoding="async" :src="rel.image ? assetUrl(rel.image) : `https://picsum.photos/id/${100 + rel.id}/800/600`"
+              <img loading="lazy" decoding="async" :src="rel.image ? assetUrl(rel.image) : '/journal-placeholder.svg'"
                    class="card-img-top" :alt="rel.title">
             </div>
             <span v-if="rel.category" class="badge position-absolute px-3 py-2">{{ rel.category }}</span>

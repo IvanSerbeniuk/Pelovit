@@ -33,7 +33,7 @@ useHead({
 })
 
 function postImg(post: any) {
-  return post.image ? assetUrl(post.image) : `https://picsum.photos/id/${100 + post.id}/600/400`
+  return post.image ? assetUrl(post.image) : '/journal-placeholder.svg'
 }
 
 </script>

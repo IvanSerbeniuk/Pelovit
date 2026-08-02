@@ -83,6 +83,13 @@
     font-size: 2.8rem;
     color: #2a9d8f;
   }
+
+  // У макеті це h5; тут h3 заради ієрархії заголовків, розмір фіксуємо.
+  .value-title {
+    font-size: 1.25rem;
+    line-height: 1.2;
+    margin-bottom: .5rem;
+  }
   .founder-photo {
     border-radius: 16px;
     width: 200px;

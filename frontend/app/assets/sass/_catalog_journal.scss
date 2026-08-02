@@ -103,3 +103,79 @@
     border: 1px solid #76544A !important;
   }
 }
+
+// ── Меджурнал: пошук, фільтри, анонси ─────────────────────────────
+.journal-search {
+  max-width: 520px;
+  width: 100%;
+
+  .input-group {
+    border-radius: 16px;
+    border: 1px solid #DEDEDE;
+    overflow: hidden;
+  }
+
+  .input-group-text {
+    background: transparent;
+    border: none;
+    color: #6b6b6b;
+  }
+
+  .form-control {
+    border: none;
+    box-shadow: none;
+  }
+}
+
+.catalog_journal {
+  // Лічильник статей у сайдбарі
+  .cat-count {
+    font-size: .78rem;
+    color: #8a8a8a;
+    background: #F4F0E7;
+    border-radius: 10px;
+    padding: 1px 8px;
+    flex-shrink: 0;
+  }
+
+  .sidebar .nav-link.active .cat-count {
+    background: #5E3F3E;
+    color: #fff;
+  }
+
+  // Чипи активних фільтрів
+  .filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid #DEDEDE;
+    background: #F4F0E7;
+    color: #422928;
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: .85rem;
+    cursor: pointer;
+    transition: background .2s ease;
+
+    &:hover {
+      background: #e7ddd2;
+    }
+  }
+
+  .journal-empty {
+    background: #F9F7F2;
+    border-radius: 16px;
+  }
+}
+
+// Анонс у картках: рівно три рядки, щоб картки лишались однакової висоти.
+.card-excerpt {
+  font-size: .88rem;
+  line-height: 1.45;
+  margin-top: .5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
