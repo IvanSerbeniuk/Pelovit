@@ -17,6 +17,7 @@ use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Phone;
 use MoonShine\UI\Fields\Select;
 use MoonShine\UI\Fields\Text;
+use MoonShine\UI\Fields\Textarea;
 use Throwable;
 
 /**
@@ -38,8 +39,9 @@ class LeadFormPage extends FormPage
                     ->options(['call' => 'Дзвінок', 'telegram' => 'Telegram', 'viber' => 'Viber', 'whatsapp' => 'WhatsApp'])
                     ->required(),
                 Text::make('Компанія', 'company'),
+                Textarea::make('Деталі заявки', 'details'),
                 Select::make('Джерело', 'source')
-                    ->options(['home' => 'Головна', 'contacts' => 'Контакти', 'masters' => 'Майстрам', 'opt' => 'Опт', 'contract' => 'Контрактне'])
+                    ->options(['home' => 'Головна', 'contacts' => 'Контакти', 'masters' => 'Майстрам', 'opt' => 'Опт', 'contract' => 'Контрактне', 'contract-calculator' => 'Контрактне (калькулятор)', 'contract-tester' => 'Контрактне (тестер)'])
                     ->required(),
                 Select::make('Статус', 'status')
                     ->options(['new' => 'Новий', 'in_progress' => 'В роботі', 'done' => 'Завершено'])

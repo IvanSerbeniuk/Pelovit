@@ -19,6 +19,7 @@ class LeadController extends Controller
             'phone'          => 'required|string|max:20',
             'contact_method' => 'required|in:call,telegram,viber,whatsapp',
             'company'        => 'nullable|string|max:255',
+            'details'        => 'nullable|string|max:2000',
             'source'         => 'required|string|max:50',
         ]);
 

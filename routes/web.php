@@ -59,6 +59,7 @@ Route::post('/admin/settings/save', function (\Illuminate\Http\Request $request)
         'app_store_url', 'google_play_url',
         'banner_text', 'min_free_shipping',
         'payment_card_number', 'payment_card_holder',
+        'calc_min_batch_total', 'calc_production_days', 'calc_spread_percent',
         // Global SEO
         'google_analytics_id', 'default_og_image', 'site_description',
         // Per-page SEO

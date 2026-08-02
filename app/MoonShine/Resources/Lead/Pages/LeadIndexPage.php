@@ -98,7 +98,7 @@ class LeadIndexPage extends IndexPage
         ];
 
         $methodLabels = ['call' => 'Дзвінок', 'telegram' => 'Telegram', 'viber' => 'Viber', 'whatsapp' => 'WhatsApp'];
-        $sourceLabels = ['home' => 'Головна', 'contacts' => 'Контакти', 'masters' => 'Майстрам', 'opt' => 'Опт', 'contract' => 'Контрактне'];
+        $sourceLabels = ['home' => 'Головна', 'contacts' => 'Контакти', 'masters' => 'Майстрам', 'opt' => 'Опт', 'contract' => 'Контрактне', 'contract-calculator' => 'Контрактне (калькулятор)', 'contract-tester' => 'Контрактне (тестер)'];
 
         $csrf = csrf_token();
 

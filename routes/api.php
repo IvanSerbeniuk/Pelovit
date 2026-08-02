@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CalculatorApiController;
 use App\Http\Controllers\Api\CatalogApiController;
 use App\Http\Controllers\Api\HomeApiController;
 use App\Http\Controllers\Api\JournalApiController;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/settings', fn() => response()->json(Setting::allKeyed()));
 Route::get('/home', [HomeApiController::class, 'index']);
 Route::get('/catalog', [CatalogApiController::class, 'index']);
+Route::get('/calculator', [CalculatorApiController::class, 'index']);
 Route::get('/products/{slug}', [ProductApiController::class, 'show']);
 Route::get('/journal', [JournalApiController::class, 'index']);
 Route::get('/journal/{slug}', [JournalApiController::class, 'show']);

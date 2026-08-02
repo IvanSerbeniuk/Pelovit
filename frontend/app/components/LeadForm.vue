@@ -3,9 +3,13 @@ const props = withDefaults(defineProps<{
   source: string
   showCompany?: boolean
   contactMethods?: string[]
+  // Довільний контекст заявки (напр. конфігурація з калькулятора) —
+  // менеджер отримує його в листі разом з контактами.
+  details?: string
 }>(), {
   showCompany: false,
   contactMethods: () => ['call', 'telegram', 'viber'],
+  details: '',
 })
 
 const methodLabels: Record<string, string> = {
@@ -39,6 +43,7 @@ async function submit() {
         phone: form.phone,
         contact_method: form.contact_method,
         company: props.showCompany ? form.company || undefined : undefined,
+        details: props.details || undefined,
         source: props.source,
       },
     })

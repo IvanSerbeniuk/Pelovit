@@ -57,6 +57,10 @@ class SettingsPage extends Page
         $shopHtml = $field('Мінімальна сума для безкоштовної доставки (₴)', 'min_free_shipping', 'number', 'Залиште порожнім щоб вимкнути') .
             $field('Текст банера / оголошення', 'banner_text', 'text', 'Відображається у шапці сайту. Порожньо — банер прихований.');
 
+        $calcHtml = $field('Мінімальна сума партії (₴)', 'calc_min_batch_total', 'number', 'Калькулятор попередить, якщо партія виходить меншою, і підкаже потрібний тираж.') .
+            $field('Термін виготовлення (днів)', 'calc_production_days', 'number', 'Показується в результаті розрахунку.') .
+            $field('Розкид ціни, ±%', 'calc_spread_percent', 'number', 'Ціна показується вилкою: 12 означає ±12% від розрахунку.');
+
         $paymentHtml = $field('Номер картки для оплати', 'payment_card_number', 'text', 'Показується клієнту при виборі "Оплата на карту" — на сторінці замовлення, сторінці успіху та в листі-підтвердженні.') .
             $field('Одержувач (ПІБ)', 'payment_card_holder', 'text', 'Необовʼязково. Показується поруч із номером картки.');
 
@@ -124,6 +128,11 @@ class SettingsPage extends Page
             <div style='margin-top:8px'>
                 <div style='font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--color-base-text);opacity:.45;margin-bottom:16px'>Оплата</div>
                 {$paymentHtml}
+            </div>
+            <div style='margin-top:8px'>
+                <div style='font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--color-base-text);opacity:.45;margin-bottom:16px'>Калькулятор контрактного виробництва</div>
+                <p style='font-size:12px;color:var(--color-base-text);opacity:.55;margin-bottom:16px'>Ставки за продукти, тару та знижки за тираж редагуються в розділах «Калькулятор: опції» та «Калькулятор: знижки за тираж».</p>
+                {$calcHtml}
             </div>
             <div style='margin-top:8px'>
                 <div style='font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--color-base-text);opacity:.45;margin-bottom:16px'>Глобальне SEO</div>

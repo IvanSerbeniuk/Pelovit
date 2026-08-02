@@ -14,6 +14,7 @@ class Lead extends Model
         'phone',
         'contact_method',
         'company',
+        'details',
         'source',
         'status',
     ];

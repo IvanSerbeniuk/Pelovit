@@ -402,6 +402,52 @@
       border-radius: 50%;
       object-fit: cover;
     }
+
+    // Дефолтні стрілки Bootstrap — білі, на світлому фоні секції їх не видно.
+    .carousel-control-prev,
+    .carousel-control-next {
+      width: 44px;
+      height: 44px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #422928;
+      border-radius: 50%;
+      opacity: .85;
+
+      &:hover,
+      &:focus-visible {
+        opacity: 1;
+      }
+    }
+    .carousel-control-prev { left: -22px; }
+    .carousel-control-next { right: -22px; }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .carousel-indicators {
+      position: static;
+      margin: 24px 0 0;
+
+      button {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 0;
+        background-color: #cbbab3;
+        opacity: 1;
+
+        &.active { background-color: #422928; }
+      }
+    }
+
+    @media (max-width: 1200px) {
+      .carousel-control-prev { left: 0; }
+      .carousel-control-next { right: 0; }
+    }
   }
 
   .about-section{
@@ -488,7 +534,8 @@
     padding: 100px 0;
     position: relative;
     overflow: hidden;
-    .left-content h1 {
+    .left-content h1,
+    .left-content h2 {
       font-size: 2.8rem;
       line-height: 1.15;
       font-weight: 700;
@@ -623,8 +670,49 @@
     .price_wrapper{
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
       h2{
         color: #422928;
+        font-size: 1.75rem;
+        white-space: nowrap;
+      }
+
+      &--total {
+        padding-top: .5rem;
+        margin-top: .5rem;
+        border-top: 1px solid #e6d9cf;
+      }
+    }
+    .price-total {
+      font-weight: 600;
+      color: #422928;
+      white-space: nowrap;
+    }
+    .price-discount {
+      font-size: .88rem;
+      font-weight: 600;
+      color: #1a7b9e;
+    }
+    .price-term {
+      font-size: .88rem;
+      color: #5c4a43;
+    }
+
+    // Партія нижча за мінімальну — головна підказка калькулятора,
+    // тому виглядає як попередження, а не як дрібний текст.
+    .min-batch-warning {
+      background: #fdf3e7;
+      border: 1px solid #f0d5b0;
+      border-radius: 16px;
+      padding: 1.1rem 1.35rem;
+      font-size: .92rem;
+      line-height: 1.5;
+      color: #6b4a1f;
+
+      &__title {
+        font-weight: 700;
+        margin-bottom: .4rem;
       }
     }
 
@@ -679,6 +767,58 @@
       pointer-events: none;
     }
 
+    // Підсумок конфігурації над формою: те, що клієнт нарахував, їде в заявку.
+    .calc-summary {
+      background: #fff;
+      border: 1px solid #efe6df;
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+
+      &__title {
+        font-weight: 600;
+        margin-bottom: .75rem;
+      }
+
+      &__list {
+        list-style: none;
+        margin: 0 0 .75rem;
+        padding: 0;
+
+        li {
+          display: flex;
+          justify-content: space-between;
+          gap: 1rem;
+          padding: .3rem 0;
+          font-size: .95rem;
+          border-bottom: 1px solid #f5efe9;
+
+          &:last-child { border-bottom: 0; }
+
+          span { color: #7a6a63; }
+          b { text-align: right; }
+        }
+      }
+
+      &__note {
+        margin: 0;
+        font-size: .82rem;
+        color: #7a6a63;
+      }
+    }
+  }
+
+  // Сітка товарів під час перемикання категорії — щоб перехід не був різким.
+  .tabs_own_brand .is-loading {
+    opacity: .45;
+    transition: opacity .2s ease;
+    pointer-events: none;
+  }
+
+  .product-link {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover { text-decoration: underline; }
   }
 }
 

@@ -6,5 +6,9 @@
 @if($lead->company)
 Компанія: {{ $lead->company }}
 @endif
+@if($lead->details)
+Деталі заявки:
+{{ $lead->details }}
+@endif
 Джерело: {{ $lead->source }}
 Дата: {{ $lead->created_at?->format('d.m.Y H:i') }}
