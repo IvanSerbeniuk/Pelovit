@@ -1,8 +1,8 @@
 <script setup lang="ts">
 useSeoPage({
   pageKey: 'contacts',
-  fallbackTitle: 'Контакти — PELOVIT-R',
-  fallbackDescription: 'Контакти PELOVIT-R. Адреса: вул. Успенська 59, Одеса. Телефон: +38 (063) 309-03-03.',
+  fallbackTitle: 'Контакти — PELOVIT',
+  fallbackDescription: 'Контакти PELOVIT. Адреса: вул. Успенська 59, Одеса. Телефон: +38 (063) 309-03-03.',
   canonicalPath: '/contacts',
 })
 
@@ -73,6 +73,8 @@ const team = computed(() => data.value?.team ?? [])
               :alt="member.name"
               class="rounded-circle mb-3 object-fit-cover"
               style="width:120px;height:120px;"
+              loading="lazy"
+              decoding="async"
             >
             <h6 class="fw-semibold mb-1">{{ member.name }}</h6>
             <p class="text-muted small mb-1">{{ member.position }}</p>

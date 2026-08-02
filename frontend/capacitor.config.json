@@ -1,6 +1,6 @@
 {
   "appId": "ua.pelovit.app",
-  "appName": "PELOVIT-R",
+  "appName": "PELOVIT",
   "webDir": ".output/public",
   "server": {
     "androidScheme": "https"

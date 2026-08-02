@@ -1,16 +1,8 @@
 <script setup lang="ts">
-import { Swiper, SwiperSlide } from 'swiper/vue'
-import 'swiper/css'
-
-const allProductsSwiper = ref<any>(null)
-function onAllProductsSwiper(s: any) { allProductsSwiper.value = s }
-function allPrev() { allProductsSwiper.value?.slidePrev() }
-function allNext() { allProductsSwiper.value?.slideNext() }
-
 useSeoPage({
   pageKey: 'home',
-  fallbackTitle: 'PELOVIT-R — Косметика для здорової шкіри',
-  fallbackDescription: 'PELOVIT-R — натуральна косметика з мінералами Куяльницького лиману. Лікувальні препарати, догляд за шкірою, контрактне виробництво.',
+  fallbackTitle: 'PELOVIT — Косметика для здорової шкіри',
+  fallbackDescription: 'PELOVIT — натуральна косметика з мінералами Куяльницького лиману. Лікувальні препарати, догляд за шкірою, контрактне виробництво.',
   canonicalPath: '/',
 })
 
@@ -28,6 +20,17 @@ const CART_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><p
 const ARROW_RIGHT = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M17.3172 10.442L11.6922 16.067C11.5749 16.1843 11.4159 16.2502 11.25 16.2502C11.0841 16.2502 10.9251 16.1843 10.8078 16.067C10.6905 15.9498 10.6247 15.7907 10.6247 15.6249C10.6247 15.459 10.6905 15.2999 10.8078 15.1827L15.3664 10.6249H3.125C2.95924 10.6249 2.80027 10.559 2.68306 10.4418C2.56585 10.3246 2.5 10.1656 2.5 9.99986C2.5 9.8341 2.56585 9.67513 2.68306 9.55792C2.80027 9.44071 2.95924 9.37486 3.125 9.37486H15.3664L10.8078 4.81705C10.6905 4.69977 10.6247 4.54071 10.6247 4.37486C10.6247 4.20901 10.6905 4.04995 10.8078 3.93267C10.9251 3.8154 11.0841 3.74951 11.25 3.74951C11.4159 3.74951 11.5749 3.8154 11.6922 3.93267L17.3172 9.55767C17.3753 9.61572 17.4214 9.68465 17.4529 9.76052C17.4843 9.8364 17.5005 9.91772 17.5005 9.99986C17.5005 10.082 17.4843 10.1633 17.4529 10.2392C17.4214 10.3151 17.3753 10.384 17.3172 10.442Z" fill="#1A1A1A"/></svg>`
 
 const reviewShots = ['vidguk1.jpg', 'vidguk2.jpg', 'vidguk3.jpg', 'vidguk4.jpg']
+
+// Hero — це LCP, але картинка задана як background-image в inline-стилі, тож
+// браузер знаходить її лише після парсингу CSS. Preload прибирає цю затримку.
+const heroImage = computed(() => {
+  const first = banners.value[0]
+  return first?.image ? assetUrl(first.image) : assetUrl('images/gl_face.png')
+})
+
+useHead({
+  link: [{ rel: 'preload', as: 'image', href: heroImage, fetchpriority: 'high' }],
+})
 
 function postImg(post: any) {
   return post.image ? assetUrl(post.image) : `https://picsum.photos/id/${100 + post.id}/600/400`
@@ -119,25 +122,18 @@ function postImg(post: any) {
       <h2 class="fw-bold">Всі товари</h2>
       <NuxtLink to="/catalog" class="view-all">Переглянути більше</NuxtLink>
     </div>
-    <div class="swiper-with-nav">
-      <button class="section-nav-btn section-nav-btn--side" @click="allPrev" aria-label="Назад">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <Swiper
-        :slides-per-view="2"
-        :space-between="16"
-        :breakpoints="{ 576: { slidesPerView: 2 }, 768: { slidesPerView: 3 }, 992: { slidesPerView: 4 } }"
-        :grab-cursor="true"
-        @swiper="onAllProductsSwiper"
-      >
-        <SwiperSlide v-for="product in allProducts" :key="product.id">
-          <ProductCard :product="product" />
-        </SwiperSlide>
-      </Swiper>
-      <button class="section-nav-btn section-nav-btn--side" @click="allNext" aria-label="Вперед">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </div>
+    <!-- Карусель вантажиться після гідратації; SSR віддає звичайну сітку,
+         щоб товари лишалися в HTML для пошуковиків і не було порожнього блоку. -->
+    <ClientOnly>
+      <LazyProductsCarousel :products="allProducts" />
+      <template #fallback>
+        <div class="row g-3">
+          <div v-for="product in allProducts.slice(0, 4)" :key="product.id" class="col-6 col-md-4 col-lg-3">
+            <ProductCard :product="product" />
+          </div>
+        </div>
+      </template>
+    </ClientOnly>
   </div>
 </section>
 
@@ -157,11 +153,11 @@ function postImg(post: any) {
   </div>
 </section>
 
-<!-- Pelovit-R Liman -->
+<!-- Pelovit Liman -->
 <section class="py-5">
   <div class="container">
     <div class="row align-items-center card_liman">
-      <h2 class="fw-bold pelovit-content">Pelovit-R — натуральна сила Куяльницького лиману для здоров'я та краси вдома</h2>
+      <h2 class="fw-bold pelovit-content">Pelovit — натуральна сила Куяльницького лиману для здоров'я та краси вдома</h2>
       <ul class="list-unstyled features">
         <li>Натуральні компоненти</li>
         <li>Ефект санаторію без виходу з дому</li>
@@ -362,7 +358,7 @@ function postImg(post: any) {
         <div class="accordion" id="faqAccordion">
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#q1" aria-expanded="true">Що таке PELOVIT-R і в чому його особливість?</button>
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#q1" aria-expanded="true">Що таке PELOVIT і в чому його особливість?</button>
             </h2>
             <div id="q1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
               <div class="accordion-body">Асортимент включає лікувальні препарати, доглядову косметику, а також контрактне виробництво.</div>

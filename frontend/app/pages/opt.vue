@@ -1,7 +1,7 @@
 <script setup lang="ts">
 useSeoPage({
   pageKey: 'opt',
-  fallbackTitle: 'Оптові закупівлі — PELOVIT-R',
+  fallbackTitle: 'Оптові закупівлі — PELOVIT',
   fallbackDescription: 'Натуральна косметика та засоби оздоровлення напряму від виробника — без посередників і з гнучкими умовами співпраці.',
   canonicalPath: '/opt',
 })
@@ -12,7 +12,7 @@ useSeoPage({
   <div class="container">
     <div class="loyalty-content">
       <div class="loyalty-text">
-        <h2>Оптові закупівлі Pelovit-R</h2>
+        <h2>Оптові закупівлі Pelovit</h2>
         <p>Натуральна косметика та засоби оздоровлення напряму від виробника — без посередників і з гнучкими умовами співпраці.</p>
         <a href="#opt-form" class="btn-register rad-16">Залишити заявку</a>
       </div>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 useSeoPage({
   pageKey: 'masters',
-  fallbackTitle: 'Майстрам — PELOVIT-R',
-  fallbackDescription: 'Відеопротоколи масажів з продуктами Pelovit-R. Безкоштовний відеопротокол та розрахунок процедури для майстрів.',
+  fallbackTitle: 'Майстрам — PELOVIT',
+  fallbackDescription: 'Відеопротоколи масажів з продуктами Pelovit. Безкоштовний відеопротокол та розрахунок процедури для майстрів.',
   canonicalPath: '/masters',
 })
 </script>
@@ -12,7 +12,7 @@ useSeoPage({
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-7">
-        <h1 class="fw-bold mb-4">Pelovit-R — натуральна сила Куяльницького лиману для здоров'я та краси вдома</h1>
+        <h1 class="fw-bold mb-4">Pelovit — натуральна сила Куяльницького лиману для здоров'я та краси вдома</h1>
         <p class="lead fs-5">• Натуральні компоненти, перевірені часом</p>
         <p class="lead fs-5">• Ефект санаторію без виходу з дому</p>
         <p class="lead fs-5">• Продукти для тіла, обличчя та загального оздоровлення</p>

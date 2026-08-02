@@ -75,7 +75,7 @@ class PostSeeder extends Seeder
             ],
             [
                 'title'        => 'Лікувальні процедури з Пеловіт-Р для обличчя',
-                'slug'         => 'likuvalni-procedury-z-pelovit-r-dlya-oblychchya',
+                'slug'         => 'likuvalni-procedury-z-pelovit-dlya-oblychchya',
                 'excerpt'      => 'Детальний опис процедур з використанням препаратів Пеловіт-Р для відновлення шкіри обличчя.',
                 'image'        => null,
                 'category'     => 'Лікувальні процедури',
@@ -145,7 +145,7 @@ class PostSeeder extends Seeder
             ],
             [
                 'title'        => 'Склад Дерміс-гелю Пеловіт-Р: що всередині',
-                'slug'         => 'sklad-dermis-helyu-pelovit-r',
+                'slug'         => 'sklad-dermis-helyu-pelovit',
                 'excerpt'      => 'Детальний розбір складу головного продукту лінійки — Дерміс-гелю. Що за кожним інгредієнтом?',
                 'image'        => null,
                 'category'     => 'Про продукти',

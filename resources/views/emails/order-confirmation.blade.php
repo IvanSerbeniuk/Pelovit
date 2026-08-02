@@ -49,7 +49,7 @@
 ---
 
 З повагою,<br>
-Команда **PELOVIT-R**
+Команда **PELOVIT**
 
 <x-mail::button :url="config('app.url')">
 Перейти на сайт

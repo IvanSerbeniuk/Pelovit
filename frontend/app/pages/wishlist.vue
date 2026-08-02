@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useWishlistStore } from '~/stores/wishlist'
 
-useHead({ title: 'Обране — PELOVIT-R' })
+useHead({ title: 'Обране — PELOVIT' })
 
 const wishlistStore = useWishlistStore()
 </script>

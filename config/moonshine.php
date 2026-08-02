@@ -24,7 +24,7 @@ use MoonShine\Laravel\Pages\LoginPage;
 use MoonShine\Laravel\Pages\ProfilePage;
 
 return [
-    'title' => env('MOONSHINE_TITLE', 'PELOVIT-R Admin'),
+    'title' => env('MOONSHINE_TITLE', 'PELOVIT Admin'),
     'logo' => '/vendor/moonshine/logo-small.svg',
     'logo_small' => '/vendor/moonshine/logo-small.svg',
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 useSeoPage({
   pageKey: 'catalog',
-  fallbackTitle: 'Каталог товарів — PELOVIT-R',
-  fallbackDescription: 'Каталог косметики PELOVIT-R. Лікувальні препарати, доглядова косметика, парфумована лінійка ART17. Замовляйте з доставкою по Україні.',
+  fallbackTitle: 'Каталог товарів — PELOVIT',
+  fallbackDescription: 'Каталог косметики PELOVIT. Лікувальні препарати, доглядова косметика, парфумована лінійка ART17. Замовляйте з доставкою по Україні.',
   canonicalPath: '/catalog',
 })
 

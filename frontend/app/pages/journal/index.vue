@@ -1,8 +1,8 @@
 <script setup lang="ts">
 useSeoPage({
   pageKey: 'journal',
-  fallbackTitle: 'Меджурнал — PELOVIT-R',
-  fallbackDescription: 'Корисні статті про косметику, здоров\'я шкіри та лікувальні процедури від PELOVIT-R.',
+  fallbackTitle: 'Меджурнал — PELOVIT',
+  fallbackDescription: 'Корисні статті про косметику, здоров\'я шкіри та лікувальні процедури від PELOVIT.',
   canonicalPath: '/journal',
 })
 

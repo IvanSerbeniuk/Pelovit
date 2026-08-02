@@ -7,7 +7,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: !isApp,
 
-  modules: ['@pinia/nuxt', 'nuxt-swiper'],
+  // nuxt-swiper прибрано: він реєстрував swiper/element/bundle на кожній
+  // сторінці, хоча в коді використовуються лише Vue-компоненти swiper/vue.
+  modules: ['@pinia/nuxt'],
 
   runtimeConfig: {
     public: {
@@ -32,7 +34,7 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { property: 'og:site_name', content: 'PELOVIT-R' },
+        { property: 'og:site_name', content: 'PELOVIT' },
         { property: 'og:locale', content: 'uk_UA' },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:site', content: '@pelovit' },
@@ -69,6 +71,14 @@ export default defineNuxtConfig({
     : {
         '/images/**': { proxy: 'http://localhost:8000/images/**' },
         '/products/**': { proxy: 'http://localhost:8000/products/**' },
+
+        // Ребрендинг PELOVIT-R -> PELOVIT: старі URL статей
+        '/journal/likuvalni-procedury-z-pelovit-r-dlya-oblychchya': {
+          redirect: { to: '/journal/likuvalni-procedury-z-pelovit-dlya-oblychchya', statusCode: 301 },
+        },
+        '/journal/sklad-dermis-helyu-pelovit-r': {
+          redirect: { to: '/journal/sklad-dermis-helyu-pelovit', statusCode: 301 },
+        },
       },
 
   nitro: isApp ? { preset: 'static' } : {},

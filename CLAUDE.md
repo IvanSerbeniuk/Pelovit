@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-**Pelovit-R** — a Ukrainian cosmetics e-commerce storefront built with Laravel 13 + Blade + Bootstrap 5 + Tailwind CSS 4. The site is Ukrainian-language (`lang="uk"`). No admin panel exists yet; product/category data is managed directly via the database or Tinker.
+**Pelovit** — a Ukrainian cosmetics e-commerce storefront built with Laravel 13 + Blade + Bootstrap 5 + Tailwind CSS 4. The site is Ukrainian-language (`lang="uk"`). No admin panel exists yet; product/category data is managed directly via the database or Tinker.
 
 ## Commands
 

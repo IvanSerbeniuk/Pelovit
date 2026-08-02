@@ -3,7 +3,7 @@ const { assetUrl } = useAsset()
 
 useSeoPage({
   pageKey: 'about',
-  fallbackTitle: 'Про нас — PELOVIT-R',
+  fallbackTitle: 'Про нас — PELOVIT',
   fallbackDescription: 'Аксімед — інноваційне підприємство з 1985 року. Розробляємо натуральну косметику на основі наукових досліджень.',
   canonicalPath: '/about',
 })
@@ -38,7 +38,7 @@ useSeoPage({
   <div class="container p-5">
     <h3 class="title_nagoroda text-center mb-5">Робота Асимед неодноразово відмічена нагородами</h3>
     <div class="nagoroda_img text-center">
-      <img :src="assetUrl('images/nagorods.png')" alt="" class="img-fluid">
+      <img :src="assetUrl('images/nagorods.png')" alt="" class="img-fluid" loading="lazy" decoding="async">
     </div>
   </div>
 </section>
@@ -55,7 +55,7 @@ useSeoPage({
         </div>
       </div>
       <div class="col-lg-4">
-        <img :src="assetUrl('images/science_in_laboratory.png')" alt="Дослідження в лабораторії" class="research-img img-fluid">
+        <img :src="assetUrl('images/science_in_laboratory.png')" alt="Дослідження в лабораторії" class="research-img img-fluid" loading="lazy" decoding="async">
       </div>
       <div class="col-lg-4">
         <h2 class="section-title mb-4">Дослідження</h2>
@@ -85,8 +85,8 @@ useSeoPage({
   <div class="container">
     <h2 class="section-title text-center">Аксимед має європейську сертифікацію GMP ISO 22716</h2>
     <div class="row g-5 justify-content-center">
-      <div class="col-lg-5 col-md-6"><div class="cert-card"><img :src="assetUrl('images/sertificate1.png')" alt="Сертифікат GMP ISO 22716" class="cert-image"></div></div>
-      <div class="col-lg-5 col-md-6"><div class="cert-card"><img :src="assetUrl('images/sertificate2.png')" alt="Сертифікат GMP ISO 22716" class="cert-image"></div></div>
+      <div class="col-lg-5 col-md-6"><div class="cert-card"><img :src="assetUrl('images/sertificate1.png')" alt="Сертифікат GMP ISO 22716" class="cert-image"></div></div loading="lazy" decoding="async">
+      <div class="col-lg-5 col-md-6"><div class="cert-card"><img :src="assetUrl('images/sertificate2.png')" alt="Сертифікат GMP ISO 22716" class="cert-image"></div></div loading="lazy" decoding="async">
     </div>
   </div>
 </section>

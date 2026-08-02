@@ -2,8 +2,8 @@
 const { assetUrl } = useAsset()
 
 useHead({
-  title: 'Лікувальні масажі — Майстрам PELOVIT-R',
-  meta: [{ name: 'description', content: 'Відеопротоколи лікувальних масажів з продуктами Pelovit-R для майстрів салонів краси.' }],
+  title: 'Лікувальні масажі — Майстрам PELOVIT',
+  meta: [{ name: 'description', content: 'Відеопротоколи лікувальних масажів з продуктами Pelovit для майстрів салонів краси.' }],
 })
 </script>
 
@@ -60,7 +60,7 @@ useHead({
             <div class="row g-3 mb product_cards_sm">
               <div class="col-md-4 product_card_sm">
                 <div class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
-                  <img :src="assetUrl('images/image.png')" alt="Пеловіт" class="product-img" style="width: 50px;">
+                  <img :src="assetUrl('images/image.png')" alt="Пеловіт" class="product-img" style="width: 50px;" loading="lazy" decoding="async">
                   <div>
                     <h6>Пеловіт-Р Класичний 500мл</h6>
                     <div class="content-product_card_sm">

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Перехід до оплати — PELOVIT-R</title>
+    <title>Перехід до оплати — PELOVIT</title>
     <style>
         body { font-family: system-ui, -apple-system, sans-serif; display: flex; align-items: center;
                justify-content: center; min-height: 100vh; margin: 0; color: #333; }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 useSeoPage({
   pageKey: 'contract',
-  fallbackTitle: 'Контрактне виробництво косметики — PELOVIT-R',
+  fallbackTitle: 'Контрактне виробництво косметики — PELOVIT',
   fallbackDescription: 'Виготовляємо косметику під вашим брендом — від розробки формули до готової продукції. GMP ISO 22716.',
   canonicalPath: '/kontractne-vyrobnyctvo',
 })

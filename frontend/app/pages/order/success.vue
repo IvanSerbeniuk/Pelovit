@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useHead({ title: 'Замовлення оформлено — PELOVIT-R' })
+useHead({ title: 'Замовлення оформлено — PELOVIT' })
 
 const route = useRoute()
 const { data: settings } = useSettings()

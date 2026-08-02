@@ -38,7 +38,7 @@ class LiqPayService
             'action' => 'pay',
             'amount' => (float) $order->total,
             'currency' => 'UAH',
-            'description' => "Замовлення №{$order->id} — PELOVIT-R",
+            'description' => "Замовлення №{$order->id} — PELOVIT",
             'order_id' => $this->orderReference($order),
             'server_url' => rtrim((string) config('app.url'), '/').'/api/liqpay/callback',
             'result_url' => $forApp

@@ -21,13 +21,13 @@ const { siteUrl } = useRuntimeConfig().public
 const canonicalUrl = computed(() => `${siteUrl}/product/${route.params.slug}`)
 
 const seoTitle = computed(() =>
-  product.value?.meta_title || `${product.value?.name ?? 'Товар'} — PELOVIT-R`
+  product.value?.meta_title || `${product.value?.name ?? 'Товар'} — PELOVIT`
 )
 const seoDesc = computed(() =>
-  product.value?.meta_description || product.value?.description || `${product.value?.name} — косметика PELOVIT-R. Замовляйте з доставкою по Україні.`
+  product.value?.meta_description || product.value?.description || `${product.value?.name} — косметика PELOVIT. Замовляйте з доставкою по Україні.`
 )
 const seoOgTitle = computed(() =>
-  product.value?.og_title || product.value?.meta_title || `${product.value?.name} — PELOVIT-R`
+  product.value?.og_title || product.value?.meta_title || `${product.value?.name} — PELOVIT`
 )
 const seoOgDesc = computed(() =>
   product.value?.og_description || product.value?.meta_description || product.value?.description || ''
@@ -54,7 +54,7 @@ useHead({
       description: seoDesc.value,
       image: product.value?.image ? assetUrl(product.value.image) : undefined,
       sku: String(product.value?.id ?? ''),
-      brand: { '@type': 'Brand', name: product.value?.brand ?? 'PELOVIT-R' },
+      brand: { '@type': 'Brand', name: product.value?.brand ?? 'PELOVIT' },
       offers: {
         '@type': 'Offer',
         url: canonicalUrl.value,
@@ -70,7 +70,6 @@ useHead({
 
 const { imgSrc, addToCart: addToCartFn, toggleWishlist: toggleWishlistFn, wishlist } = useProduct()
 
-const qty = ref(1)
 const addedToCart = ref(false)
 const thumbsSwiper = ref(null)
 const mainSwiper = ref<any>(null)
@@ -121,9 +120,6 @@ onBeforeUnmount(() => {
   lightbox = null
 })
 
-function incQty() { qty.value++ }
-function decQty() { if (qty.value > 1) qty.value-- }
-
 function handleAddToCart() {
   if (!product.value) return
   addToCartFn({ ...product.value })
@@ -142,8 +138,8 @@ function copyProductUrl() {
   navigator.clipboard.writeText(canonicalUrl.value)
 }
 
-const HEART_OUTLINE = `<svg width="22" height="22" viewBox="0 0 21 19" fill="none"><path d="M18.5152 9.264L10.2652 17.43L2.01516 9.264C1.43802 8.7024 0.983408 8.02732 0.679965 7.28138C0.376523 6.53544 0.230816 5.73475 0.252021 4.92973C0.273226 4.12471 0.460884 3.3328 0.803178 2.60387C1.14547 1.87494 1.63499 1.22477 2.2409 0.69432C2.84681 0.163862 3.55599 -0.23539 4.32378 -0.478301C5.09157 -0.721211 5.90134 -0.80251 6.70209 -0.71709C7.50285 -0.631669 8.27724 -0.381384 8.97652 0.018C9.67581 0.417444 10.2848 0.957312 10.7652 1.60364C11.2476 0.962001 11.8573 0.426853 12.5561 0.031C13.2549 -0.363491 14.0277 -0.610167 14.8262 -0.692918C15.6248 -0.775669 16.4318 -0.692711 17.1967 -0.449233C17.9617 -0.205754 18.6682 0.192987 19.272 0.722068C19.8758 1.25115 20.3638 1.89914 20.7057 2.62552C21.0475 3.35189 21.2357 4.14101 21.2585 4.94347C21.2813 5.74593 21.1383 6.54447 20.8383 7.2891C20.5383 8.03373 20.0879 8.70844 19.5152 9.271" stroke="#422928" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
-const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 21 19" fill="none"><path d="M18.5152 9.264L10.2652 17.43L2.01516 9.264C1.43802 8.7024 0.983408 8.02732 0.679965 7.28138C0.376523 6.53544 0.230816 5.73475 0.252021 4.92973C0.273226 4.12471 0.460884 3.3328 0.803178 2.60387C1.14547 1.87494 1.63499 1.22477 2.2409 0.69432C2.84681 0.163862 3.55599 -0.23539 4.32378 -0.478301C5.09157 -0.721211 5.90134 -0.80251 6.70209 -0.71709C7.50285 -0.631669 8.27724 -0.381384 8.97652 0.018C9.67581 0.417444 10.2848 0.957312 10.7652 1.60364C11.2476 0.962001 11.8573 0.426853 12.5561 0.031C13.2549 -0.363491 14.0277 -0.610167 14.8262 -0.692918C15.6248 -0.775669 16.4318 -0.692711 17.1967 -0.449233C17.9617 -0.205754 18.6682 0.192987 19.272 0.722068C19.8758 1.25115 20.3638 1.89914 20.7057 2.62552C21.0475 3.35189 21.2357 4.14101 21.2585 4.94347C21.2813 5.74593 21.1383 6.54447 20.8383 7.2891C20.5383 8.03373 20.0879 8.70844 19.5152 9.271" stroke="#422928" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#422928"/></svg>`
+const HEART_OUTLINE = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.5 4.04 3 5.5l7 7Z" stroke="#422928" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.5 4.04 3 5.5l7 7Z" stroke="#422928" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="#422928"/></svg>`
 </script>
 
 <template>
@@ -207,7 +203,7 @@ const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 21 19" fill="none
             class="product-gallery-thumbs"
           >
             <SwiperSlide v-for="(img, i) in galleryImages" :key="i">
-              <img :src="img" :alt="product.name + ' ' + (i + 1)" class="img-fluid rounded product-thumb-img">
+              <img :src="img" :alt="product.name + ' ' + (i + 1)" class="img-fluid rounded product-thumb-img" loading="lazy" decoding="async">
             </SwiperSlide>
           </Swiper>
         </template>
@@ -243,13 +239,8 @@ const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 21 19" fill="none
         </div>
 
         <div class="my-4 counter_cart_wrapper">
-          <div class="counter">
-            <button class="btn_counter minus" @click="decQty">−</button>
-            <span class="value">{{ qty }}</span>
-            <button class="btn_counter plus" @click="incQty">+</button>
-          </div>
           <button class="btn btn-dark btn-lg px-5 me-3 add_incart" @click="handleAddToCart">
-            {{ addedToCart ? 'Додано!' : 'Додати в кошик' }}
+            Отримай 10% знижки у застосунку
           </button>
           <button class="btn btn-outline-dark px-5 btn-lg buy_in_oneclick">Купити в один клік</button>
         </div>
@@ -266,7 +257,7 @@ const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 21 19" fill="none
           <div class="accordion" id="faqAccordion">
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#q1" aria-expanded="true">Що таке PELOVIT-R?</button>
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#q1" aria-expanded="true">Що таке PELOVIT?</button>
               </h2>
               <div id="q1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
                 <div class="accordion-body">Асортимент включає лікувальні препарати, доглядову косметику та контрактне виробництво.</div>

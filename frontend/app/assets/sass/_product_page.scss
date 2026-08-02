@@ -347,25 +347,8 @@
   .counter_cart_wrapper{
     display: flex;
 
-    .counter {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      font-size: 1.5rem;
-      margin-right: 1rem;
-    }
     .buy_in_oneclick{
       border-radius: 1rem;
-    }
-    .btn_counter {
-      border: 1px solid #E9E8E8;
-      background-color: white;
-      border-radius: 4px;
-      width: 2.5rem;
-      height: 2.5rem;
-    }
-    .value {
-
     }
 
     .add_incart{

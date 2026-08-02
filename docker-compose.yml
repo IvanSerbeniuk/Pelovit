@@ -24,7 +24,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      APP_NAME: PELOVIT-R
+      APP_NAME: PELOVIT
       APP_ENV: production
       APP_DEBUG: "false"
       APP_KEY: ${APP_KEY}

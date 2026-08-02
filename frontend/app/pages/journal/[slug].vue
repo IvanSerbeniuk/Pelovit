@@ -12,7 +12,7 @@ const related = computed(() => data.value?.related ?? [])
 const canonicalUrl = computed(() => `${config.public.siteUrl}/journal/${route.params.slug}`)
 
 const seoTitle = computed(() =>
-  post.value?.meta_title || `${post.value?.title ?? 'Стаття'} — Меджурнал PELOVIT-R`
+  post.value?.meta_title || `${post.value?.title ?? 'Стаття'} — Меджурнал PELOVIT`
 )
 const seoDesc = computed(() =>
   post.value?.meta_description || post.value?.excerpt || post.value?.title || ''

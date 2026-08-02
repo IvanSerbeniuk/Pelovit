@@ -1,8 +1,8 @@
 <script setup lang="ts">
 useSeoPage({
   pageKey: 'promotions',
-  fallbackTitle: 'Акції — PELOVIT-R',
-  fallbackDescription: 'Товари зі знижкою від PELOVIT-R. Косметика за акційними цінами з доставкою по Україні.',
+  fallbackTitle: 'Акції — PELOVIT',
+  fallbackDescription: 'Товари зі знижкою від PELOVIT. Косметика за акційними цінами з доставкою по Україні.',
   canonicalPath: '/promotions',
 })
 

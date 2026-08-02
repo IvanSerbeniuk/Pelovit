@@ -26,7 +26,7 @@ class OrderConfirmation extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Ваше замовлення #' . $this->order->id . ' прийнято — PELOVIT-R',
+            subject: 'Ваше замовлення #' . $this->order->id . ' прийнято — PELOVIT',
         );
     }
 

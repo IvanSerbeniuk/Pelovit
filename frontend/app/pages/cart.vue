@@ -2,7 +2,7 @@
 import { useCartStore } from '~/stores/cart'
 
 useHead({
-  title: 'Кошик — PELOVIT-R',
+  title: 'Кошик — PELOVIT',
 })
 
 const config = useRuntimeConfig()
@@ -64,7 +64,7 @@ const CART_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><p
           <p v-if="cartStore.items.length === 0" class="text-muted">Ваш кошик порожній.</p>
           <div v-for="item in cartStore.items" :key="item.id"
                class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
-            <img :src="imgSrc(item.image)" :alt="item.name" class="product-img">
+            <img :src="imgSrc(item.image)" :alt="item.name" class="product-img" loading="lazy" decoding="async">
             <div class="flex-grow-1">
               <h6>{{ item.name }}</h6>
               <div class="d-flex align-items-center gap-2 mt-2 rad-12 count_rates">
@@ -88,7 +88,7 @@ const CART_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><p
             <div v-for="product in featured" :key="product.id"
                  class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
               <NuxtLink :to="`/product/${product.slug}`">
-                <img :src="assetUrl(product.image)" :alt="product.name" class="product-img">
+                <img :src="assetUrl(product.image)" :alt="product.name" class="product-img" loading="lazy" decoding="async">
               </NuxtLink>
               <div class="flex-grow-1">
                 <h6><NuxtLink :to="`/product/${product.slug}`" class="text-dark text-decoration-none">{{ product.name }}</NuxtLink></h6>
