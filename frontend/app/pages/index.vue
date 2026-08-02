@@ -239,10 +239,10 @@ function postImg(post: any) {
         <div class="review-footer">
           <div class="wrapper rad-16">
             <div class="product-info">
-              <img :src="assetUrl('images/vid_prep.png')" alt="Пеловіт-Р" loading="lazy" decoding="async">
+              <img :src="assetUrl('images/vid_prep.png')" alt="Пеловіт" loading="lazy" decoding="async">
               <div class="content_wrapper">
                 <div class="prep_name">
-                  <div>Пеловіт-Р Класичний</div>
+                  <div>Пеловіт Класичний</div>
                   <div>500мл</div>
                 </div>
                 <div class="rating">★★★★★</div>

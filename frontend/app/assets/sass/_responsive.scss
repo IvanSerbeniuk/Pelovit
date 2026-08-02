@@ -1,6 +1,48 @@
 @use 'variables' as *;
 
 @media (max-width: $bp-lg) {
+  // .hero має min-height: 85vh і align-items: center. На телефоні його вміст
+  // (заголовок + список + картки) вищий за екран, а центрований flex-вміст,
+  // який не вміщається, обрізається згори й знизу — перший рядок заголовка
+  // ховався під навбар, а нижня картка вилазила за межі секції.
+  .hero {
+    min-height: auto;
+    align-items: flex-start;
+    padding: 2.5rem 0;
+  }
+
+  // Сторінка процедур: вертикальний сайдбар з'їдав увесь перший екран,
+  // тому на мобільному він стає горизонтальною стрічкою над контентом.
+  .master_category .sidebar {
+    position: static !important;
+
+    .nav {
+      flex-direction: row !important;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: .5rem;
+      padding-bottom: .25rem;
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar { display: none; }
+    }
+
+    .nav-link {
+      white-space: nowrap;
+      margin-bottom: 0;
+      padding: 10px 16px;
+      background-color: #f8f1eb;
+    }
+
+    .nav-link.active {
+      background-color: #eadfd3;
+    }
+
+    > p.small {
+      margin: .75rem 0 .25rem;
+    }
+  }
+
   // Navbar mobile collapse
   .navbar {
     .navbar-collapse {
@@ -43,10 +85,12 @@
     }
   }
 
+  // Було column-reverse — на телефоні картки-переваги йшли перед заголовком
+  // секції, і блок читався як помилка. Лишаємо природний порядок.
   .consultation-grid,
   .loyalty-content {
-    flex-direction: column-reverse;
-    gap: 3rem;
+    flex-direction: column;
+    gap: 2.5rem;
   }
   .loyalty-text {
     text-align: center;
@@ -213,8 +257,8 @@
     grid-template-columns: 1fr;
   }
   .loyalty-content {
-    flex-direction: column-reverse;
-    gap: 3rem;
+    flex-direction: column;
+    gap: 2.5rem;
   }
   .faq-container{
     order: 1;

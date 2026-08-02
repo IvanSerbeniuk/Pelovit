@@ -18,6 +18,11 @@ use App\MoonShine\Resources\TeamMember\TeamMemberResource;
 use App\MoonShine\Resources\Subscriber\SubscriberResource;
 use App\MoonShine\Resources\Lead\LeadResource;
 use App\MoonShine\Resources\PromoCode\PromoCodeResource;
+use App\MoonShine\Resources\CalculatorOption\CalculatorOptionResource;
+use App\MoonShine\Resources\CalculatorTier\CalculatorTierResource;
+use App\MoonShine\Resources\Testimonial\TestimonialResource;
+use App\MoonShine\Resources\BrandCase\BrandCaseResource;
+use App\MoonShine\Resources\Faq\FaqResource;
 use App\MoonShine\Pages\SettingsPage;
 use MoonShine\MenuManager\MenuItem;
 use MoonShine\MenuManager\MenuGroup;
@@ -51,7 +56,14 @@ final class MoonShineLayout extends AppLayout
                 MenuItem::make(BannerResource::class, 'Банери')->icon('photo'),
                 MenuItem::make(PostResource::class, 'Журнал')->icon('document-text'),
                 MenuItem::make(TeamMemberResource::class, 'Команда')->icon('user-group'),
+                MenuItem::make(TestimonialResource::class, 'Відгуки')->icon('chat-bubble-left-right'),
+                MenuItem::make(BrandCaseResource::class, 'Кейси брендів')->icon('sparkles'),
+                MenuItem::make(FaqResource::class, 'FAQ')->icon('question-mark-circle'),
             ])->icon('pencil-square'),
+            MenuGroup::make('Калькулятор', [
+                MenuItem::make(CalculatorOptionResource::class, 'Опції')->icon('adjustments-horizontal'),
+                MenuItem::make(CalculatorTierResource::class, 'Знижки за тираж')->icon('chart-bar'),
+            ])->icon('calculator'),
             MenuItem::make(SubscriberResource::class, 'Підписники')->icon('users'),
             MenuItem::make(SettingsPage::class, 'Налаштування')->icon('cog-6-tooth'),
         ];

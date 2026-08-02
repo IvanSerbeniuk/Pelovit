@@ -11,6 +11,24 @@
 .wrapper_date{
   display: flex;
   gap: 3rem;
+  align-items: center;
+}
+
+// Текст статті: раніше стояв bootstrap-клас w-50, тому на телефоні колонка
+// звужувалась до половини екрана. Обмежуємо ширину в px — комфортна довжина
+// рядка на десктопі й повна ширина на вузьких екранах.
+.article_content{
+  width: 100%;
+  max-width: 720px;
+}
+
+@media (max-width: $bp-md) {
+  .article-image{
+    height: 240px;
+  }
+  .wrapper_date{
+    gap: 1rem;
+  }
 }
 
 .article_section{

@@ -1,13 +1,21 @@
 @use 'variables' as *;
 
-.hero{
+// Білий текст шапки раніше приходив із .hero сторінки «Про нас». Після того,
+// як ті стилі стали локальними, задаємо власний колір тут.
+.masters-hero{
   margin: unset;
   border-radius: unset;
+  color: #fff;
 }
 .stat-card{
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: transform .15s, box-shadow .15s;
+}
+a.stat-card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .12);
 }
 .hero{
   a.btn{
@@ -32,6 +40,24 @@
   position: relative;
   border-radius: 16px;
   overflow: hidden;
+}
+// Стан, коли відеопротокол ще не прив'язаний до процедури
+.hero-video.video-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 260px;
+  background: #f8f1eb;
+  text-align: center;
+  padding: 1.5rem;
+}
+.protocol-steps {
+  padding-left: 1.25rem;
+
+  li {
+    margin-bottom: .75rem;
+    line-height: 1.55;
+  }
 }
 .product-card {
   transition: all 0.3s;

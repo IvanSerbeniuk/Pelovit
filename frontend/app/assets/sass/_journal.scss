@@ -1,4 +1,24 @@
 @use 'variables' as *;
+
+// Шапка сторінки журналу: заголовок і пошук. Без обмеження ширини форма
+// розтягувалась на весь вільний простір, а на телефоні — навпаки, стискалась
+// так, що плейсхолдер обрізався і налазив на заголовок.
+.journal-head {
+  .journal-search {
+    width: min(420px, 100%);
+  }
+
+  @media (max-width: $bp-md) {
+    h1 {
+      font-size: clamp(1.5rem, 7vw, 2rem);
+    }
+
+    .journal-search {
+      width: 100%;
+    }
+  }
+}
+
 /* Medical Journal */
 .medical-journal {
   color: #fff;

@@ -96,5 +96,3 @@ Route::patch('/admin/leads/{lead}/status', function (Lead $lead, \Illuminate\Htt
     $lead->update(['status' => $request->status]);
     return response()->json(['success' => true]);
 })->middleware(['moonshine', 'MoonShine\Laravel\Http\Middleware\Authenticate'])->name('admin.leads.status');
-
-require __DIR__.'/auth.php';

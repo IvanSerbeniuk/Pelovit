@@ -54,7 +54,7 @@ function copyUrl() {
     <div v-if="post.image" class="mb-4">
       <img :src="assetUrl(post.image)" class="img-fluid rounded-4 w-100 article-image" :alt="post.title">
     </div>
-    <div class="d-flex justify-content-between align-items-center mb-5">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-5">
       <div class="wrapper_date">
         <button v-if="post.category" class="btn rounded-pill px-4 lik_prof">{{ post.category }}</button>
         <div class="date_artc_wrapper">
@@ -66,7 +66,7 @@ function copyUrl() {
         Поділитись
       </button>
     </div>
-    <section class="article_content w-50 mx-auto">
+    <section class="article_content mx-auto">
       <div v-html="post.body"></div>
     </section>
   </div>

@@ -6,7 +6,10 @@
   height: auto;
   display: block;
 }
-.hero {
+// Раніше селектор був просто .hero — і геометрія шапки «Про нас» (фіксовані
+// 700px, зовнішні відступи, скруглення) розповзалась на hero інших сторінок,
+// зокрема «Майстрам», де вміст вищий і тому обрізався.
+.about-hero {
   margin: 80px 3.5rem;
   height: 700px;
   display: flex;
@@ -14,7 +17,7 @@
   color: white;
   position: relative;
   border-radius: 24px;
-  min-height:unset;
+  min-height: unset;
 }
 .stat-card {
   background-color: white;
@@ -26,6 +29,36 @@
   font-size: 2.8rem;
   font-weight: 700;
   color: #1A7B9E;
+}
+
+// Картки-цифри в шапці «Про нас». Розкладку задаємо явно: раніше вона
+// приходила з .stat-card сторінки «Майстрам» — там ті самі класи, і будь-яка
+// правка тієї сторінки мовчки змінювала цю.
+.about-hero .stat-card--metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+
+  // Без цього довгий підпис («Одиниць виробляємо в день») не вміщався
+  // у вузьку колонку й вилазив за межі картки.
+  p {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  // На телефоні поруч цифра й підпис не вміщаються — ставимо їх одне під одним.
+  @media (max-width: $bp-md) {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    gap: .25rem;
+
+    .stat-number {
+      font-size: 2.1rem;
+      line-height: 1.1;
+    }
+  }
 }
 .hero-text {
   max-width: 520px;

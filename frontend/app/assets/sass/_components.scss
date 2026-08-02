@@ -16,9 +16,21 @@
     line-height: 15px;
     padding: $spacing-xs $spacing-sm;
     border-radius: $radius-sm;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+    // Довгі назви категорій («Опорно-руховий апарат») у вузькій колонці
+    // заповзали під бейдж знижки. Лишаємо місце під нього і серце,
+    // решту ховаємо в трикрапку. display:block — інакше text-overflow
+    // не працює у flex-контейнері.
+    display: block;
+    max-width: calc(100% - 110px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // Без знижки поруч лишається тільки серце — можна дати більше місця.
+  &:not(:has(.discount-badge)) .tag_brown {
+    max-width: calc(100% - 60px);
   }
 
   .like {
@@ -87,6 +99,23 @@
   top: 12px;
   right: 46px;
   z-index: 2;
+}
+
+// На вузькому екрані картка вдвічі вужча, і назва категорії поруч зі знижкою
+// стискалась до «Опо…». Тому знижку опускаємо рядком нижче — під серце,
+// а категорії дістається майже вся ширина.
+@media (max-width: $bp-sm) {
+  .product-card {
+    .discount-badge {
+      top: 46px;
+      right: 12px;
+    }
+
+    .tag_brown,
+    &:not(:has(.discount-badge)) .tag_brown {
+      max-width: calc(100% - 52px);
+    }
+  }
 }
 
 .discount-badge--inline {

@@ -70,6 +70,33 @@ useHead({
 
 const { imgSrc, addToCart: addToCartFn, toggleWishlist: toggleWishlistFn, wishlist } = useProduct()
 
+// Промо застосунку показуємо лише у вебі: усередині самого застосунку
+// пропонувати його встановити безглуздо.
+const { data: settings } = await useSettings()
+const isApp = Boolean(config.public.isApp)
+
+// Магазин визначаємо на клієнті: на сервері платформи відвідувача не видно,
+// а різний href на SSR і в браузері ламає гідратацію.
+const storeUrl = ref<string | null>(null)
+
+onMounted(() => {
+  const ua = navigator.userAgent
+  const isIos = /iPad|iPhone|iPod/.test(ua)
+    || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+  const isAndroid = /Android/.test(ua)
+  const s = settings.value
+
+  storeUrl.value = (isIos
+    ? s?.app_store_url
+    : isAndroid
+      ? s?.google_play_url
+      : s?.app_store_url || s?.google_play_url) || null
+})
+
+// Поки застосунку немає в сторах, кнопка веде до бейджів у футері —
+// там чесно написано «Незабаром», замість переходу в нікуди.
+const appPromoHref = computed(() => storeUrl.value ?? '#app-badges')
+
 const addedToCart = ref(false)
 const thumbsSwiper = ref(null)
 const mainSwiper = ref<any>(null)
@@ -239,10 +266,18 @@ const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none
         </div>
 
         <div class="my-4 counter_cart_wrapper">
-          <button class="btn btn-dark btn-lg px-5 me-3 add_incart" @click="handleAddToCart">
+          <a
+            v-if="!isApp"
+            :href="appPromoHref"
+            :target="storeUrl ? '_blank' : undefined"
+            :rel="storeUrl ? 'noopener' : undefined"
+            class="btn btn-dark btn-lg px-5 me-3 add_incart"
+          >
             Отримай 10% знижки у застосунку
+          </a>
+          <button class="btn btn-outline-dark px-5 btn-lg buy_in_oneclick" @click="handleAddToCart">
+            {{ addedToCart ? 'Додано!' : 'Додати в кошик' }}
           </button>
-          <button class="btn btn-outline-dark px-5 btn-lg buy_in_oneclick">Додати в кошик</button>
         </div>
 
         <div class="description_wrapper_dropdown">

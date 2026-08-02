@@ -6,11 +6,14 @@ export default defineEventHandler(async () => {
     { loc: '/',                        priority: '1.0', changefreq: 'weekly'  },
     { loc: '/catalog',                 priority: '0.9', changefreq: 'daily'   },
     { loc: '/journal',                 priority: '0.8', changefreq: 'weekly'  },
+    { loc: '/promotions',              priority: '0.7', changefreq: 'weekly'  },
     { loc: '/contacts',                priority: '0.6', changefreq: 'monthly' },
     { loc: '/about',                   priority: '0.5', changefreq: 'monthly' },
     { loc: '/opt',                     priority: '0.6', changefreq: 'monthly' },
     { loc: '/masters',                 priority: '0.6', changefreq: 'monthly' },
+    { loc: '/masters-category',        priority: '0.5', changefreq: 'monthly' },
     { loc: '/kontractne-vyrobnyctvo',  priority: '0.5', changefreq: 'monthly' },
+    // /catalog-journal навмисно відсутня — це 301-редирект на /journal
   ]
 
   const urls: { loc: string; lastmod?: string; priority: string; changefreq: string }[] = [...staticPages]

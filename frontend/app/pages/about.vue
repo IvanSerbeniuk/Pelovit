@@ -68,7 +68,7 @@ const values = [
 </script>
 
 <template>
-<section class="hero">
+<section class="hero about-hero">
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-7">
@@ -82,10 +82,10 @@ const values = [
       </div>
       <div class="col-lg-5">
         <div class="row g-4">
-          <div class="col-6"><div class="stat-card text-center"><div class="stat-number">50</div><p class="mb-0 fw-medium">Працівників</p></div></div>
-          <div class="col-6"><div class="stat-card text-center"><div class="stat-number">1000</div><p class="mb-0 fw-medium">Одиниць виробляємо в день</p></div></div>
-          <div class="col-6"><div class="stat-card text-center"><div class="stat-number">88</div><p class="mb-0 fw-medium">Сертифікованих засобів</p></div></div>
-          <div class="col-6"><div class="stat-card text-center"><div class="stat-number">40+</div><p class="mb-0 fw-medium">Років досвіду</p></div></div>
+          <div class="col-6"><div class="stat-card stat-card--metric text-center"><div class="stat-number">50</div><p class="mb-0 fw-medium">Працівників</p></div></div>
+          <div class="col-6"><div class="stat-card stat-card--metric text-center"><div class="stat-number">1000</div><p class="mb-0 fw-medium">Одиниць виробляємо в день</p></div></div>
+          <div class="col-6"><div class="stat-card stat-card--metric text-center"><div class="stat-number">88</div><p class="mb-0 fw-medium">Сертифікованих засобів</p></div></div>
+          <div class="col-6"><div class="stat-card stat-card--metric text-center"><div class="stat-number">40+</div><p class="mb-0 fw-medium">Років досвіду</p></div></div>
         </div>
       </div>
     </div>

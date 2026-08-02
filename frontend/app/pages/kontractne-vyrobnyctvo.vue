@@ -119,24 +119,31 @@ const selectedBox = computed(() => pick(boxTypes.value, boxId.value))
 const hasPricing = computed(() => Boolean(selectedProduct.value && selectedFormula.value))
 
 // Ступінь знижки — найвища з тих, поріг яких пройдено.
-const activeTier = computed(() => {
+function tierFor(qty: number) {
   const tiers = (calc.value?.tiers ?? []) as { min_quantity: number, discount_percent: number }[]
   return tiers
-    .filter(t => quantity.value >= t.min_quantity)
+    .filter(t => qty >= t.min_quantity)
     .sort((a, b) => b.min_quantity - a.min_quantity)[0] ?? null
-})
+}
+const activeTier = computed(() => tierFor(quantity.value))
 const discountPercent = computed(() => activeTier.value?.discount_percent ?? 0)
 
-// Собівартість рецептури + витратні матеріали, далі знижка за тираж.
-const unitPrice = computed(() => {
+// Собівартість рецептури + витратні матеріали, до знижки за тираж.
+const baseUnitPrice = computed(() => {
   if (!hasPricing.value) return 0
   const recipe = selectedProduct.value!.value * volume.value * selectedFormula.value!.value
   const materials = (selectedPackaging.value?.value ?? 0)
     + (selectedLabel.value?.value ?? 0)
     + (selectedBox.value?.value ?? 0)
-  return (recipe + materials) * (1 - discountPercent.value / 100)
+  return recipe + materials
 })
 
+// Ціна за одиницю залежить від тиражу — знижка застосовується за порогом.
+function unitPriceFor(qty: number) {
+  return baseUnitPrice.value * (1 - (tierFor(qty)?.discount_percent ?? 0) / 100)
+}
+
+const unitPrice = computed(() => unitPriceFor(quantity.value))
 const batchTotal = computed(() => unitPrice.value * quantity.value)
 
 const spread = computed(() => (calc.value?.spread_percent ?? 0) / 100)
@@ -159,9 +166,37 @@ const batchTotalRange = computed(() => range(batchTotal.value))
 const belowMinimum = computed(
   () => minBatchTotal.value > 0 && batchTotal.value > 0 && batchTotal.value < minBatchTotal.value,
 )
-const requiredQuantity = computed(
-  () => (unitPrice.value > 0 ? Math.ceil(minBatchTotal.value / unitPrice.value) : 0),
+
+// Клієнт бачить не точну суму, а вилку ±spread. Якщо мінімум потрапляє
+// всередину вилки, стверджувати «партія менша за мінімальну» не можна —
+// це межовий випадок, і формулювання має бути іншим.
+const batchTotalUpper = computed(() => batchTotal.value * (1 + spread.value))
+const borderlineMinimum = computed(
+  () => belowMinimum.value && batchTotalUpper.value >= minBatchTotal.value,
 )
+
+// Тираж, за якого партія дотягує до мінімальної суми. Ціна за одиницю сама
+// падає зі зростанням тиражу, тому просте ділення дає замалу відповідь:
+// на знайденому тиражі спрацьовує знижка і сума знову провалюється під мінімум.
+// Тому підтягуємо число, доки воно не перестане рости.
+const requiredQuantity = computed(() => {
+  if (baseUnitPrice.value <= 0 || minBatchTotal.value <= 0) return 0
+
+  let qty = Math.ceil(minBatchTotal.value / unitPriceFor(quantity.value))
+
+  // Кожен перехід через поріг тиражу здешевлює одиницю — ітерацій потрібно
+  // не більше, ніж порогів, але обмежуємо цикл про всяк випадок.
+  for (let i = 0; i < 10; i++) {
+    const next = Math.ceil(minBatchTotal.value / unitPriceFor(qty))
+    if (next <= qty) break
+    qty = next
+  }
+
+  return qty
+})
+
+// За межами повзунка порадити «збільште тираж» вже не можна.
+const requiredExceedsMax = computed(() => requiredQuantity.value > QTY_MAX)
 
 // Те, що клієнт нарахував, їде в заявку — інакше менеджер отримує самий лише телефон.
 const calculatorSummary = computed(() => {
@@ -183,7 +218,9 @@ const calculatorSummary = computed(() => {
     if (discountPercent.value > 0) {
       lines.push(`Знижка за тираж: ${discountPercent.value}%`)
     }
-    if (belowMinimum.value) {
+    if (borderlineMinimum.value) {
+      lines.push(`Увага: партія на межі мінімальної (${money(minBatchTotal.value)} ₴)`)
+    } else if (belowMinimum.value) {
       lines.push(`Увага: партія менша за мінімальну (${money(minBatchTotal.value)} ₴)`)
     }
   }
@@ -554,11 +591,22 @@ const { data: brandProducts, pending: brandProductsPending } = await useAsyncDat
           </div>
 
           <div v-if="belowMinimum" class="min-batch-warning mb-4">
-            <p class="min-batch-warning__title">Партія менша за мінімальну</p>
-            <p class="mb-0">
+            <p class="min-batch-warning__title">
+              {{ borderlineMinimum ? 'Партія на межі мінімальної' : 'Партія менша за мінімальну' }}
+            </p>
+            <p v-if="borderlineMinimum" class="mb-0">
+              Мінімальне замовлення — {{ money(minBatchTotal) }} ₴, а розрахунок дає вилку
+              {{ batchTotalRange }}. Чи пройде партія, стане зрозуміло після узгодження рецептури —
+              або збільште тираж до <b>{{ requiredQuantity }} шт</b>, щоб мати запас.
+            </p>
+            <p v-else-if="requiredExceedsMax" class="mb-0">
+              Мінімальне замовлення — {{ money(minBatchTotal) }} ₴. За обраних параметрів такої суми
+              не дає навіть максимальний тираж — збільште об'єм або оберіть іншу упаковку.
+            </p>
+            <p v-else class="mb-0">
               Мінімальне замовлення — {{ money(minBatchTotal) }} ₴.
-              За обраних параметрів це приблизно <b>{{ requiredQuantity }} шт</b> —
-              збільште тираж або об'єм, і ми зможемо взяти замовлення в роботу.
+              За обраних параметрів це приблизно <b>{{ requiredQuantity }} шт</b> (з урахуванням
+              знижки за тираж) — збільште тираж або об'єм, і ми зможемо взяти замовлення в роботу.
             </p>
           </div>
 
