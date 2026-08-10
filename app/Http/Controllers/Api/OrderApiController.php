@@ -23,7 +23,9 @@ class OrderApiController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
-            'email' => 'nullable|email|max:255',
+            // Email обовʼязковий: це єдиний канал, яким покупець отримує
+            // підтвердження та персональне посилання на статус замовлення.
+            'email' => 'required|email|max:255',
             'city' => 'required|string|max:255',
             'branch' => 'required|string|max:255',
             'payment_method' => 'required|in:card,cod,liqpay',
@@ -111,6 +113,10 @@ class OrderApiController extends Controller
 
         $notifier->send($order);
 
-        return response()->json(['success' => true, 'order_id' => $order->id], 201);
+        return response()->json([
+            'success' => true,
+            'order_id' => $order->id,
+            'track_token' => $order->track_token,
+        ], 201);
     }
 }

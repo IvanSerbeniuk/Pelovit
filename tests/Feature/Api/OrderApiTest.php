@@ -72,12 +72,13 @@ class OrderApiTest extends TestCase
             ->assertJsonValidationErrors(['items']);
     }
 
-    public function test_email_is_optional(): void
+    public function test_email_is_required(): void
     {
         Mail::fake();
 
         $this->postJson('/api/orders', $this->validPayload(['email' => null]))
-            ->assertCreated();
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['email']);
     }
 
     public function test_sends_confirmation_mail_when_email_provided(): void
@@ -89,13 +90,26 @@ class OrderApiTest extends TestCase
         Mail::assertSent(\App\Mail\OrderConfirmation::class, fn($m) => $m->hasTo('buyer@example.com'));
     }
 
-    public function test_no_confirmation_mail_when_email_missing(): void
+    public function test_no_order_and_no_mail_when_email_missing(): void
     {
         Mail::fake();
 
         $this->postJson('/api/orders', $this->validPayload(['email' => null]));
 
+        $this->assertDatabaseCount('orders', 0);
         Mail::assertNotSent(\App\Mail\OrderConfirmation::class);
+    }
+
+    public function test_order_gets_track_token_and_returns_it(): void
+    {
+        Mail::fake();
+
+        $response = $this->postJson('/api/orders', $this->validPayload())
+            ->assertCreated();
+
+        $token = $response->json('track_token');
+        $this->assertNotEmpty($token);
+        $this->assertSame($token, Order::first()->track_token);
     }
 
     public function test_order_saves_items_as_json(): void
