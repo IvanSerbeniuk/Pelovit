@@ -1,23 +1,116 @@
 name: Deploy to production
 
+# Образи збираються тут, у CI, і публікуються в GHCR. Сервер (1 ГБ RAM)
+# більше нічого не збирає — тільки тягне готові шари й перезапускає стек.
+# Раніше збірка двох образів на самому VPS займала ~7 хвилин.
+
 on:
   push:
     branches: [main]
   workflow_dispatch:   # дозволяє запустити деплой вручну з вкладки Actions
 
+# Два деплої підряд не мають їхати паралельно: другий дочекається першого,
+# інакше на сервері можна отримати образи від різних комітів.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+env:
+  # GHCR вимагає нижній регістр у назві образу.
+  LARAVEL_IMAGE: ghcr.io/ivanserbeniuk/pelovit-laravel
+  NUXT_IMAGE: ghcr.io/ivanserbeniuk/pelovit-nuxt
+
 jobs:
-  deploy:
+  build:
+    name: Build ${{ matrix.name }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      # Один упалий образ не має публікувати другий — інакше на сервері
+      # опиниться половина оновлення.
+      fail-fast: true
+      matrix:
+        include:
+          - name: laravel
+            image: ghcr.io/ivanserbeniuk/pelovit-laravel
+            context: .
+            dockerfile: docker/laravel/Dockerfile
+          - name: nuxt
+            image: ghcr.io/ivanserbeniuk/pelovit-nuxt
+            context: ./frontend
+            dockerfile: ./frontend/Dockerfile
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
+          push: true
+          # SHA — те, чим реально деплоїмо; latest — щоб `docker compose up`
+          # вручну на сервері не тягнув невідомо що.
+          tags: |
+            ${{ matrix.image }}:${{ github.sha }}
+            ${{ matrix.image }}:latest
+          # Прив'язує пакет до репозиторію — без цього GITHUB_TOKEN
+          # деплой-джоби не має доступу на читання приватного образу.
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+          # Кеш шарів між запусками: без нього composer install і npm ci
+          # щоразу йшли б з нуля.
+          cache-from: type=gha,scope=${{ matrix.name }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.name }}
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+
     steps:
       - name: Deploy over SSH
         uses: appleboy/ssh-action@v1.2.0
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+          GHCR_USER: ${{ github.actor }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
+          envs: IMAGE_TAG,GHCR_USER,GHCR_TOKEN
           script: |
             set -e
             cd /opt/pelovit
+
+            # Потрібен лише для docker-compose.yml і конфігів деплою —
+            # код застосунку тепер приїжджає всередині образів.
             git pull --ff-only
-            docker compose up -d --build
+
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+
+            # Compose підставляє IMAGE_TAG у назви образів; змінна оболонки
+            # має пріоритет над .env, тож деплоїться саме цей коміт.
+            export IMAGE_TAG
+            docker compose pull laravel nuxt
+
+            # --no-build: якщо pull чомусь не дав образу, хай впаде тут,
+            # а не з'їсть усю памʼять сервера спробою зібрати локально.
+            docker compose up -d --no-build
+
+            docker logout ghcr.io
             docker image prune -f

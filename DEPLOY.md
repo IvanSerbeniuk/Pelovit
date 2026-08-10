@@ -56,10 +56,24 @@ nginx -t && systemctl reload nginx
   **тепер колбек дійде** (APP_URL публічний) і замовлення стане «Оплачено».
 
 ## Оновлення надалі
+
+Звичайний шлях — **нічого робити не треба**: push у `main` запускає GitHub Actions,
+який збирає обидва образи у себе, кладе в GHCR і на сервері робить лише `pull` +
+рестарт. Сервер більше нічого не збирає (раніше це займало ~7 хвилин на 1 ГБ RAM).
+
+Вручну, якщо треба відкотитись або задеплоїти конкретний коміт:
 ```bash
 cd /opt/pelovit && git pull
-docker compose up -d --build          # пересбирає змінені образи
-docker compose exec laravel php artisan migrate --force   # якщо нема в entrypoint-логах
+echo "$GHCR_TOKEN" | docker login ghcr.io -u <github-user> --password-stdin
+export IMAGE_TAG=<повний sha коміту>   # без змінної береться :latest
+docker compose pull laravel nuxt
+docker compose up -d --no-build
+```
+Міграції виконуються автоматично при старті `laravel` (entrypoint).
+
+Зібрати образ прямо на сервері (аварійний варіант, потребує вільної памʼяті):
+```bash
+docker compose up -d --build
 ```
 
 ## Важливо
@@ -67,8 +81,8 @@ docker compose exec laravel php artisan migrate --force   # якщо нема в
   і `LIQPAY_SANDBOX=false`, `docker compose up -d`.
 - **Нова Пошта**: `NOVA_POSHTA_API_KEY` порожній → автозаповнення міст вимкнено, у формі
   замовлення діє тимчасовий `REQUIRE_NP=false` (місто/відділення вводяться текстом). Коли
-  додаси ключ НП — постав `REQUIRE_NP = true` у `frontend/app/pages/order/index.vue` і
-  перезбери: `docker compose up -d --build nuxt`.
+  додаси ключ НП — постав `REQUIRE_NP = true` у `frontend/app/pages/order/index.vue`,
+  запушь у `main` і дочекайся деплою (образ nuxt перезбереться в CI).
 - **Дані**: свіжа БД порожня. Товари/категорії — через `/admin`, або імпортуй дамп своєї
   локальної БД (`docker compose exec -T db mariadb -u root -p pelovit < dump.sql`).
 - **Ресурси**: збірка Nuxt важка для 1 ГБ RAM — swap (у тебе 2 ГБ) обов'язковий.
