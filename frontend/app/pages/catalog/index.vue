@@ -11,14 +11,20 @@ const { assetUrl } = useAsset()
 const route = useRoute()
 const router = useRouter()
 
-const { data } = await useFetch<any>(`${config.public.apiBase}/catalog`, {
+const { data, status } = await useFetch<any>(`${config.public.apiBase}/catalog`, {
   query: computed(() => route.query),
 })
+
+const isLoading = computed(() => status.value === 'pending')
 
 const products = computed(() => data.value?.products ?? { data: [], last_page: 1, links: [] })
 const categories = computed(() => data.value?.categories ?? [])
 const brands = computed(() => data.value?.brands ?? [])
-const filters = computed(() => data.value?.filters ?? {})
+// Захист від масиву з бекенда: у ньому .sort — метод, а не фільтр.
+const filters = computed<Record<string, string>>(() => {
+  const f = data.value?.filters
+  return f && !Array.isArray(f) ? f : {}
+})
 
 function navigatePage(url: string | null) {
   if (!url) return
@@ -32,54 +38,49 @@ function pageLabel(label: string) {
   return label
 }
 
-const selectedCategory = computed(() => route.query.category as string ?? '')
-const selectedBrand = computed(() => route.query.brand as string ?? '')
-const selectedSort = computed(() => route.query.sort as string ?? '')
-const minPrice = ref(route.query.min_price as string ?? '')
-const maxPrice = ref(route.query.max_price as string ?? '')
-
-function toggleCategory(slug: string) {
-  const next = selectedCategory.value === slug ? undefined : slug
-  router.push({ query: { ...route.query, category: next, page: undefined } })
-}
-
-function toggleBrand(brand: string) {
-  const next = selectedBrand.value === brand ? undefined : brand
-  router.push({ query: { ...route.query, brand: next, page: undefined } })
-}
-
-function setSort(sort: string) {
-  const next = selectedSort.value === sort ? undefined : sort
-  router.push({ query: { ...route.query, sort: next, page: undefined } })
-}
-
-function applyPrice() {
-  router.push({
-    query: {
-      ...route.query,
-      min_price: minPrice.value || undefined,
-      max_price: maxPrice.value || undefined,
-      page: undefined,
-    },
-  })
-}
-
 function resetFilters() {
-  minPrice.value = ''
-  maxPrice.value = ''
   router.push({ path: '/catalog' })
 }
 
-const activeFiltersCount = computed(() => {
-  let n = 0
-  if (filters.value.category) n++
-  if (filters.value.brand) n++
-  if (filters.value.sort) n++
-  if (filters.value.min_price) n++
-  if (filters.value.max_price) n++
-  if (filters.value.q) n++
-  return n
+const SORT_LABELS: Record<string, string> = {
+  featured: 'За популярністю',
+  new: 'Новинки',
+  price_asc: 'Ціна: від дешевих',
+  price_desc: 'Ціна: від дорогих',
+}
+
+function categoryName(slug: string) {
+  for (const cat of categories.value) {
+    if (cat.slug === slug) return cat.name
+    const child = cat.children?.find((c: any) => c.slug === slug)
+    if (child) return child.name
+  }
+  return slug
+}
+
+/**
+ * Активні фільтри винесені на сторінку окремими чіпами: раніше про них
+ * говорила лише цифра на кнопці, і щоб побачити вибране, треба було
+ * відкривати панель.
+ */
+const activeChips = computed(() => {
+  const f = filters.value
+  const chips: { key: string; label: string; patch: Record<string, any> }[] = []
+
+  if (f.category) chips.push({ key: 'category', label: categoryName(f.category), patch: { category: undefined } })
+  if (f.brand) chips.push({ key: 'brand', label: f.brand, patch: { brand: undefined } })
+  if (f.sort) chips.push({ key: 'sort', label: SORT_LABELS[f.sort] ?? f.sort, patch: { sort: undefined } })
+  if (f.min_price) chips.push({ key: 'min_price', label: `від ${f.min_price}₴`, patch: { min_price: undefined } })
+  if (f.max_price) chips.push({ key: 'max_price', label: `до ${f.max_price}₴`, patch: { max_price: undefined } })
+  if (f.q) chips.push({ key: 'q', label: `«${f.q}»`, patch: { q: undefined } })
+
+  return chips
 })
+
+function removeChip(patch: Record<string, any>) {
+  router.push({ query: { ...route.query, ...patch, page: undefined } })
+}
+
 </script>
 
 <template>
@@ -107,101 +108,14 @@ const activeFiltersCount = computed(() => {
     </div>
   </section>
 
-  <!-- Offcanvas фільтри -->
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="filterOffcanvas">
+  <!-- Offcanvas фільтри — лише для мобільних; на десктопі панель у сайдбарі -->
+  <div class="offcanvas offcanvas-end d-lg-none" tabindex="-1" id="filterOffcanvas">
     <div class="offcanvas-header">
       <h5 class="offcanvas-title">Фільтри</h5>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body">
-
-      <!-- Сортування -->
-      <div class="mb-4">
-        <h6 class="fw-semibold mb-3">Сортування</h6>
-        <div class="filter-check">
-          <input type="checkbox" id="sort-featured" :checked="selectedSort === 'featured'" @change="setSort('featured')">
-          <label for="sort-featured">За популярністю</label>
-        </div>
-        <div class="filter-check">
-          <input type="checkbox" id="sort-new" :checked="selectedSort === 'new'" @change="setSort('new')">
-          <label for="sort-new">Новинки</label>
-        </div>
-        <div class="filter-check">
-          <input type="checkbox" id="sort-price-asc" :checked="selectedSort === 'price_asc'" @change="setSort('price_asc')">
-          <label for="sort-price-asc">Ціна: від дешевих</label>
-        </div>
-        <div class="filter-check">
-          <input type="checkbox" id="sort-price-desc" :checked="selectedSort === 'price_desc'" @change="setSort('price_desc')">
-          <label for="sort-price-desc">Ціна: від дорогих</label>
-        </div>
-      </div>
-
-      <!-- Категорії -->
-      <div class="mb-4">
-        <h6 class="fw-semibold mb-3">Категорії</h6>
-        <div v-for="cat in categories" :key="cat.id" class="mb-1">
-          <div class="filter-check">
-            <input
-              type="checkbox"
-              :id="`cat-${cat.slug}`"
-              :checked="selectedCategory === cat.slug"
-              @change="toggleCategory(cat.slug)"
-            >
-            <label :for="`cat-${cat.slug}`">{{ cat.name }}</label>
-          </div>
-          <div v-if="cat.children?.length" class="ps-3 mt-1">
-            <div v-for="child in cat.children" :key="child.id" class="filter-check filter-check--sm">
-              <input
-                type="checkbox"
-                :id="`cat-${child.slug}`"
-                :checked="selectedCategory === child.slug"
-                @change="toggleCategory(child.slug)"
-              >
-              <label :for="`cat-${child.slug}`">{{ child.name }}</label>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Бренд -->
-      <div v-if="brands.length" class="mb-4">
-        <h6 class="fw-semibold mb-3">Бренд</h6>
-        <div v-for="brand in brands" :key="brand" class="filter-check">
-          <input
-            type="checkbox"
-            :id="`brand-${brand}`"
-            :checked="selectedBrand === brand"
-            @change="toggleBrand(brand)"
-          >
-          <label :for="`brand-${brand}`">{{ brand }}</label>
-        </div>
-      </div>
-
-      <!-- Ціна -->
-      <div class="mb-4">
-        <h6 class="fw-semibold mb-3">Ціна (₴)</h6>
-        <div class="d-flex gap-2 align-items-center">
-          <input
-            v-model="minPrice"
-            type="number"
-            class="form-control form-control-sm"
-            placeholder="від"
-            min="0"
-            @keyup.enter="applyPrice"
-          >
-          <span class="text-muted">—</span>
-          <input
-            v-model="maxPrice"
-            type="number"
-            class="form-control form-control-sm"
-            placeholder="до"
-            min="0"
-            @keyup.enter="applyPrice"
-          >
-          <button class="btn btn-sm btn-dark" @click="applyPrice">OK</button>
-        </div>
-      </div>
-
+      <CatalogFilters :categories="categories" :brands="brands" id-prefix="m" />
     </div>
     <div class="offcanvas-footer p-3 border-top">
       <button class="btn btn-outline-secondary w-100" @click="resetFilters">Скинути всі фільтри</button>
@@ -213,10 +127,15 @@ const activeFiltersCount = computed(() => {
     <div class="container">
       <div class="catalog-head d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
         <h2 class="fw-bold mb-0">{{ filters.q ? `Результати: «${filters.q}»` : 'Каталог' }}</h2>
-        <div class="filters" data-bs-toggle="offcanvas" data-bs-target="#filterOffcanvas" style="cursor:pointer;">
+        <div
+          class="filters d-lg-none"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#filterOffcanvas"
+          style="cursor:pointer;"
+        >
           <div class="content">
             Фільтри
-            <span v-if="activeFiltersCount" class="badge bg-dark">{{ activeFiltersCount }}</span>
+            <span v-if="activeChips.length" class="badge bg-dark">{{ activeChips.length }}</span>
           </div>
           <i class="icon_filter">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 4H10V10H4V4Z" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 4H20V10H14V4Z" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 14H10V20H4V14Z" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 17C14 17.7956 14.3161 18.5587 14.8787 19.1213C15.4413 19.6839 16.2044 20 17 20C17.7956 20 18.5587 19.6839 19.1213 19.1213C19.6839 18.5587 20 17.7956 20 17C20 16.2044 19.6839 15.4413 19.1213 14.8787C18.5587 14.3161 17.7956 14 17 14C16.2044 14 15.4413 14.3161 14.8787 14.8787C14.3161 15.4413 14 16.2044 14 17Z" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -224,24 +143,64 @@ const activeFiltersCount = computed(() => {
         </div>
       </div>
 
-      <p v-if="!products.data?.length" class="text-muted py-4">Товарів не знайдено.</p>
-
-      <div v-else class="row g-4">
-        <div v-for="product in products.data" :key="product.id" class="col-md-3 col-6">
-          <ProductCard :product="product" />
-        </div>
+      <div v-if="activeChips.length" class="catalog-chips d-flex flex-wrap align-items-center gap-2 mb-4">
+        <button
+          v-for="chip in activeChips"
+          :key="chip.key"
+          type="button"
+          class="catalog-chip"
+          @click="removeChip(chip.patch)"
+        >
+          {{ chip.label }}
+          <span class="catalog-chip__x" aria-hidden="true">×</span>
+          <span class="visually-hidden">Прибрати фільтр</span>
+        </button>
+        <button type="button" class="btn btn-link btn-sm text-muted p-0 ms-1" @click="resetFilters">
+          Скинути все
+        </button>
       </div>
 
-      <div v-if="products.last_page > 1" class="mt-4 d-flex justify-content-center gap-1">
-        <button
-          v-for="link in products.links"
-          :key="link.label"
-          class="btn btn-sm"
-          :class="link.active ? 'btn-dark' : 'btn-outline-secondary'"
-          :disabled="!link.url"
-          @click="navigatePage(link.url)"
-          v-html="pageLabel(link.label)"
-        ></button>
+      <div class="row g-4">
+        <aside class="col-lg-3 d-none d-lg-block">
+          <div class="catalog-sidebar">
+            <h5 class="fw-bold mb-3">Фільтри</h5>
+            <CatalogFilters :categories="categories" :brands="brands" id-prefix="d" />
+            <button class="btn btn-outline-secondary w-100" @click="resetFilters">Скинути всі фільтри</button>
+          </div>
+        </aside>
+
+        <div class="col-lg-9">
+          <!-- Сітка тьмяніє, поки їде відповідь: інакше клік по фільтру
+               виглядає так, ніби нічого не сталося. -->
+          <div class="catalog-grid" :class="{ 'catalog-grid--loading': isLoading }">
+            <div v-if="isLoading" class="catalog-grid__spinner" role="status" aria-live="polite">
+              <span class="spinner-border text-secondary"></span>
+              <span class="visually-hidden">Завантаження товарів</span>
+            </div>
+
+            <p v-if="!products.data?.length && !isLoading" class="text-muted py-4">
+              За цими фільтрами товарів немає. Спробуйте прибрати частину умов.
+            </p>
+
+            <div v-else class="row g-4">
+              <div v-for="product in products.data" :key="product.id" class="col-xl-4 col-md-6 col-6">
+                <ProductCard :product="product" />
+              </div>
+            </div>
+          </div>
+
+          <div v-if="products.last_page > 1" class="mt-4 d-flex justify-content-center gap-1">
+            <button
+              v-for="link in products.links"
+              :key="link.label"
+              class="btn btn-sm"
+              :class="link.active ? 'btn-dark' : 'btn-outline-secondary'"
+              :disabled="!link.url"
+              @click="navigatePage(link.url)"
+              v-html="pageLabel(link.label)"
+            ></button>
+          </div>
+        </div>
       </div>
     </div>
   </section>

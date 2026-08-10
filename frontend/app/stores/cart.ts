@@ -14,7 +14,8 @@ interface AppliedPromo {
   code: string
   type: string
   value: number
-  discount: number
+  /** Нижня межа суми, з якої код діє. null — обмеження немає. */
+  min_order_total: number | null
 }
 
 export const useCartStore = defineStore('cart', {
@@ -26,7 +27,36 @@ export const useCartStore = defineStore('cart', {
   getters: {
     count: (state) => state.items.reduce((sum, i) => sum + i.qty, 0),
     total: (state) => state.items.reduce((sum, i) => sum + i.price * i.qty, 0),
-    discount: (state) => state.promo?.discount ?? 0,
+
+    /**
+     * Знижка рахується від поточного кошика, а не запамʼятовується разом із
+     * кодом: інакше зміна кількості робила б суму неправильною. Остаточне
+     * слово все одно за бекендом — він перевіряє код ще раз при оформленні.
+     */
+    discount(state): number {
+      const promo = state.promo
+      if (!promo) return 0
+
+      const subtotal = this.total
+      if (promo.min_order_total && subtotal < promo.min_order_total) return 0
+
+      const raw = promo.type === 'percent'
+        ? Math.round((subtotal * promo.value) / 100 * 100) / 100
+        : promo.value
+
+      return Math.min(raw, subtotal)
+    },
+
+    /**
+     * Скільки не вистачає до мінімальної суми промокоду. 0 — код діє.
+     * Потрібно, щоб показати «додайте ще N₴», а не мовчки прибирати знижку.
+     */
+    promoShortfall(state): number {
+      const min = state.promo?.min_order_total
+      if (!min) return 0
+
+      return Math.max(0, min - this.total)
+    },
   },
 
   actions: {
@@ -62,20 +92,18 @@ export const useCartStore = defineStore('cart', {
       this._persist()
     },
 
-    add(product: Omit<CartItem, 'qty'>) {
+    add(product: Omit<CartItem, 'qty'>, qty = 1) {
       const existing = this.items.find((i) => i.id === product.id)
       if (existing) {
-        existing.qty += 1
+        existing.qty += qty
       } else {
-        this.items.push({ ...product, qty: 1 })
+        this.items.push({ ...product, qty })
       }
-      this.clearPromo()
       this._persist()
     },
 
     remove(id: number) {
       this.items = this.items.filter((i) => i.id !== id)
-      this.clearPromo()
       this._persist()
     },
 
@@ -83,7 +111,6 @@ export const useCartStore = defineStore('cart', {
       const item = this.items.find((i) => i.id === id)
       if (item) {
         item.qty = Math.max(1, qty)
-        this.clearPromo()
         this._persist()
       }
     },

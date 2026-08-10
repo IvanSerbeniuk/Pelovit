@@ -11,6 +11,17 @@ class CatalogApiTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Порожній масив у JSON — це [], і на вітрині filters.sort стає
+     * методом масиву, через що зʼявляється фантомний активний фільтр.
+     */
+    public function test_filters_is_an_object_even_when_empty(): void
+    {
+        $this->getJson('/api/catalog')
+            ->assertOk()
+            ->assertSee('"filters":{}', escape: false);
+    }
+
     public function test_returns_required_keys(): void
     {
         $response = $this->getJson('/api/catalog');
@@ -43,7 +54,7 @@ class CatalogApiTest extends TestCase
     public function test_filter_by_category_includes_children(): void
     {
         $parent = Category::factory()->create(['slug' => 'parent']);
-        $child  = Category::factory()->child($parent->id)->create();
+        $child = Category::factory()->child($parent->id)->create();
         Product::factory(2)->create(['category_id' => $child->id]);
         Product::factory()->create(['category_id' => $parent->id]);
         Product::factory(3)->create();
@@ -103,7 +114,7 @@ class CatalogApiTest extends TestCase
 
         $response = $this->getJson('/api/catalog?sort=price_asc');
 
-        $prices = collect($response->json('products.data'))->pluck('price')->map(fn($p) => (float) $p)->all();
+        $prices = collect($response->json('products.data'))->pluck('price')->map(fn ($p) => (float) $p)->all();
         $this->assertEquals([100.0, 200.0, 300.0], $prices);
     }
 
@@ -115,7 +126,7 @@ class CatalogApiTest extends TestCase
 
         $response = $this->getJson('/api/catalog?sort=price_desc');
 
-        $prices = collect($response->json('products.data'))->pluck('price')->map(fn($p) => (float) $p)->all();
+        $prices = collect($response->json('products.data'))->pluck('price')->map(fn ($p) => (float) $p)->all();
         $this->assertEquals([300.0, 200.0, 100.0], $prices);
     }
 

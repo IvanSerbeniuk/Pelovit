@@ -147,9 +147,17 @@ onBeforeUnmount(() => {
   lightbox = null
 })
 
+const qty = ref(1)
+
+function normalizeQty() {
+  const n = Math.floor(Number(qty.value))
+  qty.value = Number.isFinite(n) ? Math.min(99, Math.max(1, n)) : 1
+}
+
 function handleAddToCart() {
   if (!product.value) return
-  addToCartFn({ ...product.value })
+  normalizeQty()
+  addToCartFn({ ...product.value }, qty.value)
   addedToCart.value = true
   setTimeout(() => { addedToCart.value = false }, 1500)
 }
@@ -275,6 +283,20 @@ const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none
           >
             Отримай 10% знижки у застосунку
           </a>
+          <div class="qty-picker" role="group" aria-label="Кількість">
+            <button type="button" class="qty-picker__btn" :disabled="qty <= 1" aria-label="Зменшити кількість" @click="qty--">−</button>
+            <input
+              v-model.number="qty"
+              type="number"
+              class="qty-picker__input"
+              min="1"
+              max="99"
+              inputmode="numeric"
+              aria-label="Кількість"
+              @change="normalizeQty"
+            >
+            <button type="button" class="qty-picker__btn" :disabled="qty >= 99" aria-label="Збільшити кількість" @click="qty++">+</button>
+          </div>
           <button class="btn btn-outline-dark px-5 btn-lg buy_in_oneclick" @click="handleAddToCart">
             {{ addedToCart ? 'Додано!' : 'Додати в кошик' }}
           </button>
