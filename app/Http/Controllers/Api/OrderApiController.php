@@ -19,13 +19,23 @@ class OrderApiController extends Controller
 
     public function store(Request $request, LiqPayService $liqpay, OrderNotifier $notifier): JsonResponse
     {
+        // Email обовʼязковий: це єдиний канал, яким покупець отримує
+        // підтвердження та персональне посилання на статус замовлення.
+        //
+        // Виняток — запити із застосунку. Уже встановлені APK зібрані до цієї
+        // зміни й надсилають замовлення без пошти; якби бекенд відповідав 422,
+        // вони перестали б оформлювати замовлення до оновлення застосунку.
+        // У нових збірках пошта лишається обовʼязковою на самій формі, тож це
+        // послаблення — тимчасовий місток сумісності, а не постійна поведінка.
+        // Заголовок не є захистом: підробити його тривіально, але тут він
+        // впливає лише на суворість валідації, а не на доступ до чогось.
+        $emailRule = $request->header('X-App-Platform') ? 'nullable' : 'required';
+
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
-            // Email обовʼязковий: це єдиний канал, яким покупець отримує
-            // підтвердження та персональне посилання на статус замовлення.
-            'email' => 'required|email|max:255',
+            'email' => $emailRule.'|email|max:255',
             'city' => 'required|string|max:255',
             'branch' => 'required|string|max:255',
             'payment_method' => 'required|in:card,cod,liqpay',
