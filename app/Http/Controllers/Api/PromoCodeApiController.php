@@ -36,6 +36,9 @@ class PromoCodeApiController extends Controller
             'code' => $promo->code,
             'type' => $promo->type,
             'value' => (float) $promo->value,
+            // Потрібне вітрині, щоб перерахувати знижку при зміні кошика
+            // й підказати, скільки не вистачає до мінімальної суми.
+            'min_order_total' => $promo->min_order_total ? (float) $promo->min_order_total : null,
             'discount' => $promo->discountFor($subtotal),
             'message' => 'Промокод застосовано',
         ]);

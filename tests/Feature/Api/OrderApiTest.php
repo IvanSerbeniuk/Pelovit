@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\Api;
 
+use App\Mail\OrderConfirmation;
 use App\Models\Order;
+use App\Models\PromoCode;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
@@ -14,15 +16,15 @@ class OrderApiTest extends TestCase
     private function validPayload(array $overrides = []): array
     {
         return array_merge([
-            'first_name'     => 'Іван',
-            'last_name'      => 'Петренко',
-            'phone'          => '+380631234567',
-            'email'          => 'test@example.com',
-            'city'           => 'Одеса',
-            'branch'         => '5',
+            'first_name' => 'Іван',
+            'last_name' => 'Петренко',
+            'phone' => '+380631234567',
+            'email' => 'test@example.com',
+            'city' => 'Одеса',
+            'branch' => '5',
             'payment_method' => 'card',
-            'comment'        => null,
-            'items'          => [
+            'comment' => null,
+            'items' => [
                 ['id' => 1, 'name' => 'Крем', 'price' => 199.00, 'qty' => 2],
             ],
             'total' => 398.00,
@@ -72,12 +74,13 @@ class OrderApiTest extends TestCase
             ->assertJsonValidationErrors(['items']);
     }
 
-    public function test_email_is_optional(): void
+    public function test_email_is_required(): void
     {
         Mail::fake();
 
         $this->postJson('/api/orders', $this->validPayload(['email' => null]))
-            ->assertCreated();
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['email']);
     }
 
     public function test_sends_confirmation_mail_when_email_provided(): void
@@ -86,16 +89,54 @@ class OrderApiTest extends TestCase
 
         $this->postJson('/api/orders', $this->validPayload(['email' => 'buyer@example.com']));
 
-        Mail::assertSent(\App\Mail\OrderConfirmation::class, fn($m) => $m->hasTo('buyer@example.com'));
+        Mail::assertSent(OrderConfirmation::class, fn ($m) => $m->hasTo('buyer@example.com'));
     }
 
-    public function test_no_confirmation_mail_when_email_missing(): void
+    /**
+     * Місток сумісності зі старими APK, зібраними до того, як пошта
+     * стала обовʼязковою. Прибрати, коли застосунок оновиться.
+     */
+    public function test_email_is_optional_for_app_requests(): void
+    {
+        Mail::fake();
+
+        $this->withHeader('X-App-Platform', 'android')
+            ->postJson('/api/orders', $this->validPayload(['email' => null]))
+            ->assertCreated();
+
+        $this->assertDatabaseCount('orders', 1);
+    }
+
+    public function test_app_request_with_invalid_email_still_rejected(): void
+    {
+        Mail::fake();
+
+        $this->withHeader('X-App-Platform', 'android')
+            ->postJson('/api/orders', $this->validPayload(['email' => 'not-an-email']))
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['email']);
+    }
+
+    public function test_no_order_and_no_mail_when_email_missing(): void
     {
         Mail::fake();
 
         $this->postJson('/api/orders', $this->validPayload(['email' => null]));
 
-        Mail::assertNotSent(\App\Mail\OrderConfirmation::class);
+        $this->assertDatabaseCount('orders', 0);
+        Mail::assertNotSent(OrderConfirmation::class);
+    }
+
+    public function test_order_gets_track_token_and_returns_it(): void
+    {
+        Mail::fake();
+
+        $response = $this->postJson('/api/orders', $this->validPayload())
+            ->assertCreated();
+
+        $token = $response->json('track_token');
+        $this->assertNotEmpty($token);
+        $this->assertSame($token, Order::first()->track_token);
     }
 
     public function test_order_saves_items_as_json(): void
@@ -143,7 +184,7 @@ class OrderApiTest extends TestCase
     {
         Mail::fake();
 
-        \App\Models\PromoCode::create(['code' => 'SALE10', 'type' => 'percent', 'value' => 10, 'is_active' => true]);
+        PromoCode::create(['code' => 'SALE10', 'type' => 'percent', 'value' => 10, 'is_active' => true]);
 
         $this->postJson('/api/orders', $this->validPayload(['promo_code' => 'sale10']))
             ->assertCreated();
@@ -152,14 +193,14 @@ class OrderApiTest extends TestCase
         $this->assertEquals('39.80', $order->discount);   // 10% of 398
         $this->assertEquals('358.20', $order->total);      // 398 - 39.80
         $this->assertEquals('SALE10', $order->promo_code);
-        $this->assertEquals(1, \App\Models\PromoCode::first()->used_count);
+        $this->assertEquals(1, PromoCode::first()->used_count);
     }
 
     public function test_fixed_promo_code_is_applied(): void
     {
         Mail::fake();
 
-        \App\Models\PromoCode::create(['code' => 'MINUS100', 'type' => 'fixed', 'value' => 100, 'is_active' => true]);
+        PromoCode::create(['code' => 'MINUS100', 'type' => 'fixed', 'value' => 100, 'is_active' => true]);
 
         $this->postJson('/api/orders', $this->validPayload(['promo_code' => 'MINUS100']))
             ->assertCreated();
@@ -184,7 +225,7 @@ class OrderApiTest extends TestCase
     {
         Mail::fake();
 
-        \App\Models\PromoCode::create(['code' => 'BIG', 'type' => 'fixed', 'value' => 50, 'min_order_total' => 1000, 'is_active' => true]);
+        PromoCode::create(['code' => 'BIG', 'type' => 'fixed', 'value' => 50, 'min_order_total' => 1000, 'is_active' => true]);
 
         $this->postJson('/api/orders', $this->validPayload(['promo_code' => 'BIG']))
             ->assertUnprocessable()
@@ -195,7 +236,7 @@ class OrderApiTest extends TestCase
     {
         Mail::fake();
 
-        \App\Models\PromoCode::create(['code' => 'ONCE', 'type' => 'fixed', 'value' => 50, 'usage_limit' => 1, 'used_count' => 1, 'is_active' => true]);
+        PromoCode::create(['code' => 'ONCE', 'type' => 'fixed', 'value' => 50, 'usage_limit' => 1, 'used_count' => 1, 'is_active' => true]);
 
         $this->postJson('/api/orders', $this->validPayload(['promo_code' => 'ONCE']))
             ->assertUnprocessable()

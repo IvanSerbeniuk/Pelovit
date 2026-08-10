@@ -28,6 +28,28 @@ class PromoApiTest extends TestCase
             ->assertJson(['valid' => true, 'discount' => 100]);
     }
 
+    /**
+     * Вітрина перераховує знижку при зміні кошика, тож їй потрібна
+     * нижня межа суми — інакше вона не знає, коли код перестає діяти.
+     */
+    public function test_response_exposes_min_order_total(): void
+    {
+        PromoCode::create(['code' => 'FROM500', 'type' => 'percent', 'value' => 10, 'min_order_total' => 500, 'is_active' => true]);
+
+        $this->postJson('/api/promo/validate', ['code' => 'FROM500', 'subtotal' => 600])
+            ->assertOk()
+            ->assertJson(['valid' => true, 'min_order_total' => 500]);
+    }
+
+    public function test_min_order_total_is_null_when_unlimited(): void
+    {
+        PromoCode::create(['code' => 'ANY', 'type' => 'percent', 'value' => 5, 'is_active' => true]);
+
+        $this->postJson('/api/promo/validate', ['code' => 'ANY', 'subtotal' => 100])
+            ->assertOk()
+            ->assertJson(['valid' => true, 'min_order_total' => null]);
+    }
+
     public function test_unknown_code_is_invalid(): void
     {
         $this->postJson('/api/promo/validate', ['code' => 'NOPE', 'subtotal' => 500])

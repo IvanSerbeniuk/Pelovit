@@ -5,6 +5,7 @@ const route = useRoute()
 const { data: settings } = useSettings()
 const isCardPayment = computed(() => route.query.payment_method === 'card')
 const isLiqpayPayment = computed(() => route.query.payment_method === 'liqpay')
+const trackToken = computed(() => (route.query.token as string) ?? '')
 </script>
 
 <template>
@@ -27,9 +28,18 @@ const isLiqpayPayment = computed(() => route.query.payment_method === 'liqpay')
       <div v-if="settings.payment_card_holder">Одержувач: <strong>{{ settings.payment_card_holder }}</strong></div>
     </div>
 
-    <div>
-      <NuxtLink to="/" class="btn btn-dark px-5 py-3 rad-16">На головну</NuxtLink>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+      <NuxtLink
+        v-if="trackToken"
+        :to="{ path: '/order/track', query: { token: trackToken } }"
+        class="btn btn-dark px-5 py-3 rad-16"
+      >Відстежити замовлення</NuxtLink>
+      <NuxtLink to="/" class="btn btn-outline-dark px-5 py-3 rad-16">На головну</NuxtLink>
     </div>
+
+    <p v-if="trackToken" class="text-muted small mt-3 mb-0">
+      Посилання на статус ми також надіслали вам на пошту.
+    </p>
   </div>
 </section>
 </template>

@@ -44,7 +44,12 @@ async function applyPromo() {
       body: { code, subtotal: cartTotal.value },
     })
     if (res.valid) {
-      cartStore.applyPromo({ code: res.code, type: res.type, value: res.value, discount: res.discount })
+      cartStore.applyPromo({
+        code: res.code,
+        type: res.type,
+        value: res.value,
+        min_order_total: res.min_order_total ?? null,
+      })
       promoOk.value = true
       promoMessage.value = res.message
     } else {
@@ -58,6 +63,20 @@ async function applyPromo() {
   } finally {
     promoApplying.value = false
   }
+}
+
+function incQty(id: number) {
+  const item = cartStore.items.find(i => i.id === id)
+  if (item) cartStore.update(id, item.qty + 1)
+}
+
+function decQty(id: number) {
+  const item = cartStore.items.find(i => i.id === id)
+  if (item && item.qty > 1) cartStore.update(id, item.qty - 1)
+}
+
+function removeItem(id: number) {
+  cartStore.remove(id)
 }
 
 function removePromo() {
@@ -198,6 +217,11 @@ async function submitOrder() {
 
   if (!form.phone.trim()) localErrors.phone = 'Вкажіть мобільний телефон'
 
+  // Лист із підтвердженням і посиланням на статус — єдиний спосіб для покупця
+  // стежити за замовленням, тож пошта обовʼязкова.
+  if (!form.email.trim()) localErrors.email = 'Вкажіть електронну пошту'
+  else if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) localErrors.email = 'Перевірте адресу пошти'
+
   if (REQUIRE_NP && !cityRef.value) localErrors.city = 'Оберіть місто зі списку Нової пошти'
   else if (!form.city.trim()) localErrors.city = 'Вкажіть місто'
   if (!form.branch.trim()) localErrors.branch = REQUIRE_NP ? 'Оберіть відділення або поштомат' : 'Вкажіть відділення'
@@ -213,6 +237,7 @@ async function submitOrder() {
 
     const resp = await $fetch<{
       order_id: number
+      track_token?: string
       liqpay?: { action_url: string; data: string; signature: string }
       payment_url?: string
     }>(`${config.public.apiBase}/orders`, {
@@ -241,7 +266,10 @@ async function submitOrder() {
       return
     }
 
-    router.push({ path: '/order/success', query: { payment_method: form.payment_method } })
+    router.push({
+      path: '/order/success',
+      query: { payment_method: form.payment_method, token: resp.track_token },
+    })
   } catch (err: any) {
     if (err?.data?.errors) {
       errors.value = Object.fromEntries(
@@ -282,8 +310,10 @@ async function submitOrder() {
                 <div v-if="errors.phone" class="invalid-feedback">{{ errors.phone }}</div>
               </div>
               <div class="col-md-6">
-                <label class="form-label fw-medium">Електронна пошта</label>
-                <input v-model="form.email" type="email" class="form-control" placeholder="Введіть електронну пошту">
+                <label class="form-label fw-medium">Електронна пошта <span class="text-danger">*</span></label>
+                <input v-model="form.email" type="email" class="form-control" :class="{'is-invalid': errors.email}" placeholder="Введіть електронну пошту" required>
+                <div v-if="errors.email" class="invalid-feedback">{{ errors.email }}</div>
+                <div class="form-text">Надішлемо підтвердження та посилання на статус замовлення.</div>
               </div>
             </div>
           </div>
@@ -394,7 +424,14 @@ async function submitOrder() {
                 <img :src="assetUrl(item.image)" :alt="item.name" class="product-img" loading="lazy" decoding="async">
                 <div class="flex-grow-1">
                   <h6>{{ item.name }}</h6>
-                  <span class="text-muted small">{{ item.qty }} шт.</span>
+                  <!-- Передумав на останньому кроці — не треба вертатися
+                       в кошик і проходити оформлення наново. -->
+                  <div class="checkout-qty mt-1">
+                    <button type="button" :disabled="item.qty <= 1" :aria-label="`Зменшити кількість: ${item.name}`" @click="decQty(item.id)">−</button>
+                    <span>{{ item.qty }}</span>
+                    <button type="button" :aria-label="`Збільшити кількість: ${item.name}`" @click="incQty(item.id)">+</button>
+                    <button type="button" class="checkout-qty__remove" :aria-label="`Прибрати ${item.name}`" @click="removeItem(item.id)">Прибрати</button>
+                  </div>
                 </div>
                 <div class="fw-medium">{{ fmt(parseFloat(String(item.price)) * item.qty) }}</div>
               </div>
@@ -431,6 +468,11 @@ async function submitOrder() {
               </div>
               <div v-if="promoMessage" class="small mt-1" :class="promoOk ? 'text-success' : 'text-danger'">
                 {{ promoMessage }}
+              </div>
+              <!-- Кошик міг подешевшати після застосування коду: пояснюємо,
+                   чому знижки зараз немає, замість того щоб мовчки її прибрати. -->
+              <div v-if="cartStore.promoShortfall > 0" class="small mt-1 text-warning-emphasis">
+                Додайте товарів ще на {{ fmt(cartStore.promoShortfall) }}, щоб знижка застосувалась.
               </div>
             </div>
 

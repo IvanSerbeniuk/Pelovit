@@ -28,18 +28,18 @@ class CatalogApiController extends Controller
 
         $products = Product::where('is_active', true)
             ->with('category')
-            ->when($categoryIds, fn($q) => $q->whereIn('category_id', $categoryIds))
-            ->when($request->q, fn($q, $search) => $q->where('name', 'like', "%{$search}%"))
-            ->when($request->brand, fn($q, $brand) => $q->where('brand', $brand))
-            ->when($request->min_price, fn($q, $min) => $q->where('price', '>=', $min))
-            ->when($request->max_price, fn($q, $max) => $q->where('price', '<=', $max))
-            ->when($request->boolean('on_sale'), fn($q) => $q->whereNotNull('old_price')->whereColumn('old_price', '>', 'price'))
+            ->when($categoryIds, fn ($q) => $q->whereIn('category_id', $categoryIds))
+            ->when($request->q, fn ($q, $search) => $q->where('name', 'like', "%{$search}%"))
+            ->when($request->brand, fn ($q, $brand) => $q->where('brand', $brand))
+            ->when($request->min_price, fn ($q, $min) => $q->where('price', '>=', $min))
+            ->when($request->max_price, fn ($q, $max) => $q->where('price', '<=', $max))
+            ->when($request->boolean('on_sale'), fn ($q) => $q->whereNotNull('old_price')->whereColumn('old_price', '>', 'price'))
             ->when($request->sort, function ($q, $sort) {
                 match ($sort) {
-                    'price_asc'  => $q->orderBy('price'),
+                    'price_asc' => $q->orderBy('price'),
                     'price_desc' => $q->orderByDesc('price'),
-                    'new'        => $q->orderByDesc('created_at'),
-                    default      => $q->orderByDesc('is_featured'),
+                    'new' => $q->orderByDesc('created_at'),
+                    default => $q->orderByDesc('is_featured'),
                 };
             })
             ->paginate(12)
@@ -53,10 +53,13 @@ class CatalogApiController extends Controller
             ->pluck('brand');
 
         return response()->json([
-            'products'   => $products,
+            'products' => $products,
             'categories' => $categories,
-            'brands'     => $brands,
-            'filters'    => $request->only(['category', 'sort', 'brand', 'min_price', 'max_price', 'q']),
+            'brands' => $brands,
+            // (object) обовʼязково: порожній PHP-масив серіалізується в JSON як
+            // [], і на вітрині filters.sort потрапляє в Array.prototype.sort —
+            // тобто «фільтр» виглядає застосованим, хоча його немає.
+            'filters' => (object) $request->only(['category', 'sort', 'brand', 'min_price', 'max_price', 'q']),
         ]);
     }
 }

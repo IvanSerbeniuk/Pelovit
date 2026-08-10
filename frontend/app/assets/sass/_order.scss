@@ -19,6 +19,54 @@ body{
     flex-direction: column;
   }
 
+  .checkout-qty{
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    button{
+      min-width: 26px;
+      height: 26px;
+      padding: 0 6px;
+      border: 1px solid #E4DCD2;
+      border-radius: 8px;
+      background: #FFFEFC;
+      color: #422928;
+      line-height: 1;
+      cursor: pointer;
+
+      &:hover:not(:disabled){
+        background: #F4F0E7;
+      }
+
+      &:disabled{
+        color: #C2BAB1;
+        cursor: default;
+      }
+    }
+
+    span{
+      min-width: 22px;
+      text-align: center;
+      font-weight: 600;
+      color: #422928;
+    }
+
+    .checkout-qty__remove{
+      margin-left: 0.35rem;
+      border: 0;
+      background: none;
+      color: #9A8F84;
+      font-size: 13px;
+      text-decoration: underline;
+
+      &:hover{
+        color: #B5423A;
+        background: none;
+      }
+    }
+  }
+
   .count_rates{
     border: 1px solid #F4F0E7;
     width: fit-content;

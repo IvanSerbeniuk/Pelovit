@@ -50,7 +50,7 @@ const CART_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><p
           <h4 class="price">{{ Math.round(Number(product.price)) }}₴</h4>
           <div v-if="product.old_price" class="disc_price">{{ Math.round(Number(product.old_price)) }}₴</div>
         </div>
-        <button class="btn buy rad-12" @click="addToCart(product)" :disabled="addedToCart[product.id]">
+        <button class="btn buy rad-12" @click="addToCart(product)">
           <span>{{ addedToCart[product.id] ? '✓' : 'Купити' }}</span>
           <span v-if="!addedToCart[product.id]" v-html="CART_SVG"></span>
         </button>

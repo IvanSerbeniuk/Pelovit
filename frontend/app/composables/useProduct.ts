@@ -12,10 +12,20 @@ export const useProduct = () => {
     return image ? `${config.public.assetBase}/${image}` : '/images/image.png'
   }
 
-  function addToCart(product: { id: number; name: string; price: number | string; image: string | null; slug: string }) {
-    cart.add({ ...product, price: parseFloat(String(product.price)), image: product.image })
+  function addToCart(
+    product: { id: number; name: string; price: number | string; image: string | null; slug: string },
+    qty = 1,
+  ) {
+    cart.add({ ...product, price: parseFloat(String(product.price)), image: product.image }, qty)
     addedToCart.value[product.id] = true
-    addToast(`${product.name} — додано до кошика`, 'cart')
+    addToast(
+      qty > 1
+        ? `${product.name} — додано ${qty} шт.`
+        : `${product.name} — додано до кошика`,
+      'cart',
+    )
+    // Позначка «✓» гасне сама, але кнопка лишається активною: покупець
+    // має змогу докласти ще одну штуку, не чекаючи.
     setTimeout(() => { addedToCart.value[product.id] = false }, 1500)
   }
 

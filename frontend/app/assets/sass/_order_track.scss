@@ -1,0 +1,101 @@
+@use 'variables' as *;
+
+/*
+ * Сторінка статусу замовлення за посиланням з листа.
+ *
+ * Класи .checkout-card / .step-circle вкладені в _order.scss та _cart.scss під
+ * своїми секціями, тож сюди вони не дістають — повторюємо потрібне локально,
+ * зберігаючи ту саму палітру.
+ */
+.order-track-section {
+  padding: 40px 0;
+  background-color: #FDFBF8;
+
+  .track-card {
+    border-radius: 16px;
+    background-color: #ffffff;
+    border: 1px solid #F5EDE8;
+  }
+
+  .track-card__header {
+    padding: 1.25rem 1.5rem 0;
+    font-weight: 600;
+    color: #422928;
+  }
+
+  .product-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+  }
+
+  .track-item {
+    border-bottom: 1px solid #F5EDE8;
+
+    &:last-of-type {
+      border-bottom: 0;
+    }
+  }
+
+  .track-steps {
+    gap: 4px;
+  }
+
+  .track-step {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .track-step__circle {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    background-color: #EDEDED;
+    color: #9A9A9A;
+    font-weight: 600;
+    transition: background-color .2s ease, color .2s ease;
+  }
+
+  .track-step__label {
+    font-size: 13px;
+    color: #9A9A9A;
+  }
+
+  /* Пройдені кроки — фірмовий блакитний, поточний додатково виділено. */
+  .track-step--done {
+    .track-step__circle {
+      background-color: #D5EAF2;
+      color: #69BDDB;
+    }
+
+    .track-step__label {
+      color: #422928;
+    }
+  }
+
+  .track-step--current {
+    .track-step__circle {
+      background-color: #69BDDB;
+      color: #FFFEFC;
+    }
+
+    .track-step__label {
+      font-weight: 600;
+    }
+  }
+
+  .track-meta {
+    dt {
+      color: #969696;
+      font-weight: 500;
+    }
+
+    dd {
+      color: #1A1A1A;
+    }
+  }
+}

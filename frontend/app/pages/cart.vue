@@ -70,7 +70,11 @@ const CART_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><p
             </div>
           </template>
         <div class="cart_wrapper gap-2 d-flex flex-column mt-4">
-          <p v-if="cartStore.items.length === 0" class="text-muted">Ваш кошик порожній.</p>
+          <div v-if="cartStore.items.length === 0" class="cart-empty text-center py-5">
+            <p class="text-muted mb-1">Ваш кошик порожній.</p>
+            <p class="text-muted small mb-4">Оберіть щось із каталогу — ми додали туди новинки.</p>
+            <NuxtLink to="/catalog" class="btn btn-brown px-5 py-3 rad-16">Перейти до каталогу</NuxtLink>
+          </div>
           <div v-for="item in cartStore.items" :key="item.id"
                class="cart-item d-flex align-items-center gap-3 bg-white p-2-5 rad-16">
             <img :src="imgSrc(item.image)" :alt="item.name" class="product-img" loading="lazy" decoding="async">
@@ -120,6 +124,10 @@ const CART_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><p
             <span>Знижка<span v-if="cartStore.promo"> ({{ cartStore.promo.code }})</span></span>
             <span>{{ cartStore.discount > 0 ? '−' + fmt(cartStore.discount) : '0₴' }}</span>
           </div>
+          <p v-if="cartStore.promoShortfall > 0" class="small text-warning-emphasis mb-2">
+            Додайте товарів ще на {{ fmt(cartStore.promoShortfall) }}, щоб знижка
+            за кодом {{ cartStore.promo?.code }} застосувалась.
+          </p>
           <div class="d-flex justify-content-between mb-3 gray_cl">
             <span>Сума</span><span>{{ fmt(cartTotal) }}</span>
           </div>

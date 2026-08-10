@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\CatalogApiController;
 use App\Http\Controllers\Api\HomeApiController;
 use App\Http\Controllers\Api\JournalApiController;
 use App\Http\Controllers\Api\OrderApiController;
+use App\Http\Controllers\Api\OrderTrackController;
 use App\Http\Controllers\Api\ProductApiController;
 use App\Http\Controllers\Api\PromoCodeApiController;
 use App\Http\Controllers\Api\ContactsApiController;
@@ -26,6 +27,8 @@ Route::get('/journal', [JournalApiController::class, 'index']);
 Route::get('/journal/{slug}', [JournalApiController::class, 'show']);
 Route::get('/contacts', [ContactsApiController::class, 'index']);
 Route::post('/orders', [OrderApiController::class, 'store']);
+Route::get('/orders/track/{token}', [OrderTrackController::class, 'show'])
+    ->middleware('throttle:30,1');
 Route::post('/promo/validate', [PromoCodeApiController::class, 'validate']);
 Route::post('/leads', [LeadController::class, 'store']);
 Route::post('/subscribe', [SubscribeController::class, 'store']);
