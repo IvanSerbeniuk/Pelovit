@@ -340,6 +340,25 @@
     color: rgba(103, 94, 84, 1) ;
   }
 
+  // Службова кнопка — її бачить лише залогінений адміністратор.
+  .admin-edit-link{
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    margin-bottom: 1rem;
+    padding: .35rem .85rem;
+    border: 1px dashed #69BDDB;
+    border-radius: 1rem;
+    color: #2C7B99;
+    font-size: .875rem;
+    text-decoration: none;
+
+    &:hover{
+      background: #F1F8FB;
+      color: #1F5C74;
+    }
+  }
+
   // Описи товарів приходять з БД як HTML (перенесені зі старого сайту).
   .product-description {
     color: rgba(103, 94, 84, 1);
