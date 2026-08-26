@@ -23,14 +23,16 @@ const canonicalUrl = computed(() => `${siteUrl}/product/${route.params.slug}`)
 const seoTitle = computed(() =>
   product.value?.meta_title || `${product.value?.name ?? 'Товар'} — PELOVIT`
 )
+const descriptionHtml = computed(() => sanitizeHtml(product.value?.description))
+
 const seoDesc = computed(() =>
-  product.value?.meta_description || product.value?.description || `${product.value?.name} — косметика PELOVIT. Замовляйте з доставкою по Україні.`
+  product.value?.meta_description || htmlToText(product.value?.description) || `${product.value?.name} — косметика PELOVIT. Замовляйте з доставкою по Україні.`
 )
 const seoOgTitle = computed(() =>
   product.value?.og_title || product.value?.meta_title || `${product.value?.name} — PELOVIT`
 )
 const seoOgDesc = computed(() =>
-  product.value?.og_description || product.value?.meta_description || product.value?.description || ''
+  product.value?.og_description || product.value?.meta_description || htmlToText(product.value?.description) || ''
 )
 
 useHead({
@@ -305,7 +307,8 @@ const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none
         <div class="description_wrapper_dropdown">
           <template v-if="product.description">
             <h5 class="mt-5 mb-3">Опис</h5>
-            <p>{{ product.description }}</p>
+            <!-- eslint-disable-next-line vue/no-v-html -->
+            <div class="product-description" v-html="descriptionHtml" />
           </template>
         </div>
 
