@@ -8,6 +8,7 @@ if (error.value) throw createError({ statusCode: 404, message: 'Статтю н�
 
 const post = computed(() => data.value?.post)
 const related = computed(() => data.value?.related ?? [])
+const bodyHtml = computed(() => sanitizeHtml(post.value?.body))
 
 const canonicalUrl = computed(() => `${config.public.siteUrl}/journal/${route.params.slug}`)
 
@@ -67,7 +68,8 @@ function copyUrl() {
       </button>
     </div>
     <section class="article_content mx-auto">
-      <div v-html="post.body"></div>
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <div v-html="bodyHtml"></div>
     </section>
   </div>
 </section>
