@@ -383,62 +383,6 @@
       border-radius: 1rem;
     }
 
-    .qty-picker{
-      display: flex;
-      align-items: center;
-      border: 1px solid #422928;
-      border-radius: 1rem;
-      overflow: hidden;
-      background: #FFFEFC;
-    }
-
-    .qty-picker__btn{
-      width: 44px;
-      height: 48px;
-      border: 0;
-      background: transparent;
-      color: #422928;
-      font-size: 1.25rem;
-      line-height: 1;
-      cursor: pointer;
-      transition: background-color .15s ease;
-
-      &:hover:not(:disabled){
-        background: #F4F0E7;
-      }
-
-      &:disabled{
-        color: #B9B2AA;
-        cursor: default;
-      }
-    }
-
-    .qty-picker__input{
-      width: 48px;
-      height: 48px;
-      border: 0;
-      border-left: 1px solid #EDE6DE;
-      border-right: 1px solid #EDE6DE;
-      text-align: center;
-      font-weight: 600;
-      color: #422928;
-      background: transparent;
-      // Стрілки браузера дублюють наші кнопки «−» / «+».
-      appearance: textfield;
-      -moz-appearance: textfield;
-
-      &::-webkit-outer-spin-button,
-      &::-webkit-inner-spin-button{
-        appearance: none;
-        margin: 0;
-      }
-
-      &:focus{
-        outline: 2px solid #69BDDB;
-        outline-offset: -2px;
-      }
-    }
-
     .add_incart{
       display: flex;
       flex-direction: row;
