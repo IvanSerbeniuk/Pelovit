@@ -24,6 +24,8 @@ const seoTitle = computed(() =>
   product.value?.meta_title || `${product.value?.name ?? 'Товар'} — PELOVIT`
 )
 const descriptionHtml = computed(() => sanitizeHtml(product.value?.description))
+const instructionHtml = computed(() => sanitizeHtml(product.value?.instruction))
+const instructionOpen = ref(false)
 
 const seoDesc = computed(() =>
   product.value?.meta_description || htmlToText(product.value?.description) || `${product.value?.name} — косметика PELOVIT. Замовляйте з доставкою по Україні.`
@@ -300,6 +302,27 @@ const HEART_FILLED = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none
             <h5 class="mt-5 mb-3">Опис</h5>
             <!-- eslint-disable-next-line vue/no-v-html -->
             <div class="product-description" v-html="descriptionHtml" />
+          </template>
+
+          <!-- Повний текст інструкції: склад, активи, спосіб застосування. -->
+          <template v-if="instructionHtml">
+            <button
+              type="button"
+              class="instruction-toggle"
+              :aria-expanded="instructionOpen"
+              aria-controls="product-instruction"
+              @click="instructionOpen = !instructionOpen"
+            >
+              <span>Інструкція із застосування</span>
+              <span class="instruction-toggle__icon" :class="{ 'is-open': instructionOpen }">⌄</span>
+            </button>
+            <!-- eslint-disable-next-line vue/no-v-html -->
+            <div
+              v-show="instructionOpen"
+              id="product-instruction"
+              class="product-description product-instruction"
+              v-html="instructionHtml"
+            />
           </template>
         </div>
 

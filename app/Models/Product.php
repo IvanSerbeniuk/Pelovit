@@ -31,7 +31,7 @@ class Product extends Model
     }
 
     protected $fillable = [
-        'category_id', 'name', 'slug', 'description',
+        'category_id', 'name', 'slug', 'description', 'instruction',
         'meta_title', 'meta_description', 'meta_keywords',
         'og_title', 'og_description', 'no_index',
         'price', 'old_price', 'image', 'images',

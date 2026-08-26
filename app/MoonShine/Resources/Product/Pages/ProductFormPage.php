@@ -66,6 +66,8 @@ class ProductFormPage extends FormPage
                         BelongsTo::make('Категорія', 'category', fn($item) => $item->name, resource: \App\MoonShine\Resources\Category\CategoryResource::class)->required(),
                         Text::make('Бренд', 'brand'),
                         Textarea::make('Опис', 'description'),
+                        Textarea::make('Інструкція', 'instruction')
+                            ->hint('Повний текст: склад, активи, спосіб застосування. Показується окремим блоком на сторінці товару'),
                     ])->columnSpan(8),
                     Column::make([
                         Number::make('Ціна (₴)', 'price')->required()->step(0.01),

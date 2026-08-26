@@ -34,6 +34,18 @@ class ProductApiTest extends TestCase
             ->assertNotFound();
     }
 
+    public function test_response_includes_instruction(): void
+    {
+        $product = Product::factory()->create([
+            'slug' => 'krem-z-instruktsiieiu',
+            'instruction' => '<p>Склад та спосіб застосування</p>',
+        ]);
+
+        $this->getJson("/api/products/{$product->slug}")
+            ->assertOk()
+            ->assertJsonPath('product.instruction', '<p>Склад та спосіб застосування</p>');
+    }
+
     public function test_response_includes_related_products(): void
     {
         $category = Category::factory()->create();

@@ -359,6 +359,44 @@
     }
   }
 
+  // Інструкція довга, тому за замовчуванням згорнута.
+  .instruction-toggle{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    width: 100%;
+    margin-top: 2rem;
+    padding: .9rem 0;
+    border: 0;
+    border-top: 1px solid #EDE6DE;
+    border-bottom: 1px solid #EDE6DE;
+    background: transparent;
+    color: #422928;
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+
+    &:hover{
+      color: #2C7B99;
+    }
+  }
+
+  .instruction-toggle__icon{
+    font-size: 1.4rem;
+    line-height: 1;
+    transition: transform .2s ease;
+
+    &.is-open{
+      transform: rotate(180deg);
+    }
+  }
+
+  .product-instruction{
+    padding-top: 1.25rem;
+  }
+
   // Описи товарів приходять з БД як HTML (перенесені зі старого сайту).
   .product-description {
     color: rgba(103, 94, 84, 1);
