@@ -138,8 +138,30 @@
     flex-shrink: 0;
   }
 
+  // Категорії в сайдбарі — той самий вигляд, що й фільтри каталогу:
+  // активний пункт залитий, ховер його не перебиває.
+  .sidebar .nav-link {
+    border-radius: 8px;
+    padding: 6px 10px;
+    transition: background .2s ease, color .2s ease;
+
+    &:hover:not(.active) {
+      background: rgba(66, 41, 40, .06);
+    }
+
+    &.active {
+      background: #422928;
+      color: #FFFEFC;
+      font-weight: 500;
+
+      &:hover {
+        background: #533634;
+      }
+    }
+  }
+
   .sidebar .nav-link.active .cat-count {
-    background: #5E3F3E;
+    background: rgba(255, 255, 255, .18);
     color: #fff;
   }
 
