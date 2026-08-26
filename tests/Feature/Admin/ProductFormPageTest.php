@@ -40,4 +40,19 @@ class ProductFormPageTest extends TestCase
         $response->assertSee('name="instruction"', false);
         $response->assertSee('Інструкція');
     }
+
+    /**
+     * MoonShine приклеює dir до значення поля, тож dir мусить збігатися з
+     * тим, де файли лежать насправді, інакше в адмінці — биті картинки.
+     */
+    public function test_image_url_matches_stored_path(): void
+    {
+        $product = Product::factory()->create(['image' => 'products/krem.jpg']);
+
+        $this->actingAs($this->admin(), 'moonshine')
+            ->get(app(ProductResource::class)->getFormPageUrl($product->id))
+            ->assertOk()
+            ->assertSee('/products/krem.jpg', false)
+            ->assertDontSee('/products/products/krem.jpg', false);
+    }
 }

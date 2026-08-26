@@ -75,7 +75,11 @@ class PostFormPage extends FormPage
                         Date::make('Дата публікації', 'published_at'),
                     ])->columnSpan(6),
                     Column::make([
-                        Image::make('Зображення', 'image')->dir('posts')->disk('public_root'),
+                        // dir мусить збігатися з тим, де файли лежать насправді: MoonShine
+                        // приклеює його до значення, і 'posts/' давав шлях у нікуди.
+                        // Крім того, public/posts не змонтований томом — завантажене
+                        // туди зникало б при оновленні образу.
+                        Image::make('Зображення', 'image')->dir('images/journal')->disk('public_root'),
                         Switcher::make('Опублікована', 'is_published'),
                         Switcher::make('Обрана публікація', 'is_featured'),
                     ])->columnSpan(6),

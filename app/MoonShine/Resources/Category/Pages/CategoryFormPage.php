@@ -62,7 +62,8 @@ class CategoryFormPage extends FormPage
                         return $query;
                     }),
                 Number::make('Порядок сортування', 'sort_order'),
-                Image::make('Зображення', 'image')->dir('categories')->disk('public_root'),
+                // Картинки категорій лежать у public/images, а не в public/categories.
+                Image::make('Зображення', 'image')->dir('images')->disk('public_root'),
                 Switcher::make('Активна', 'is_active'),
             ]),
         ];
