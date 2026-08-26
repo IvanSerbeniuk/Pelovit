@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\MoonShine\Resources\Post\PostResource;
 use App\MoonShine\Resources\Product\ProductResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -18,6 +19,7 @@ class AdminLinkController extends Controller
     /** Ресурси, для яких вітрина може попросити посилання. */
     private const RESOURCES = [
         'product' => ProductResource::class,
+        'post' => PostResource::class,
     ];
 
     public function show(Request $request): JsonResponse

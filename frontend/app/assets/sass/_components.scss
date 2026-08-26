@@ -524,3 +524,24 @@
   color: $text-muted;
   user-select: none;
 }
+
+// Службове посилання в адмінку — його бачить лише залогінений адміністратор.
+// Живе тут, а не в стилях сторінки товару: та сама кнопка є і в меджурналі.
+.admin-edit-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  margin-bottom: 1rem;
+  padding: .35rem .85rem;
+  border: 1px dashed $primary-blue;
+  border-radius: 1rem;
+  color: #2C7B99;
+  font-size: .875rem;
+  text-decoration: none;
+  transition: $transition-default;
+
+  &:hover {
+    background: #F1F8FB;
+    color: #1F5C74;
+  }
+}
