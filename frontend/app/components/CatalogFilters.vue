@@ -7,6 +7,7 @@
 const props = defineProps<{
   categories: any[]
   brands: string[]
+  priceRange?: { min: number, max: number }
   /** Панель рендериться двічі — префікс тримає id унікальними в межах сторінки. */
   idPrefix: string
 }>()
@@ -18,10 +19,15 @@ const router = useRouter()
 
 const selectedCategory = computed(() => (route.query.category as string) ?? '')
 const selectedBrand = computed(() => (route.query.brand as string) ?? '')
-const selectedSort = computed(() => (route.query.sort as string) ?? '')
 
 const minPrice = ref((route.query.min_price as string) ?? '')
 const maxPrice = ref((route.query.max_price as string) ?? '')
+
+// Бренд у каталозі поки один — фільтр, який нічого не відсіює, лише шумить.
+const showBrands = computed(() => props.brands.length > 1)
+
+const hasFilters = computed(() => ['category', 'brand', 'sort', 'min_price', 'max_price', 'q']
+  .some(key => Boolean(route.query[key])))
 
 // Ціну вводять в обох копіях панелі (сайдбар + offcanvas) і міняють
 // кнопками «Скинути» — без синхронізації поля розʼїжджаються з URL.
@@ -42,77 +48,69 @@ function toggleBrand(brand: string) {
   pushQuery({ brand: selectedBrand.value === brand ? undefined : brand })
 }
 
-function setSort(sort: string) {
-  pushQuery({ sort: selectedSort.value === sort ? undefined : sort })
-}
-
 function applyPrice() {
   pushQuery({
     min_price: minPrice.value || undefined,
     max_price: maxPrice.value || undefined,
   })
 }
+
+function resetFilters() {
+  router.push({ path: '/catalog' })
+}
 </script>
 
 <template>
   <div class="catalog-filters">
     <div class="mb-4">
-      <h6 class="fw-semibold mb-3">Сортування</h6>
-      <div class="filter-check">
-        <input type="checkbox" :id="uid('sort-featured')" :checked="selectedSort === 'featured'" @change="setSort('featured')">
-        <label :for="uid('sort-featured')">За популярністю</label>
-      </div>
-      <div class="filter-check">
-        <input type="checkbox" :id="uid('sort-new')" :checked="selectedSort === 'new'" @change="setSort('new')">
-        <label :for="uid('sort-new')">Новинки</label>
-      </div>
-      <div class="filter-check">
-        <input type="checkbox" :id="uid('sort-price-asc')" :checked="selectedSort === 'price_asc'" @change="setSort('price_asc')">
-        <label :for="uid('sort-price-asc')">Ціна: від дешевих</label>
-      </div>
-      <div class="filter-check">
-        <input type="checkbox" :id="uid('sort-price-desc')" :checked="selectedSort === 'price_desc'" @change="setSort('price_desc')">
-        <label :for="uid('sort-price-desc')">Ціна: від дорогих</label>
-      </div>
-    </div>
-
-    <div class="mb-4">
       <h6 class="fw-semibold mb-3">Категорії</h6>
+
+      <!-- Категорія вибирається одна: кнопки, а не чекбокси, які обіцяють
+           множинний вибір і мовчки знімають попередню галку. -->
       <div v-for="cat in categories" :key="cat.id" class="mb-1">
-        <div class="filter-check">
-          <input
-            type="checkbox"
-            :id="uid(`cat-${cat.slug}`)"
-            :checked="selectedCategory === cat.slug"
-            @change="toggleCategory(cat.slug)"
+        <button
+          type="button"
+          class="filter-option"
+          :class="{ 'is-active': selectedCategory === cat.slug }"
+          :aria-pressed="selectedCategory === cat.slug"
+          :disabled="!cat.products_count"
+          @click="toggleCategory(cat.slug)"
+        >
+          <span class="filter-option__name">{{ cat.name }}</span>
+          <span class="filter-option__count">{{ cat.products_count ?? 0 }}</span>
+        </button>
+
+        <div v-if="cat.children?.length" class="ps-2 mt-1">
+          <button
+            v-for="child in cat.children"
+            :key="child.id"
+            type="button"
+            class="filter-option filter-option--sm"
+            :class="{ 'is-active': selectedCategory === child.slug }"
+            :aria-pressed="selectedCategory === child.slug"
+            :disabled="!child.products_count"
+            @click="toggleCategory(child.slug)"
           >
-          <label :for="uid(`cat-${cat.slug}`)">{{ cat.name }}</label>
-        </div>
-        <div v-if="cat.children?.length" class="ps-3 mt-1">
-          <div v-for="child in cat.children" :key="child.id" class="filter-check filter-check--sm">
-            <input
-              type="checkbox"
-              :id="uid(`cat-${child.slug}`)"
-              :checked="selectedCategory === child.slug"
-              @change="toggleCategory(child.slug)"
-            >
-            <label :for="uid(`cat-${child.slug}`)">{{ child.name }}</label>
-          </div>
+            <span class="filter-option__name">{{ child.name }}</span>
+            <span class="filter-option__count">{{ child.products_count ?? 0 }}</span>
+          </button>
         </div>
       </div>
     </div>
 
-    <div v-if="brands.length" class="mb-4">
+    <div v-if="showBrands" class="mb-4">
       <h6 class="fw-semibold mb-3">Бренд</h6>
-      <div v-for="brand in brands" :key="brand" class="filter-check">
-        <input
-          type="checkbox"
-          :id="uid(`brand-${brand}`)"
-          :checked="selectedBrand === brand"
-          @change="toggleBrand(brand)"
-        >
-        <label :for="uid(`brand-${brand}`)">{{ brand }}</label>
-      </div>
+      <button
+        v-for="brand in brands"
+        :key="brand"
+        type="button"
+        class="filter-option"
+        :class="{ 'is-active': selectedBrand === brand }"
+        :aria-pressed="selectedBrand === brand"
+        @click="toggleBrand(brand)"
+      >
+        <span class="filter-option__name">{{ brand }}</span>
+      </button>
     </div>
 
     <div class="mb-4">
@@ -122,7 +120,7 @@ function applyPrice() {
           v-model="minPrice"
           type="number"
           class="form-control form-control-sm"
-          placeholder="від"
+          :placeholder="priceRange ? String(priceRange.min) : 'від'"
           min="0"
           aria-label="Ціна від"
           @keyup.enter="applyPrice"
@@ -132,13 +130,25 @@ function applyPrice() {
           v-model="maxPrice"
           type="number"
           class="form-control form-control-sm"
-          placeholder="до"
+          :placeholder="priceRange ? String(priceRange.max) : 'до'"
           min="0"
           aria-label="Ціна до"
           @keyup.enter="applyPrice"
         >
         <button class="btn btn-sm btn-dark" @click="applyPrice">OK</button>
       </div>
+      <p v-if="priceRange" class="filter-hint mt-2 mb-0">
+        Товари від {{ priceRange.min }} до {{ priceRange.max }} ₴
+      </p>
     </div>
+
+    <button
+      type="button"
+      class="btn btn-outline-secondary w-100"
+      :disabled="!hasFilters"
+      @click="resetFilters"
+    >
+      Скинути всі фільтри
+    </button>
   </div>
 </template>

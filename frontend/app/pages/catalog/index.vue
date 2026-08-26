@@ -26,6 +26,21 @@ const filters = computed<Record<string, string>>(() => {
   return f && !Array.isArray(f) ? f : {}
 })
 
+const priceRange = computed(() => data.value?.price_range)
+
+function setSort(sort: string) {
+  router.push({ query: { ...route.query, sort: sort || undefined, page: undefined } })
+}
+
+// Множина для «Знайдено N товарів / товари / товар».
+function pluralProducts(n: number) {
+  const mod10 = n % 10
+  const mod100 = n % 100
+  if (mod10 === 1 && mod100 !== 11) return 'товар'
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'товари'
+  return 'товарів'
+}
+
 function goToPage(page: number) {
   router.push({ query: { ...route.query, page: page > 1 ? String(page) : undefined } })
 }
@@ -107,10 +122,7 @@ function removeChip(patch: Record<string, any>) {
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body">
-      <CatalogFilters :categories="categories" :brands="brands" id-prefix="m" />
-    </div>
-    <div class="offcanvas-footer p-3 border-top">
-      <button class="btn btn-outline-secondary w-100" @click="resetFilters">Скинути всі фільтри</button>
+      <CatalogFilters :categories="categories" :brands="brands" :price-range="priceRange" id-prefix="m" />
     </div>
   </div>
 
@@ -152,12 +164,31 @@ function removeChip(patch: Record<string, any>) {
         </button>
       </div>
 
+      <div class="catalog-toolbar d-flex justify-content-between align-items-center gap-3 mb-3">
+        <p class="text-muted small mb-0">
+          <template v-if="products.total">Знайдено {{ products.total }} {{ pluralProducts(products.total) }}</template>
+        </p>
+        <label class="catalog-sort">
+          <span class="catalog-sort__label">Сортувати:</span>
+          <!-- selected на самих option, а не value на select: у SSR-розмітці
+               value браузер ігнорує, і до гідрації видно «За замовчуванням». -->
+          <select class="form-select form-select-sm" @change="setSort(($event.target as HTMLSelectElement).value)">
+            <option value="" :selected="!filters.sort">За замовчуванням</option>
+            <option
+              v-for="(label, value) in SORT_LABELS"
+              :key="value"
+              :value="value"
+              :selected="filters.sort === value"
+            >{{ label }}</option>
+          </select>
+        </label>
+      </div>
+
       <div class="row g-4">
         <aside class="col-lg-3 d-none d-lg-block">
           <div class="catalog-sidebar">
             <h5 class="fw-bold mb-3">Фільтри</h5>
-            <CatalogFilters :categories="categories" :brands="brands" id-prefix="d" />
-            <button class="btn btn-outline-secondary w-100" @click="resetFilters">Скинути всі фільтри</button>
+            <CatalogFilters :categories="categories" :brands="brands" :price-range="priceRange" id-prefix="d" />
           </div>
         </aside>
 

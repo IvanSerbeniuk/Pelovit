@@ -18,6 +18,23 @@ class CatalogApiController extends Controller
             ->orderBy('sort_order')
             ->get();
 
+        // Скільки товарів у кожній категорії — щоб вітрина не вела в порожню
+        // видачу. У батьківської рахуємо разом із дочірніми.
+        $counts = Product::where('is_active', true)
+            ->selectRaw('category_id, COUNT(*) as total')
+            ->groupBy('category_id')
+            ->pluck('total', 'category_id');
+
+        foreach ($categories as $category) {
+            $own = (int) ($counts[$category->id] ?? 0);
+            $children = $category->children->sum(fn ($child) => (int) ($counts[$child->id] ?? 0));
+
+            $category->setAttribute('products_count', $own + $children);
+            $category->children->each(
+                fn ($child) => $child->setAttribute('products_count', (int) ($counts[$child->id] ?? 0))
+            );
+        }
+
         $categoryIds = [];
         if ($request->category) {
             $cat = Category::where('slug', $request->category)->first();
@@ -52,10 +69,21 @@ class CatalogApiController extends Controller
             ->orderBy('brand')
             ->pluck('brand');
 
+        // Реальні межі цін — підказка під полями «від / до».
+        // Нульові ціни (товар-подарунок) до мінімуму не беремо.
+        $priceRange = Product::where('is_active', true)
+            ->where('price', '>', 0)
+            ->selectRaw('MIN(price) as min, MAX(price) as max')
+            ->first();
+
         return response()->json([
             'products' => $products,
             'categories' => $categories,
             'brands' => $brands,
+            'price_range' => [
+                'min' => (int) floor((float) ($priceRange->min ?? 0)),
+                'max' => (int) ceil((float) ($priceRange->max ?? 0)),
+            ],
             // (object) обовʼязково: порожній PHP-масив серіалізується в JSON як
             // [], і на вітрині filters.sort потрапляє в Array.prototype.sort —
             // тобто «фільтр» виглядає застосованим, хоча його немає.

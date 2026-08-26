@@ -22,6 +22,36 @@ class CatalogApiTest extends TestCase
             ->assertSee('"filters":{}', escape: false);
     }
 
+    public function test_categories_carry_product_counts(): void
+    {
+        $parent = Category::factory()->create(['parent_id' => null]);
+        $child = Category::factory()->create(['parent_id' => $parent->id]);
+
+        Product::factory(2)->create(['category_id' => $parent->id]);
+        Product::factory(3)->create(['category_id' => $child->id]);
+        Product::factory()->inactive()->create(['category_id' => $child->id]);
+
+        $response = $this->getJson('/api/catalog')->assertOk();
+
+        $row = collect($response->json('categories'))->firstWhere('id', $parent->id);
+
+        // У батьківської — разом із дочірньою, неактивні не рахуються.
+        $this->assertSame(5, $row['products_count']);
+        $this->assertSame(3, $row['children'][0]['products_count']);
+    }
+
+    public function test_price_range_ignores_zero_priced_products(): void
+    {
+        Product::factory()->create(['price' => 0]);
+        Product::factory()->create(['price' => 300]);
+        Product::factory()->create(['price' => 2300]);
+
+        $this->getJson('/api/catalog')
+            ->assertOk()
+            ->assertJsonPath('price_range.min', 300)
+            ->assertJsonPath('price_range.max', 2300);
+    }
+
     public function test_returns_required_keys(): void
     {
         $response = $this->getJson('/api/catalog');
