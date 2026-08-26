@@ -33,20 +33,6 @@ const search = computed(() => route.query.search as string ?? '')
 const currentPage = computed(() => Number(posts.value.current_page ?? 1))
 const lastPage = computed(() => Number(posts.value.last_page ?? 1))
 
-// Своя пагінація замість posts.links: Laravel віддає в label ключі
-// 'pagination.previous'/'pagination.next', бо для локалі uk немає перекладів.
-const pageNumbers = computed(() => {
-  const total = lastPage.value
-  const current = currentPage.value
-  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1)
-
-  const pages = new Set([1, total, current])
-  for (let i = current - 1; i <= current + 1; i++) {
-    if (i > 1 && i < total) pages.add(i)
-  }
-  return [...pages].sort((a, b) => a - b)
-})
-
 const total = computed(() => Number(posts.value.total ?? 0))
 const hasFilters = computed(() => Boolean(currentCategory.value || search.value))
 
@@ -206,35 +192,12 @@ function postImg(post: any) {
           </div>
         </div>
 
-        <nav v-if="lastPage > 1" class="mt-5 d-flex justify-content-center align-items-center gap-1" aria-label="Сторінки">
-          <button
-            class="btn btn-sm btn-outline-secondary d-flex align-items-center"
-            :disabled="currentPage === 1"
-            aria-label="Попередня сторінка"
-            @click="goToPage(currentPage - 1)"
-          >
-            <AppIcon name="chevron-left" />
-          </button>
-
-          <template v-for="(page, i) in pageNumbers" :key="page">
-            <span v-if="i > 0 && page - pageNumbers[i - 1] > 1" class="px-1 text-muted">…</span>
-            <button
-              class="btn btn-sm"
-              :class="page === currentPage ? 'btn-dark' : 'btn-outline-secondary'"
-              :aria-current="page === currentPage ? 'page' : undefined"
-              @click="goToPage(page)"
-            >{{ page }}</button>
-          </template>
-
-          <button
-            class="btn btn-sm btn-outline-secondary d-flex align-items-center"
-            :disabled="currentPage === lastPage"
-            aria-label="Наступна сторінка"
-            @click="goToPage(currentPage + 1)"
-          >
-            <AppIcon name="chevron-right" />
-          </button>
-        </nav>
+        <AppPagination
+          :current="currentPage"
+          :last="lastPage"
+          aria-label="Сторінки статей"
+          @change="goToPage"
+        />
       </div>
     </div>
   </div>

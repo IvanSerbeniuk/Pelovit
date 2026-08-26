@@ -26,16 +26,8 @@ const filters = computed<Record<string, string>>(() => {
   return f && !Array.isArray(f) ? f : {}
 })
 
-function navigatePage(url: string | null) {
-  if (!url) return
-  const parsed = new URL(url)
-  router.push({ query: { ...route.query, page: parsed.searchParams.get('page') } })
-}
-
-function pageLabel(label: string) {
-  if (label === 'pagination.previous') return '&lsaquo;'
-  if (label === 'pagination.next') return '&rsaquo;'
-  return label
+function goToPage(page: number) {
+  router.push({ query: { ...route.query, page: page > 1 ? String(page) : undefined } })
 }
 
 function resetFilters() {
@@ -189,17 +181,12 @@ function removeChip(patch: Record<string, any>) {
             </div>
           </div>
 
-          <div v-if="products.last_page > 1" class="mt-4 d-flex justify-content-center gap-1">
-            <button
-              v-for="link in products.links"
-              :key="link.label"
-              class="btn btn-sm"
-              :class="link.active ? 'btn-dark' : 'btn-outline-secondary'"
-              :disabled="!link.url"
-              @click="navigatePage(link.url)"
-              v-html="pageLabel(link.label)"
-            ></button>
-          </div>
+          <AppPagination
+            :current="Number(products.current_page ?? 1)"
+            :last="Number(products.last_page ?? 1)"
+            aria-label="Сторінки каталогу"
+            @change="goToPage"
+          />
         </div>
       </div>
     </div>

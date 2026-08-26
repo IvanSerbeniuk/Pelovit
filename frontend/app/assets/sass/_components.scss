@@ -377,3 +377,72 @@
 .search-fade-leave-active { transition: opacity .2s ease; }
 .search-fade-enter-from,
 .search-fade-leave-to { opacity: 0; }
+
+// Пагінація — спільна для каталогу, журналу й акцій.
+.pagination-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+
+.pagination-nav__pages {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pagination-nav__page,
+.pagination-nav__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 .5rem;
+  border: 1px solid $border-light;
+  border-radius: 50%;
+  background: $white;
+  color: $brown-dark;
+  font-size: .95rem;
+  font-weight: 500;
+  line-height: 1;
+  transition: $transition-default;
+
+  &:hover:not(:disabled):not(.is-current) {
+    border-color: $brown-dark;
+    background: $light-bg;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-blue;
+    outline-offset: 2px;
+  }
+}
+
+.pagination-nav__page.is-current {
+  border-color: $brown-dark;
+  background: $brown-dark;
+  color: $white;
+  cursor: default;
+}
+
+.pagination-nav__arrow {
+  font-size: 1.1rem;
+
+  &:disabled {
+    opacity: .35;
+    cursor: default;
+  }
+}
+
+.pagination-nav__gap {
+  padding: 0 .25rem;
+  color: $text-muted;
+  user-select: none;
+}
