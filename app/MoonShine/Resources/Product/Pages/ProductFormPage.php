@@ -15,6 +15,7 @@ use MoonShine\Support\ListOf;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Textarea;
+use MoonShine\TinyMce\Fields\TinyMce;
 use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Switcher;
 use MoonShine\UI\Fields\Image;
@@ -65,8 +66,8 @@ class ProductFormPage extends FormPage
                         Text::make('Slug', 'slug')->hint('Заповниться автоматично від назви'),
                         BelongsTo::make('Категорія', 'category', fn($item) => $item->name, resource: \App\MoonShine\Resources\Category\CategoryResource::class)->required(),
                         Text::make('Бренд', 'brand'),
-                        Textarea::make('Опис', 'description'),
-                        Textarea::make('Інструкція', 'instruction')
+                        TinyMce::make('Опис', 'description'),
+                        TinyMce::make('Інструкція', 'instruction')
                             ->hint('Повний текст: склад, активи, спосіб застосування. Показується окремим блоком на сторінці товару'),
                     ])->columnSpan(8),
                     Column::make([
